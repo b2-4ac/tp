@@ -287,58 +287,129 @@ _{Explain here how the data archiving feature will be implemented}_
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                                    | I want to …​                 | So that I can…​                                                        |
-|----------|--------------------------------------------|------------------------------|------------------------------------------------------------------------|
-| `* * *`  | new user                                   | see usage instructions       | refer to instructions when I forget how to use the App                 |
-| `* * *`  | user                                       | add a new person             |                                                                        |
-| `* * *`  | user                                       | delete a person              | remove entries that I no longer need                                   |
-| `* * *`  | user                                       | find a person by name        | locate details of persons without having to go through the entire list |
-| `* *`    | user                                       | hide private contact details | minimize chance of someone else seeing them by accident                |
-| `*`      | user with many persons in the address book | sort persons by name         | locate a person easily                                                 |
-
-*{More to be added}*
+| Priority | As a …​       | I want to …​                                      | So that I can…​                                                                 |
+|----------|---------------|--------------------------------------------------|---------------------------------------------------------------------------------|
+| `* * *`  | trainer       | list all clients in my roster                    | get an overview of my entire client base                                       |
+| `* * *`  | trainer       | add a client and his/her information             |                                                                                 |
+| `* * *`  | trainer       | delete a client’s contact                        | keep my client *roster* neat and up-to-date                                    |
+| `* * *`  | trainer       | attach free-form notes to a client's profile     | record observations or other details to note from past sessions and remind myself for future sessions |
+| `* * *`  | trainer       | tag a client to a specific gym location          | identify which venue I am training them at without clarifying each time        |
+| `* *`    | trainer       | view a client's complete profile in a separate view | get a full separate picture of the client and their needs without the interference of other client information displayed |
+| `* *`    | new user      | read about the available commands and their usage | learn how to use the application and refer to the instructions when I forget a certain command |
+| `* *`    | trainer       | search for a client by name                      | retrieve their full profile instantly without scrolling through the entire list of clients |
+| `* *`    | trainer       | filter clients by gym location                   | plan and schedule my clients better to ensure that my travel route is efficient |
+| `* *`    | trainer       | record a client’s diet                           | identify which diet a client is currently adopting without clarifying each time |
+| `* *`    | trainer       | record a client's dietary restrictions           | account for nutritional needs when designing their fitness programme           |
+| `* *`    | trainer       | record injuries, medical conditions or physical limitations for each client | assign appropriate and safe exercises, and avoid aggravating existing conditions |
+| `* *`    | trainer       | assign a *workout programme* or routine to a client | track what programme they are currently supposed to follow, separate from individual session logs |
+| `* *`    | trainer       | update a client's contact details                | ensure their details remain accurate over time                                 |
+| `* *`    | trainer       | create *workout session logs* for each client    | track their training history and refer to them to tailor future sessions accordingly |
+| `* *`    | trainer       | see the last session date for each client        | identify clients I have not seen recently and decide whether to follow up      |
+| `* *`    | trainer       | mark a client as active or inactive              | focus on current clients while retaining records of past ones for future reference |
+| `* *`    | trainer       | add body measurements for each client (weight, body fat %, etc.) | track their physical progress quantitatively over time                         |
+| `* *`    | trainer       | store a *session rate* for each client           | recall their pricing quickly when preparing invoices                           |
+| `* *`    | trainer       | group clients together under a shared label      | track clients that are part of batch or group training sessions and contact them easily |
+| `* *`    | trainer       | sort my client list by different attributes (e.g. name, location, last session date) | organise my view depending on the task that I seek to do                       |
+| `* *`    | trainer       | set specific fitness goals for each client       | measure whether they are on track to meet their objectives                     |
+| `* *`    | trainer       | export or back up my client data                 | do not lose critical client information if something goes wrong                |
+| `*`      | trainer       | record emergency contact information for each client | act quickly to inform relevant contacts in the event of a *health emergency* during training |
+| `*`      | trainer       | see a summary of my total *active client* count and key details | monitor my *workload* and decide whether I have capacity to take on new clients |
+| `*`      | trainer       | record payment status for each payment cycle     | follow up on outstanding payments without losing track                         |
+| `*`      | trainer       | visualise a client's progress through charts     | identify trends in their performance at a glance and adjust their programme accordingly |
+| `*`      | trainer       | store reusable workout templates                 | refer to my *workout programmes* in one place and efficiently assign tried-and-tested programmes to new or similar clients |
+| `*`      | trainer       | filter or search clients by other specific attributes (e.g. dietary restriction, injury, *workout programme*) | quickly identify all clients sharing a particular condition or requirement     |
 
 ### Use cases
 
-(For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
+(For all use cases below, the **System** is the `PowerRoster` and the **Actor** is the `trainer`, unless specified otherwise)
 
-**Use case: Delete a person**
+**Use case: UC01 \- List all clients**  
+**Preconditions: Trainer launched PowerRoster.**  
+**Guarantees: The full client *roster* (if any) is displayed.**
 
 **MSS**
 
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+1. Trainer requests to list all clients.  
+2. PowerRoster retrieves and displays all clients in the *roster*.
 
-    Use case ends.
+   Use case ends.
 
 **Extensions**
 
-* 2a. The list is empty.
+* 2a. The *roster* has no clients 
 
-  Use case ends.
+    * 2a1. PowerRoster informs the Trainer that there are no clients in the *roster*.  
+        
+      Use case ends.
 
-* 3a. The given index is invalid.
+**Use case: UC02 \- Add a client**  
+**Preconditions: Trainer has launched PowerRoster.**   
+**Guarantees: A new client is added to the *roster* if all the required details are valid.**
 
-    * 3a1. AddressBook shows an error message.
+**MSS**
 
-      Use case resumes at step 2.
+1. Trainer requests to add a new client and input the respective details.  
+2. PowerRoster validates the details.  
+3. PowerRoster creates a new *client profile* and adds it to the *roster*.  
+4. PowerRoster confirms the successful addition to the Trainer.
 
-*{More to be added}*
+   Use case ends.
+
+**Extensions**
+
+* 2a. PowerRoster detects that one or more required fields are missing.
+
+    * 2a1. PowerRoster informs the Trainer of the missing fields.  
+    * 2a2. Trainer re-enters the details with the missing fields included.
+
+      Steps 2a1-2a2 are repeated until all required fields are present.
+
+      Use case resumes from step 2.
+
+* 2b. PowerRoster detects that the provided details contain invalid values (e.g. invalid phone number format).  
+    
+    * 2b1. PowerRoster informs the Trainer of the invalid fields and the expected format.  
+    * 2b2. Trainer re-enters the corrected details.
+
+      Steps 2b1-2b2 are repeated until all fields are valid.
+
+      Use case resumes from step 2.
+
+* 2c. PowerRoster detects that a client with the same name already exists.  
+  
+    * 2c1. PowerRoster warns the Trainer of the potential duplicate.  
+    * 2c2. Trainer confirms they wish to proceed with adding the client.
+
+      Use case resumes from step 3.
+
+* 2d. Trainer optionally provides a gym location.  
+
+    * 2d1. PowerRoster validates the gym location.  
+        * 2d1a1. PowerRoster informs the Trainer of the invalid input and the expected format.  
+        * 2d1a2. Trainer re-enters the location.  
+          Use case resumes from step 2d1.  
+    * 2d2. PowerRoster saves the gym location to the new client’s profile.  
+
+* 2e. Trainer optionally provides a note for the client.  
+    
+    * 2e1. PowerRoster saves the note to the client’s profile.  
+      Use case resumes from step 3.
 
 ### Non-Functional Requirements
 
-1.  Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
-2.  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
-3.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
-
-*{More to be added}*
+1. Should work on any *mainstream OS* as long as it has Java `17` or above installed.
+2. Should be able to hold up to 1000 clients without a noticeable sluggishness at its peak performance, even though the typical trainer is expected to store 10-25 clients.  
+3. All functions provided in PowerRoster should be able to be carried out via the Command Line Interface (CLI) only.  
+4. Must automatically save data after every successful command that alters the data stored to prevent data loss if the device’s battery dies or the app is closed abruptly.  
+5. All client data should be stored in a single file to allow for easy backups and transfer to other devices if needed.  
 
 ### Glossary
 
-* **Mainstream OS**: Windows, Linux, Unix, MacOS
-* **Private contact detail**: A contact detail that is not meant to be shared with others
+* **Mainstream OS**: Windows, Linux, Unix, MacOS  
+* **Centralised application:** A single application consolidating all client-related information into one place, eliminating the need for the Trainer to switch between multiple applications (e.g. notes apps, spreadsheets, messaging apps) to retrieve or add client data.  
+* **Roster:** The complete list of all clients stored in PowerRoster.  
+* **Client Profile:** A record within PowerRoster storing all information associated with a specific client (e.g. contact details, gym location, workout history, dietary needs).  
+* **Workout Session Log:** A recorded entry of a completed training session for a client, including details such as date, duration and exercises performed.  
 
 --------------------------------------------------------------------------------------------------------------------
 
