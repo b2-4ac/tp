@@ -272,15 +272,15 @@ _{Explain here how the data archiving feature will be implemented}_
 
 ### Product scope
 
-**Target user profile**:
+**Target user profile**: Freelance Personal Fitness Trainers
 
-* has a need to manage a significant number of contacts
-* prefer desktop apps over other types
-* can type fast
-* prefers typing to mouse interactions
-* is reasonably comfortable using CLI apps
+* Fully freelance, not affiliated with any single gym which means he/she manages his/her own client base independently
+* Handles a diverse client base of 10-25 clients, with varying fitness goals, dietary requirements, workout plans and gym location
+* Prefers laptop apps for work and keyboard-driven workflows over Graphical User Interface (GUI) navigation
+* Currently, has client information spread out across different applications, which makes it time-consuming to retrieve and update client information, and needs a *centralised* *application* to help with this
+* Needs to pull up/update a specific client’s full information before/after a session
 
-**Value proposition**: manage contacts faster than a typical mouse/GUI driven app
+**Value proposition**: PowerRoster helps freelance personal fitness trainers manage diverse client needs by linking their workout histories, dietary restrictions and preferred locations directly to their contact profiles. This allows for a *centralised* *application* for trainers to efficiently access any information needed about a client via an easy-to-use application optimised for text commands.
 
 
 ### User stories
@@ -333,14 +333,6 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 2. PowerRoster retrieves and displays all clients in the *roster*.
 
    Use case ends.
-
-**Extensions**
-
-* 2a. The *roster* has no clients 
-
-    * 2a1. PowerRoster informs the Trainer that there are no clients in the *roster*.  
-        
-      Use case ends.
 
 **Use case: UC02 \- Add a client**  
 **Preconditions: Trainer has launched PowerRoster.**   
@@ -395,13 +387,69 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 2e1. PowerRoster saves the note to the client’s profile.  
       Use case resumes from step 3.
 
+**Use case: UC03 \- Delete a client**  
+**Preconditions: Trainer has launched PowerRoster. At least one client exists in the *roster*.**   
+**Guarantees: The client and all associated data are permanently removed if the deletion is confirmed.**
+
+**MSS**
+
+1. Trainer requests to delete a specific client.
+2. PowerRoster locates the client.
+3. PowerRoster removes the client and all associated data from the *roster*.
+4. PowerRoster confirms the successful deletion to the Trainer.
+
+**Extensions**
+
+* 2a. PowerRoster cannot find a client matching the given identifier.
+    * 2a1. PowerRoster informs the Trainer that no matching contact was found and no deletion was carried out.  
+      
+      Use case ends.
+
+**Use case: UC04 \- View Help and Command Guide**  
+**Actor: New user**  
+**Preconditions: User has launched PowerRoster.**  
+**Guarantees: The list of available commands and their usage is displayed.**
+
+**MSS:**
+
+1. User requests to view the help guide.
+2. PowerRoster displays the list of all available commands with their syntax and descriptions.
+
+   Use case ends.
+
+**Use case: UC05 \- Search for a Client by Name**  
+**Preconditions: Trainer has launched PowerRoster.**  
+**Guarantees: All clients whose names match the search query are displayed.**  
+**MSS:**
+
+1. Trainer requests to search for a client by name and provides the name to search for.
+2. PowerRoster retrieves and displays all clients whose names match the search query.
+
+   Use case ends.
+
+**Extensions:**
+
+* 2a. No clients match the search query.
+    * 2a1. PowerRoster informs the Trainer that no matching clients were found.
+      
+      Use case ends.
+* 2a. The *roster* has no clients 
+
+    * 2a1. PowerRoster informs the Trainer that there are no clients in the *roster*.  
+        
+      Use case ends.
+
 ### Non-Functional Requirements
 
 1. Should work on any *mainstream OS* as long as it has Java `17` or above installed.
 2. Should be able to hold up to 1000 clients without a noticeable sluggishness at its peak performance, even though the typical trainer is expected to store 10-25 clients.  
 3. All functions provided in PowerRoster should be able to be carried out via the Command Line Interface (CLI) only.  
 4. Must automatically save data after every successful command that alters the data stored to prevent data loss if the device’s battery dies or the app is closed abruptly.  
-5. All client data should be stored in a single file to allow for easy backups and transfer to other devices if needed.  
+5. All client data should be stored in a single file to allow for easy backups and transfer to other devices if needed.
+6. A user with above-average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+7. Should provide a helpful error message every time an invalid command is entered.
+8. Should ensure basic data validation for all data entries to prevent logical impossibilities (e.g., negative *session rate*)
+9. The application is not required to carry out any Internet communication for any of its functionality.
 
 ### Glossary
 
@@ -409,7 +457,12 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 * **Centralised application:** A single application consolidating all client-related information into one place, eliminating the need for the Trainer to switch between multiple applications (e.g. notes apps, spreadsheets, messaging apps) to retrieve or add client data.  
 * **Roster:** The complete list of all clients stored in PowerRoster.  
 * **Client Profile:** A record within PowerRoster storing all information associated with a specific client (e.g. contact details, gym location, workout history, dietary needs).  
-* **Workout Session Log:** A recorded entry of a completed training session for a client, including details such as date, duration and exercises performed.  
+* **Workout Session Log:** A recorded entry of a completed training session for a client, including details such as date, duration and exercises performed.
+* **Workout Programme:** A structured plan of exercises assigned to a client to follow over a period of time (e.g. Push, Pull and Legs).
+* **Active Client**: A client currently receiving training sessions from the Trainer.
+* **Session Rate:** The fee charged by the Trainer per training session for a specific client.
+* **Health emergency:** An unexpected medical situation that occurs during a training session that requires medical attention.
+* **Workload:** The total number of active clients managed and trained by a Trainer currently.
 
 --------------------------------------------------------------------------------------------------------------------
 
