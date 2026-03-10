@@ -5,6 +5,6 @@ package seedu.address.model.person;
  * can take on.
  */
 public enum GenderEnum {
-    MALE,
-    FEMALE
+    M,
+    F
 }

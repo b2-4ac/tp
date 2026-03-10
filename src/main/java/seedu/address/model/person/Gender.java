@@ -28,9 +28,9 @@ public class Gender {
         requireNonNull(gender);
         checkArgument(isValidGender(gender), MESSAGE_CONSTRAINTS);
         if (gender.toLowerCase().equals("m")) {
-            this.value = GenderEnum.MALE;
+            this.value = GenderEnum.M;
         } else {
-            this.value = GenderEnum.FEMALE;
+            this.value = GenderEnum.F;
         }
     }
 
