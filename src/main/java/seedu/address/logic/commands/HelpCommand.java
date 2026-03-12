@@ -9,13 +9,65 @@ public class HelpCommand extends Command {
 
     public static final String COMMAND_WORD = "help";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Shows program usage instructions.\n"
-            + "Example: " + COMMAND_WORD;
+    public static final String MESSAGE_USAGE = COMMAND_WORD
+            + ": Shows program usage instructions for all commands or a specific command.\n"
+            + "Parameters: [COMMAND_WORD] (optional)\n"
+            + "Example: " + COMMAND_WORD + " (shows all commands) or " + COMMAND_WORD + " add (shows add command only)";
 
     public static final String SHOWING_HELP_MESSAGE = "Opened help window.";
 
+    private final String targetCommand;
+
+    public HelpCommand(String targetCommand) {
+        this.targetCommand = targetCommand;
+    }
+
     @Override
     public CommandResult execute(Model model) {
-        return new CommandResult(SHOWING_HELP_MESSAGE, true, false);
+        if (targetCommand.isEmpty()) {
+            return new CommandResult(getAllCommandsUsage(), true, false);
+        } else {
+            return new CommandResult(getCommandUsage(targetCommand), true, false);
+        }
+    }
+
+    private String getAllCommandsUsage() {
+        return AddCommand.MESSAGE_USAGE + "\n\n"
+                + DeleteCommand.MESSAGE_USAGE + "\n\n"
+                + EditCommand.MESSAGE_USAGE + "\n\n"
+                + NoteCommand.MESSAGE_USAGE + "\n\n"
+                + FindCommand.MESSAGE_USAGE + "\n\n"
+                + FilterCommand.MESSAGE_USAGE + "\n\n"
+                + ListCommand.MESSAGE_USAGE + "\n\n"
+                + ClearCommand.MESSAGE_USAGE + "\n\n"
+                + HelpCommand.MESSAGE_USAGE + "\n\n"
+                + ExitCommand.MESSAGE_USAGE;
+    }
+
+    private String getCommandUsage(String targetCommand) {
+        switch (targetCommand.toLowerCase()) {
+        case AddCommand.COMMAND_WORD:
+            return AddCommand.MESSAGE_USAGE;
+        case DeleteCommand.COMMAND_WORD:
+            return DeleteCommand.MESSAGE_USAGE;
+        case EditCommand.COMMAND_WORD:
+            return EditCommand.MESSAGE_USAGE;
+        case FindCommand.COMMAND_WORD:
+            return FindCommand.MESSAGE_USAGE;
+        case ListCommand.COMMAND_WORD:
+            return ListCommand.MESSAGE_USAGE;
+        case ClearCommand.COMMAND_WORD:
+            return ClearCommand.MESSAGE_USAGE;
+        case ExitCommand.COMMAND_WORD:
+            return ExitCommand.MESSAGE_USAGE;
+        case NoteCommand.COMMAND_WORD:
+            return NoteCommand.MESSAGE_USAGE;
+        case FilterCommand.COMMAND_WORD:
+            return FilterCommand.MESSAGE_USAGE;
+        case COMMAND_WORD:
+            return MESSAGE_USAGE;
+        default:
+            return "Unknown command: " + targetCommand + "\n\nType 'help' to see all available commands.";
+        }
     }
 }
