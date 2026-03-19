@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.model.person.Status;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -27,6 +28,7 @@ public class Person {
     private final Address address;
     private final Location location;
     private final Note note;
+    private final Status status;
     private final Set<Tag> tags = new HashSet<>();
 
     /**
@@ -40,6 +42,7 @@ public class Person {
             Address address,
             Location location,
             Note note,
+            Status status,
             Set<Tag> tags) {
         requireAllNonNull(name, gender, phone, email, address, location, note, tags);
         this.name = name;
@@ -50,6 +53,7 @@ public class Person {
         this.address = address;
         this.location = location;
         this.note = note;
+        this.status = status;
         this.tags.addAll(tags);
     }
 
@@ -86,6 +90,13 @@ public class Person {
      */
     public Note getNote() {
         return note;
+    }
+
+    /**
+     * Returns the status of the person.
+     */
+    public Status getStatus() {
+        return status;
     }
 
     /**
@@ -133,13 +144,14 @@ public class Person {
                 && address.equals(otherPerson.address)
                 && location.equals(otherPerson.location)
                 && note.equals(otherPerson.note)
+                && status.equals(otherPerson.status)
                 && tags.equals(otherPerson.tags);
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, gender, dob, phone, email, address, location, note, tags);
+        return Objects.hash(name, gender, dob, phone, email, address, location, note, status, tags);
     }
 
     @Override
@@ -153,6 +165,7 @@ public class Person {
                 .add("address", address)
                 .add("location", location)
                 .add("note", note)
+                .add("status", status)
                 .add("tags", tags)
                 .toString();
     }
