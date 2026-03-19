@@ -21,4 +21,5 @@ Person *--> Phone
 Person *--> Email
 Person *--> Address
 Person *--> Location
+Person *--> "0..1" Note
 @enduml

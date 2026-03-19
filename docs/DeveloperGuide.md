@@ -4,7 +4,7 @@
   pageNav: 3
 ---
 
-# AB-3 Developer Guide
+# PowerRoster Developer Guide
 
 <!-- * Table of Contents -->
 <page-nav-print />
@@ -12,6 +12,7 @@
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Acknowledgements**
+Github Copilot was used by our team for its auto-complete features during our developement of this application
 
 _{ list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well }_
 
@@ -118,7 +119,7 @@ How the parsing works:
 ### Model component
 **API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
 
-<puml src="diagrams/ModelClassDiagram.puml" width="450" />
+<puml src="diagrams/ModelClassDiagram.puml" width="600" />
 
 
 The `Model` component,
@@ -132,7 +133,7 @@ The `Model` component,
 
 **Note:** An alternative (arguably, a more OOP) model is given below. It has a `Tag` list in the `AddressBook`, which `Person` references. This allows `AddressBook` to only require one `Tag` object per unique tag, instead of each `Person` needing their own `Tag` objects.<br>
 
-<puml src="diagrams/BetterModelClassDiagram.puml" width="450" />
+<puml src="diagrams/BetterModelClassDiagram.puml" width="500" />
 
 </box>
 
@@ -357,7 +358,6 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
       Steps 2a1-2a2 are repeated until all required fields are present.
 
       Use case resumes from step 2.
-
 * 2b. PowerRoster detects that the provided details contain invalid values (e.g. invalid phone number format).  
     
     * 2b1. PowerRoster informs the Trainer of the invalid fields and the expected format.  
@@ -366,25 +366,25 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
       Steps 2b1-2b2 are repeated until all fields are valid.
 
       Use case resumes from step 2.
-
 * 2c. PowerRoster detects that a client with the same name already exists.  
   
     * 2c1. PowerRoster warns the Trainer of the potential duplicate.  
     * 2c2. Trainer confirms they wish to proceed with adding the client.
 
       Use case resumes from step 3.
-
 * 2d. Trainer optionally provides a gym location.  
 
     * 2d1. PowerRoster validates the gym location.  
         * 2d1a1. PowerRoster informs the Trainer of the invalid input and the expected format.  
-        * 2d1a2. Trainer re-enters the location.  
-          Use case resumes from step 2d1.  
+        * 2d1a2. Trainer re-enters the location.
+      
+          Use case resumes from step 2d1.
     * 2d2. PowerRoster saves the gym location to the new client’s profile.  
 
 * 2e. Trainer optionally provides a note for the client.  
     
-    * 2e1. PowerRoster saves the note to the client’s profile.  
+    * 2e1. PowerRoster saves the note to the client’s profile. 
+  
       Use case resumes from step 3.
 
 **Use case: UC03 \- Delete a client**  
@@ -433,9 +433,71 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 2a1. PowerRoster informs the Trainer that no matching clients were found.
       
       Use case ends.
-* 2a. The *roster* has no clients 
+* 2b. The *roster* has no clients 
 
-    * 2a1. PowerRoster informs the Trainer that there are no clients in the *roster*.  
+    * 2b1. PowerRoster informs the Trainer that there are no clients in the *roster*.  
+        
+      Use case ends.
+
+**Use case: UC06 \- Filter Clients by Gym Location**
+**Preconditions: Trainer has launched PowerRoster. At least one client in the *roster* has a gym location specified.**
+**Guarantees: All clients who train at the specified gym location are displayed.**
+**MSS:**
+1. Trainer requests to filter clients by gym location and provides one or more gym location phrases to filter by.
+2. PowerRoster retrieves and displays all clients whose gym location matches at least one of the provided location 
+phrases.
+3. PowerRoster confirms the number of clients found for the specified gym location to the Trainer.
+
+   Use case ends.
+
+**Extensions:**
+* 1a. Trainer omits the required command prefix for filtering by gym location.
+    * 1a1. PowerRoster informs the Trainer that the command format is invalid and shows the expected command format.  
+      
+      Use case ends.
+* 1b. Trainer provides only blank location values.
+    * 1b1. PowerRoster informs the Trainer that the command format is invalid and shows the expected command format.  
+      
+      Use case ends.
+*2a.  No clients match the filter criteria.
+    * 2a1. PowerRoster informs the Trainer that no clients were found for the specified gym location.
+
+      Use case ends.
+* 2b. Trainer provides multiple gym location phrases
+    * 2b1. PowerRoster retrieves and displays all clients whose gym location matches at least one of the provided
+      location phrases.
+
+      Use case resumes from step 3
+
+**Use case: UC07 \- Add/Append a Note to a Client**  
+**Preconditions: Trainer has launched PowerRoster.**
+
+**MSS:**
+
+1. Trainer requests to add or append a note to a specific client and provides the note.
+2. PowerRoster locates the client and adds or appends the note to the client profile.
+3. PowerRoster confirms the successful update to the Trainer.
+
+   Use case ends.
+
+**Extensions:**
+
+* 2a. The specified identifier does not match any existing client.
+    * 2a1. PowerRoster informs the Trainer that the identifier was invalid.
+
+      Use case ends.
+* 2b. PowerRoster detects that the client has requested to add and append at the same time.
+
+    * 2b1. PowerRoster informs the Trainer that it is not possible to add and append at the same time.
+        
+      Use case ends.
+* 2c. Trainer requests to add and provides an empty note.
+
+    * 2c1. PowerRoster replaces the existing note with the empty note.
+        
+      Use case ends.
+* 2d. Trainer requests to append and provides an empty note.
+    * 2d1. PowerRoster does not change the existing note.
         
       Use case ends.
 
@@ -494,17 +556,17 @@ testers are expected to do more *exploratory* testing.
 
 1. _{ more test cases …​ }_
 
-### Deleting a person
+### Deleting a client
 
-1. Deleting a person while all persons are being shown
+1. Deleting a client while all clients are being shown
 
-   1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+   1. Prerequisites: List all clients using the `list` command. Multiple clients in the list.
 
    1. Test case: `delete 1`<br>
       Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
 
    1. Test case: `delete 0`<br>
-      Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
+      Expected: No client is deleted. Error details shown in the status message. Status bar remains the same.
 
    1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
       Expected: Similar to previous.

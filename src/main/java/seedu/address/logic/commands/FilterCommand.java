@@ -19,9 +19,9 @@ public class FilterCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Filter all persons whose location contain any of "
             + "the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"
             + "Parameters: "
-            + PREFIX_LOCATION + "KEYWORD [MORE_KEYWORDS]...\n"
+            + PREFIX_LOCATION + "LOCATION_PHRASE [" + PREFIX_LOCATION + "LOCATION_PHRASE]...\n"
             + "Example: " + COMMAND_WORD + " " + PREFIX_LOCATION
-            + " Kent Ridge Clementi";
+            + "Anytime Fitness Buona " + PREFIX_LOCATION + "Clementi ActiveSG";
 
     private final LocationContainsKeywordsPredicate predicate;
 
@@ -44,7 +44,7 @@ public class FilterCommand extends Command {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof FindCommand)) {
+        if (!(other instanceof FilterCommand)) {
             return false;
         }
 

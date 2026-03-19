@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_LOCATION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NOTE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NOTE_APPEND;
 import static seedu.address.testutil.Assert.assertThrows;
@@ -21,11 +22,13 @@ import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.address.logic.commands.ExitCommand;
+import seedu.address.logic.commands.FilterCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.NoteCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.LocationContainsKeywordsPredicate;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Note;
 import seedu.address.model.person.Person;
@@ -94,6 +97,14 @@ public class AddressBookParserTest {
         FindCommand command = (FindCommand) parser.parseCommand(
                 FindCommand.COMMAND_WORD + " " + keywords.stream().collect(Collectors.joining(" ")));
         assertEquals(new FindCommand(new NameContainsKeywordsPredicate(keywords)), command);
+    }
+
+    @Test
+    public void parseCommand_filter() throws Exception {
+        List<String> keywords = Arrays.asList("Anytime Buona Vista");
+        FilterCommand command = (FilterCommand) parser.parseCommand(
+                FilterCommand.COMMAND_WORD + " " + PREFIX_LOCATION + "Anytime Buona Vista");
+        assertEquals(new FilterCommand(new LocationContainsKeywordsPredicate(keywords)), command);
     }
 
     @Test

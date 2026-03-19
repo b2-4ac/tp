@@ -3,7 +3,6 @@ package seedu.address.model.person;
 import java.util.List;
 import java.util.function.Predicate;
 
-import seedu.address.commons.util.StringUtil;
 import seedu.address.commons.util.ToStringBuilder;
 
 /**
@@ -18,9 +17,10 @@ public class LocationContainsKeywordsPredicate implements Predicate<Person> {
 
     @Override
     public boolean test(Person person) {
-        // Uses person.getName() because the Location field is currently not implemented
+        // String match does not use StringUtil.containsWordIgnoreCase to allow for partial location matches
         return keywords.stream()
-                .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getName().fullName, keyword));
+                .map(String::toLowerCase)
+                .anyMatch(keyword -> person.getLocation().value.toLowerCase().contains(keyword));
     }
 
     @Override
