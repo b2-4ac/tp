@@ -10,6 +10,7 @@ import seedu.address.commons.exceptions.DataLoadingException;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.WorkoutLogBook;
 
 /**
  * Manages storage of AddressBook data in local storage.
@@ -19,13 +20,15 @@ public class StorageManager implements Storage {
     private static final Logger logger = LogsCenter.getLogger(StorageManager.class);
     private AddressBookStorage addressBookStorage;
     private UserPrefsStorage userPrefsStorage;
+    private WorkoutLogBookStorage workoutLogBookStorage;
 
     /**
      * Creates a {@code StorageManager} with the given {@code AddressBookStorage} and {@code UserPrefStorage}.
      */
-    public StorageManager(AddressBookStorage addressBookStorage, UserPrefsStorage userPrefsStorage) {
+    public StorageManager(AddressBookStorage addressBookStorage, UserPrefsStorage userPrefsStorage, WorkoutLogBookStorage workoutLogBookStorage) {
         this.addressBookStorage = addressBookStorage;
         this.userPrefsStorage = userPrefsStorage;
+        this.workoutLogBookStorage = workoutLogBookStorage;
     }
 
     // ================ UserPrefs methods ==============================
@@ -75,4 +78,32 @@ public class StorageManager implements Storage {
         addressBookStorage.saveAddressBook(addressBook, filePath);
     }
 
+    // ================ WorkoutLogBook methods ==============================
+
+    @Override
+    public Path getWorkoutLogBookFilePath() {
+        return workoutLogBookStorage.getWorkoutLogBookFilePath();
+    }
+
+    @Override
+    public Optional<WorkoutLogBook> readWorkoutLogBook() throws DataLoadingException {
+        return readWorkoutLogBook(workoutLogBookStorage.getWorkoutLogBookFilePath());
+    }
+
+    @Override
+    public Optional<WorkoutLogBook> readWorkoutLogBook(Path filePath) throws DataLoadingException {
+        logger.fine("Attempting to read data from file: " + filePath);
+        return workoutLogBookStorage.readWorkoutLogBook(filePath);
+    }
+
+    @Override
+    public void saveWorkoutLogBook(WorkoutLogBook workoutLogBook) throws IOException {
+        saveWorkoutLogBook(workoutLogBook, workoutLogBookStorage.getWorkoutLogBookFilePath());
+    }
+
+    @Override
+    public void saveWorkoutLogBook(WorkoutLogBook workoutLogBook, Path filePath) throws IOException {
+        logger.fine("Attempting to write to data file: " + filePath);
+        workoutLogBookStorage.saveWorkoutLogBook(workoutLogBook, filePath);
+    }
 }
