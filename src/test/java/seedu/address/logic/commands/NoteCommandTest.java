@@ -202,4 +202,3 @@ public class NoteCommandTest {
                 .equals(new NoteCommand(INDEX_FIRST_PERSON, new Note(VALID_NOTE_AMY), true)));
     }
 }
-

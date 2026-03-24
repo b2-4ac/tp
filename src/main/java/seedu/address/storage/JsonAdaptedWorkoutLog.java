@@ -27,9 +27,9 @@ public class JsonAdaptedWorkoutLog {
     public JsonAdaptedWorkoutLog(@JsonProperty("traineeId") String traineeId,
             @JsonProperty("time") String time,
             @JsonProperty("location") String location) {
-                this.traineeId = traineeId;
-                this.time = time;
-                this.location = location;
+        this.traineeId = traineeId;
+        this.time = time;
+        this.location = location;
     }
 
     /**

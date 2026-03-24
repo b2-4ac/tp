@@ -2,9 +2,9 @@ package seedu.address.model.workout;
 
 import static java.util.Objects.requireNonNull;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.time.LocalDateTime;
 
 /**
  * Represents the time when a Workout took place.
@@ -14,7 +14,7 @@ public class WorkoutTime {
 
     public static final String MESSAGE_CONSTRAINTS = "Workout Time must follow the format: dd/MM/yyyy HH:mm";
     public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-    
+
     private final LocalDateTime value;
 
     /**
@@ -29,7 +29,6 @@ public class WorkoutTime {
         } else {
             throw new IllegalArgumentException(MESSAGE_CONSTRAINTS);
         }
-        
     }
 
     /**

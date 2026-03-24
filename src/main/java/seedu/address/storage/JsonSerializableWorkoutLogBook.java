@@ -17,7 +17,7 @@ import seedu.address.model.workout.WorkoutLog;
  */
 @JsonRootName(value = "workoutlogbook")
 public class JsonSerializableWorkoutLogBook {
-    
+
     public static final String MESSAGE_DUPLICATE_LOG = "Log Book contains duplicate log(s).";
 
     private final List<JsonAdaptedWorkoutLog> logs = new ArrayList<>();
