@@ -343,7 +343,7 @@ public class JsonAdaptedPersonTest {
     }
 
     @Test
-    public void toModelType_nullPlan_returnsPersonWithDefaultPlan() throws Exception {
+    public void toModelType_nullPlan_throwsIllegalValueException() {
         JsonAdaptedPerson person = new JsonAdaptedPerson(
                 VALID_NAME,
                 VALID_GENDER,
@@ -355,8 +355,8 @@ public class JsonAdaptedPersonTest {
                 VALID_NOTE,
                 null,
                 VALID_TAGS);
-
-        assertEquals(Plan.getDefaultPlan(), person.toModelType().getPlan());
+        String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Plan.class.getSimpleName());
+        assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
 
 }

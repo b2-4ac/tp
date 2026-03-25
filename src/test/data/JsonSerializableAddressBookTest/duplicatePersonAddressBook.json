@@ -8,6 +8,7 @@
     "address": "123, Jurong West Ave 6, #08-111",
     "location": "Sengkang ActiveSG Gym",
     "note": "Likes to workout in the morning",
+    "plan" : "PUSH",
     "tags": [ "friends" ]
   }, {
     "name": "Alice Pauline",
@@ -17,6 +18,7 @@
     "email": "pauline@example.com",
     "address": "4th street",
     "location": "Pasir Ris ActiveSG Gym",
-    "note": "Likes to workout in the morning"
+    "note": "Likes to workout in the morning",
+    "plan" : "PUSH"
   } ]
 }

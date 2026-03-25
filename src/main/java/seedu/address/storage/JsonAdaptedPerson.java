@@ -160,15 +160,13 @@ class JsonAdaptedPerson {
         }
         final Note modelNote = new Note(note);
 
-        final Plan modelPlan;
         if (plan == null) {
-            modelPlan = Plan.getDefaultPlan();
-        } else {
-            if (!Plan.isValidPlan(plan.trim().replaceAll("\\s+", " "))) {
-                throw new IllegalValueException(Plan.MESSAGE_CONSTRAINTS);
-            }
-            modelPlan = new Plan(plan);
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Plan.class.getSimpleName()));
         }
+        if (!Plan.isValidPlan(plan.trim().replaceAll("\\s+", " "))) {
+            throw new IllegalValueException(Plan.MESSAGE_CONSTRAINTS);
+        }
+        final Plan modelPlan = new Plan(plan);
 
         final Set<Tag> modelTags = new HashSet<>(personTags);
         return new Person(modelName,
