@@ -29,6 +29,7 @@ public class MainWindow extends UiPart<Stage> {
     private static final Boolean IS_COMMAND_BOOLEAN = true;
     private static final Boolean IS_NOT_COMMAND_BOOLEAN = false;
     private static final String MESSAGE_DELETE_STRING = "Deleted Person:";
+    private static final String MESSAGE_CLEAR_STRING = "Address book has been cleared!";
 
     private final Logger logger = LogsCenter.getLogger(getClass());
 
@@ -197,7 +198,8 @@ public class MainWindow extends UiPart<Stage> {
         if (personDetailPanel.getCurrentPerson() == null) {
             return;
         }
-        if (commandResult.getFeedbackToUser().contains(MESSAGE_DELETE_STRING)) {
+        String feedback = commandResult.getFeedbackToUser();
+        if (feedback.contains(MESSAGE_DELETE_STRING) || feedback.contains(MESSAGE_CLEAR_STRING)) {
             boolean stillExists = logic.getAddressBook().getPersonList().stream()
                     .anyMatch(p -> p.isSamePerson(personDetailPanel.getCurrentPerson()));
             if (!stillExists) {

@@ -72,7 +72,7 @@ The **API** of this component is specified in [`Ui.java`](https://github.com/se-
 
 <puml src="diagrams/UiClassDiagram.puml" alt="Structure of the UI Component"/>
 
-The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class which captures the commonalities between classes that represent parts of the visible GUI.
+The UI consists of a `MainWindow` that is made up of parts e.g. `CommandBox`, `ResultDisplay`, `PersonListPanel`, `PersonDetailPanel`, `StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class which captures the commonalities between classes that represent parts of the visible GUI.
 
 The `UI` component uses the JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/resources/view/MainWindow.fxml)
 
@@ -82,6 +82,7 @@ The `UI` component,
 * listens for changes to `Model` data so that the UI can be updated with the modified data.
 * keeps a reference to the `Logic` component, because the `UI` relies on the `Logic` to execute commands.
 * depends on some classes in the `Model` component, as it displays `Person` object residing in the `Model`.
+* renders a split layout where `PersonListPanel` shows a compact summary list while `PersonDetailPanel` displays full details for a selected client via the `view` command.
 
 ### Logic component
 
@@ -107,6 +108,7 @@ How the `Logic` component works:
 1. The command can communicate with the `Model` when it is executed (e.g. to delete a person).<br>
    Note that although this is shown as a single step in the diagram above (for simplicity), in the code it can take several interactions (between the command object and the `Model`) to achieve.
 1. The result of the command execution is encapsulated as a `CommandResult` object which is returned back from `Logic`.
+    - `CommandResult` can optionally carry a `Person` to be displayed in the UI detail panel. This is used by commands such as `view` that trigger a UI detail-view update without modifying model data.
 
 Here are the other classes in `Logic` (omitted from the class diagram above) that are used for parsing a user command:
 
@@ -158,6 +160,22 @@ Classes used by multiple components are in the `seedu.address.commons` package.
 ## **Implementation**
 
 This section describes some noteworthy details on how certain features are implemented.
+
+### View command and client detail panel
+
+The `view` feature is implemented as a collaboration between `Logic` and `UI`:
+
+1. `AddressBookParser` routes `view INDEX` to `ViewCommandParser`.
+1. `ViewCommandParser` parses the index into a `ViewCommand`.
+1. `ViewCommand` validates the index against `Model#getFilteredPersonList()` and returns a `CommandResult` that includes the target `Person`.
+1. `MainWindow#executeCommand` checks `CommandResult#isShowPersonView()` and forwards the `Person` to `PersonDetailPanel#displayPerson`.
+
+`PersonDetailPanel` has two states:
+
+* Placeholder state shown when no client is currently being viewed.
+* Detailed state shown after a successful `view INDEX` command.
+
+To keep the panel consistent with model updates, `MainWindow` also clears the detail panel after successful commands when the currently viewed person no longer exists (e.g., after a `delete` or `clear`).
 
 ### \[Proposed\] Undo/redo feature
 
@@ -482,7 +500,25 @@ phrases.
 
       Use case resumes from step 3
 
-**Use case: UC07 \- Add/Append a Note to a Client**  
+**Use case: UC07 \- View a Client's Full Profile**  
+**Preconditions: Trainer has launched PowerRoster. At least one client is shown in the current list.**
+
+**MSS:**
+
+1. Trainer requests to view a specific client profile by index.
+2. PowerRoster locates the client.
+3. PowerRoster displays that client's full details in the detail panel.
+
+    Use case ends.
+
+**Extensions:**
+
+* 2a. The specified identifier does not match any existing client.
+    * 2a1. PowerRoster informs the Trainer that the identifier was invalid.
+
+   Use case ends.
+
+**Use case: UC08 \- Add/Append a Note to a Client**  
 **Preconditions: Trainer has launched PowerRoster.**
 
 **MSS:**
@@ -583,6 +619,28 @@ testers are expected to do more *exploratory* testing.
 
    1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
       Expected: Similar to previous.
+
+### Viewing a client's full profile
+
+1. Viewing from the current list
+
+   1. Prerequisites: List all clients using the `list` command. Multiple clients in the list.
+
+   1. Test case: `view 1`<br>
+      Expected: The 1st client's full profile is shown in the detail panel. Success message is shown in the result display.
+
+   1. Test case: `view 0`<br>
+      Expected: No profile is shown/changed. Error details shown in the status message.
+
+   1. Other incorrect view commands to try: `view`, `view x`, `view ...` (where index is larger than the list size)<br>
+      Expected: Similar to previous.
+
+1. Detail panel consistency after delete
+
+   1. Prerequisites: `view 1` has been executed successfully and the profile is visible.
+
+   1. Test case: `delete 1`<br>
+      Expected: Deleted client is removed from the list and the detail panel resets to placeholder if the deleted client was the one being viewed.
 
 1. _{ more test cases …​ }_
 

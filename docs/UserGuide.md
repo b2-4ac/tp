@@ -106,6 +106,19 @@ Shows a list of all clients in PowerRoster.
 
 Format: `list`
 
+### Viewing a client's full profile : `view`
+
+Shows the full profile of a client in the Client Details panel.
+
+Format: `view INDEX`
+
+* Views the client at the specified `INDEX`. The index refers to the index number shown in the displayed client list. The index **must be a positive integer** 1, 2, 3, …​
+* The detailed profile appears in the right-side Client Details panel.
+
+Examples:
+* `view 1` shows the full profile of the 1st client in the current list.
+* `find Alex` followed by `view 1` shows the full profile of the 1st client in the filtered results.
+
 ### Editing a client : `edit`
 
 Edits an existing client in PowerRoster.
@@ -249,4 +262,5 @@ Action     | Format, Examples
 **Find**   | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **Filter** | `filter l/LOCATION_PHRASE [l/MORE_LOCATION_PHRASES]...`<br> e.g., `filter l/Clementi l/ActiveSG`
 **List**   | `list`
+**View**   | `view INDEX`<br> e.g., `view 1`
 **Help**   | `help [COMMAND_WORD]`<br> e.g., `help`, `help add`
