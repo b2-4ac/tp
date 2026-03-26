@@ -11,11 +11,13 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Address;
+import seedu.address.model.person.ClientId;
 import seedu.address.model.person.DateOfBirth;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Gender;
@@ -24,6 +26,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Note;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Rate;
 import seedu.address.model.person.Status;
 import seedu.address.model.tag.Tag;
 
@@ -33,6 +36,7 @@ import seedu.address.model.tag.Tag;
 public class AddCommandParser implements Parser<AddCommand> {
 
     public static final String EMPTY_NOTE = "";
+    public static final String EMPTY_RATE = "";
 
     /**
      * Parses the given {@code String} of arguments in the context of the AddCommand
@@ -70,9 +74,21 @@ public class AddCommandParser implements Parser<AddCommand> {
         Location location = ParserUtil.parseLocation(
                 argMultimap.getValue(PREFIX_LOCATION).orElse("No Location Specified"));
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
+        ClientId id = new ClientId(UUID.randomUUID().toString());
 
-        Person person = new Person(name, gender, dob, phone, email, address, location,
-                new Note(EMPTY_NOTE), new Status("active"), tagList);
+        Person person = new Person(
+                id,
+                name,
+                gender,
+                dob,
+                phone,
+                email,
+                address,
+                location,
+                new Note(EMPTY_NOTE),
+                new Rate(EMPTY_RATE),
+                new Status("active"),
+                tagList);
 
         return new AddCommand(person);
     }

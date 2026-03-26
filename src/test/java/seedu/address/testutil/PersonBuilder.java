@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import seedu.address.model.person.Address;
+import seedu.address.model.person.ClientId;
 import seedu.address.model.person.DateOfBirth;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Gender;
@@ -12,6 +13,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Note;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Rate;
 import seedu.address.model.person.Status;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.util.SampleDataUtil;
@@ -21,6 +23,7 @@ import seedu.address.model.util.SampleDataUtil;
  */
 public class PersonBuilder {
 
+    public static final String DEFAULT_ID = "f0962b9a-41d3-4627-897b-944a195b2173";
     public static final String DEFAULT_NAME = "Amy Bee";
     public static final String DEFAULT_GENDER = "F";
     public static final String DEFAULT_DOB = "24/04/1976";
@@ -29,8 +32,10 @@ public class PersonBuilder {
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
     public static final String DEFAULT_LOCATION = "ActiveSG @ Fernvale Square";
     public static final String DEFAULT_NOTE = "";
+    public static final String DEFAULT_RATE = "";
     public static final String DEFAULT_STATUS = "active";
 
+    private ClientId id;
     private Name name;
     private Gender gender;
     private DateOfBirth dob;
@@ -39,6 +44,7 @@ public class PersonBuilder {
     private Address address;
     private Location location;
     private Note note;
+    private Rate rate;
     private Status status;
     private Set<Tag> tags;
 
@@ -46,6 +52,7 @@ public class PersonBuilder {
      * Creates a {@code PersonBuilder} with the default details.
      */
     public PersonBuilder() {
+        id = new ClientId(DEFAULT_ID);
         name = new Name(DEFAULT_NAME);
         gender = new Gender(DEFAULT_GENDER);
         dob = new DateOfBirth(DEFAULT_DOB);
@@ -54,6 +61,7 @@ public class PersonBuilder {
         address = new Address(DEFAULT_ADDRESS);
         location = new Location(DEFAULT_LOCATION);
         note = new Note(DEFAULT_NOTE);
+        rate = new Rate(DEFAULT_RATE);
         status = new Status(DEFAULT_STATUS);
         tags = new HashSet<>();
     }
@@ -62,6 +70,7 @@ public class PersonBuilder {
      * Initializes the PersonBuilder with the data of {@code personToCopy}.
      */
     public PersonBuilder(Person personToCopy) {
+        id = personToCopy.getId();
         name = personToCopy.getName();
         gender = personToCopy.getGender();
         dob = personToCopy.getDateOfBirth();
@@ -70,6 +79,7 @@ public class PersonBuilder {
         address = personToCopy.getAddress();
         location = personToCopy.getLocation();
         note = personToCopy.getNote();
+        rate = personToCopy.getRate();
         status = personToCopy.getStatus();
         tags = new HashSet<>(personToCopy.getTags());
     }
@@ -148,6 +158,22 @@ public class PersonBuilder {
     }
 
     /**
+     * Sets the {@code ClientId} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withId(String id) {
+        this.id = new ClientId(id);
+        return this;
+    }
+
+    /**
+     * Sets the {@code Rate} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withRate(String rate) {
+        this.rate = new Rate(rate);
+        return this;
+    }
+
+    /**
      * Sets the {@code Status} of the {@code Person} that we are building.
      */
     public PersonBuilder withStatus(String status) {
@@ -156,7 +182,7 @@ public class PersonBuilder {
     }
 
     public Person build() {
-        return new Person(name, gender, dob, phone, email, address, location, note, status, tags);
+        return new Person(id, name, gender, dob, phone, email, address, location, note, rate, status, tags);
     }
 
 }

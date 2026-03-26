@@ -19,7 +19,7 @@ public class Location {
      * A valid location includes alphanumeric characters and the
      * @ symbol only.
      */
-    public static final String VALIDATION_REGEX = "[^\\s][a-zA-Z0-9@\\s]*";
+    public static final String VALIDATION_REGEX = "^[a-zA-Z0-9@][a-zA-Z0-9@\\s]*$";
 
     public final String value;
 

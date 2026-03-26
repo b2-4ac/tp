@@ -17,4 +17,5 @@ public class CliSyntax {
     public static final Prefix PREFIX_NOTE = new Prefix("n/");
     public static final Prefix PREFIX_STATUS = new Prefix("s/");
     public static final Prefix PREFIX_NOTE_APPEND = new Prefix("a/");
+    public static final Prefix PREFIX_RATE = new Prefix("r/");
 }

@@ -16,6 +16,9 @@ import seedu.address.model.tag.Tag;
  */
 public class Person {
 
+    // Unique ID
+    private final ClientId id;
+
     // Identity fields
     private final Name name;
     private final Gender gender;
@@ -27,13 +30,15 @@ public class Person {
     private final Address address;
     private final Location location;
     private final Note note;
+    private final Rate rate;
     private final Status status;
     private final Set<Tag> tags = new HashSet<>();
 
     /**
-     * Every field must be present and not null.
+     * Constructs a {@code Person}.
      */
-    public Person(Name name,
+    public Person(ClientId id,
+            Name name,
             Gender gender,
             DateOfBirth dob,
             Phone phone,
@@ -41,9 +46,12 @@ public class Person {
             Address address,
             Location location,
             Note note,
+            Rate rate,
             Status status,
             Set<Tag> tags) {
-        requireAllNonNull(name, gender, dob, phone, email, address, location, note, status, tags);
+        requireAllNonNull(id, name, gender, dob, phone, email, address, location, note, rate, status, tags);
+
+        this.id = id;
         this.name = name;
         this.gender = gender;
         this.dob = dob;
@@ -52,8 +60,13 @@ public class Person {
         this.address = address;
         this.location = location;
         this.note = note;
+        this.rate = rate;
         this.status = status;
         this.tags.addAll(tags);
+    }
+
+    public ClientId getId() {
+        return id;
     }
 
     public Name getName() {
@@ -89,6 +102,13 @@ public class Person {
      */
     public Note getNote() {
         return note;
+    }
+
+    /**
+     * Returns the rate of the person.
+     */
+    public Rate getRate() {
+        return rate;
     }
 
     /**
@@ -143,6 +163,7 @@ public class Person {
                 && address.equals(otherPerson.address)
                 && location.equals(otherPerson.location)
                 && note.equals(otherPerson.note)
+                && rate.equals(otherPerson.rate)
                 && status.equals(otherPerson.status)
                 && tags.equals(otherPerson.tags);
     }
@@ -150,7 +171,7 @@ public class Person {
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, gender, dob, phone, email, address, location, note, status, tags);
+        return Objects.hash(name, gender, dob, phone, email, address, location, note, rate, status, tags);
     }
 
     @Override
@@ -164,6 +185,7 @@ public class Person {
                 .add("address", address)
                 .add("location", location)
                 .add("note", note)
+                .add("rate", rate)
                 .add("status", status)
                 .add("tags", tags)
                 .toString();

@@ -20,9 +20,13 @@ public class ResultDisplay extends UiPart<Region> {
         super(FXML);
     }
 
-    public void setFeedbackToUser(String feedbackToUser) {
+    public void setFeedbackToUser(String feedbackToUser, Boolean isCommandBoolean) {
         requireNonNull(feedbackToUser);
-        resultDisplay.setText(feedbackToUser);
+        if (isCommandBoolean) {
+            resultDisplay.appendText("> " + feedbackToUser + "\n");
+        } else {
+            resultDisplay.appendText(feedbackToUser + "\n\n");
+        }
     }
 
 }

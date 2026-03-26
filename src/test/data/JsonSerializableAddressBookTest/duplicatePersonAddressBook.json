@@ -1,5 +1,6 @@
 {
   "persons": [ {
+    "id": "4f63c6d5-a3d1-4e78-bc4a-bf60a92f8087",
     "name": "Alice Pauline",
     "gender" : "F",
     "dob" : "16/09/1997",
@@ -8,8 +9,10 @@
     "address": "123, Jurong West Ave 6, #08-111",
     "location": "Sengkang ActiveSG Gym",
     "note": "Likes to workout in the morning",
+    "rate": "100.00",
     "tags": [ "friends" ]
   }, {
+    "id": "4f63c6d5-a3d1-4e78-bc4a-bf60a92f8087",
     "name": "Alice Pauline",
     "gender" : "F",
     "dob" : "16/09/1997",
@@ -17,6 +20,7 @@
     "email": "pauline@example.com",
     "address": "4th street",
     "location": "Pasir Ris ActiveSG Gym",
-    "note": "Likes to workout in the morning"
+    "note": "Likes to workout in the morning",
+    "rate": "100.00"
   } ]
 }

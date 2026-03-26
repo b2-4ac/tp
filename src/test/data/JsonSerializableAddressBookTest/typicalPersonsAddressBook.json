@@ -1,6 +1,7 @@
 {
   "_comment": "AddressBook save file which contains the same Person values as in TypicalPersons#getTypicalAddressBook()",
   "persons" : [ {
+    "id" : "4f63c6d5-a3d1-4e78-bc4a-bf60a92f8087",
     "name" : "Alice Pauline",
     "gender" : "F",
     "dob" : "14/10/1992",
@@ -9,8 +10,10 @@
     "address" : "123, Jurong West Ave 6, #08-111",
     "location" : "Jurong West ActiveSG Gym",
     "note": "Likes morning workouts",
+    "rate": "100.00",
     "tags" : [ "friends" ]
   }, {
+    "id" : "524f0c90-efc4-4c6e-8270-e5550a26d701",
     "name" : "Benson Meier",
     "gender" : "M",
     "dob" : "03/03/1985",
@@ -19,8 +22,10 @@
     "address" : "311, Clementi Ave 2, #02-25",
     "location" : "Clementi ActiveSG Gym",
     "note" : "Focuses on strength training",
+    "rate" : "90.00",
     "tags" : [ "friends" ]
   }, {
+    "id" : "d3e9f4c1-4b12-40e1-959c-7e61b7b75294",
     "name" : "Carl Kurz",
     "gender" : "M",
     "dob" : "22/07/2001",
@@ -29,8 +34,10 @@
     "address" : "wall street",
     "location" : "Anytime Fitness Tampines East",
     "note" : "Enjoys cardio workouts",
+    "rate" : "90.00",
     "tags" : [ ]
   }, {
+    "id" : "ae8677c3-2287-4303-9d41-3510e194916a",
     "name" : "Daniel Meier",
     "gender" : "M",
     "dob" : "11/11/1978",
@@ -39,8 +46,10 @@
     "address" : "10th street",
     "location" : "Anytime Fitness Marine Parade",
     "note" : "Enjoys cardio and yoga",
+    "rate" : "",
     "tags" : [ "friends" ]
   }, {
+    "id" : "1a4c9c64-0715-467f-8d2b-18a7a0b3f52a",
     "name" : "Elle Meyer",
     "gender" : "F",
     "dob" : "29/02/1996",
@@ -49,8 +58,10 @@
     "address" : "michegan ave",
     "location" : "Anytime Fitness Buona Vista",
     "note" : "Loves HIIT",
+    "rate" : "85.00",
     "tags" : [ ]
   }, {
+    "id" : "89b9d15e-a28a-40a8-b649-e26b47c47d77",
     "name" : "Fiona Kunz",
     "gender" : "F",
     "dob" : "05/08/2010",
@@ -59,8 +70,10 @@
     "address" : "little tokyo",
     "location" : "Anytime Fitness Buona Vista",
     "note" : "Enjoys group fitness classes",
+    "rate" : "80.00",
     "tags" : [ ]
   }, {
+    "id" : "24f9f7a7-53ef-4f1d-b8d9-601e3097c55c",
     "name" : "George Best",
     "gender" : "M",
     "dob" : "19/05/1999",
@@ -69,6 +82,7 @@
     "address" : "4th street",
     "location" : "Anytime Fitness Lower Peirce",
     "note" : "Focuses on cardio and HIIT workouts",
+    "rate" : "75.00",
     "tags" : [ ]
   } ]
 }

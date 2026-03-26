@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.person.Address;
+import seedu.address.model.person.ClientId;
 import seedu.address.model.person.DateOfBirth;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Gender;
@@ -19,6 +20,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Note;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Rate;
 import seedu.address.model.person.Status;
 import seedu.address.model.tag.Tag;
 
@@ -29,6 +31,7 @@ class JsonAdaptedPerson {
 
     public static final String MISSING_FIELD_MESSAGE_FORMAT = "Person's %s field is missing!";
 
+    private final String id;
     private final String name;
     private final String gender;
     private final String dob;
@@ -37,6 +40,7 @@ class JsonAdaptedPerson {
     private final String address;
     private final String location;
     private final String note;
+    private final String rate;
     private final String status;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
 
@@ -44,7 +48,8 @@ class JsonAdaptedPerson {
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
      */
     @JsonCreator
-    public JsonAdaptedPerson(@JsonProperty("name") String name,
+    public JsonAdaptedPerson(@JsonProperty("id") String id,
+            @JsonProperty("name") String name,
             @JsonProperty("gender") String gender,
             @JsonProperty("dob") String dob,
             @JsonProperty("phone") String phone,
@@ -52,8 +57,10 @@ class JsonAdaptedPerson {
             @JsonProperty("address") String address,
             @JsonProperty("location") String location,
             @JsonProperty("note") String note,
+            @JsonProperty("rate") String rate,
             @JsonProperty("status") String status,
             @JsonProperty("tags") List<JsonAdaptedTag> tags) {
+        this.id = id;
         this.name = name;
         this.gender = gender;
         this.dob = dob;
@@ -62,6 +69,7 @@ class JsonAdaptedPerson {
         this.address = address;
         this.location = location;
         this.note = note;
+        this.rate = rate;
         this.status = status;
         if (tags != null) {
             this.tags.addAll(tags);
@@ -72,6 +80,7 @@ class JsonAdaptedPerson {
      * Converts a given {@code Person} into this class for Jackson use.
      */
     public JsonAdaptedPerson(Person source) {
+        id = source.getId().value;
         name = source.getName().fullName;
         gender = source.getGender().value.toString();
         dob = source.getDateOfBirth().toString();
@@ -80,6 +89,7 @@ class JsonAdaptedPerson {
         address = source.getAddress().value;
         location = source.getLocation().value;
         note = source.getNote().value;
+        rate = source.getRate().value;
         status = source.getStatus().toString();
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
@@ -96,6 +106,16 @@ class JsonAdaptedPerson {
         for (JsonAdaptedTag tag : tags) {
             personTags.add(tag.toModelType());
         }
+
+        if (id == null) {
+            throw new IllegalValueException(String.format(
+                    MISSING_FIELD_MESSAGE_FORMAT,
+                    ClientId.class.getSimpleName()));
+        }
+        if (!ClientId.isValidId(id)) {
+            throw new IllegalValueException(ClientId.MESSAGE_CONSTRAINTS);
+        }
+        final ClientId modelId = new ClientId(id);
 
         if (name == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName()));
@@ -160,6 +180,14 @@ class JsonAdaptedPerson {
         }
         final Note modelNote = new Note(note);
 
+        if (rate == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Rate.class.getSimpleName()));
+        }
+        if (!Rate.isValidRate(rate.trim())) {
+            throw new IllegalValueException(Rate.MESSAGE_CONSTRAINTS);
+        }
+        final Rate modelRate = new Rate(rate);
+
         // Handle migration for old data without status field
         final Status modelStatus;
         if (status == null) {
@@ -173,7 +201,8 @@ class JsonAdaptedPerson {
         }
 
         final Set<Tag> modelTags = new HashSet<>(personTags);
-        return new Person(modelName,
+        return new Person(modelId,
+                modelName,
                 modelGender,
                 modelDateOfBirth,
                 modelPhone,
@@ -181,6 +210,7 @@ class JsonAdaptedPerson {
                 modelAddress,
                 modelLocation,
                 modelNote,
+                modelRate,
                 modelStatus,
                 modelTags);
     }

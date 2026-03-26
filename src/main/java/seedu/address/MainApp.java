@@ -21,13 +21,16 @@ import seedu.address.model.ModelManager;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.WorkoutLogBook;
 import seedu.address.model.util.SampleDataUtil;
 import seedu.address.storage.AddressBookStorage;
 import seedu.address.storage.JsonAddressBookStorage;
 import seedu.address.storage.JsonUserPrefsStorage;
+import seedu.address.storage.JsonWorkoutLogBookStorage;
 import seedu.address.storage.Storage;
 import seedu.address.storage.StorageManager;
 import seedu.address.storage.UserPrefsStorage;
+import seedu.address.storage.WorkoutLogBookStorage;
 import seedu.address.ui.Ui;
 import seedu.address.ui.UiManager;
 
@@ -55,10 +58,14 @@ public class MainApp extends Application {
         config = initConfig(appParameters.getConfigPath());
         initLogging(config);
 
-        UserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(config.getUserPrefsFilePath());
+        UserPrefsStorage userPrefsStorage =
+                new JsonUserPrefsStorage(config.getUserPrefsFilePath());
         UserPrefs userPrefs = initPrefs(userPrefsStorage);
-        AddressBookStorage addressBookStorage = new JsonAddressBookStorage(userPrefs.getAddressBookFilePath());
-        storage = new StorageManager(addressBookStorage, userPrefsStorage);
+        AddressBookStorage addressBookStorage =
+                new JsonAddressBookStorage(userPrefs.getAddressBookFilePath());
+        WorkoutLogBookStorage workoutLogBookStorage =
+                new JsonWorkoutLogBookStorage(userPrefs.getWorkoutLogBookFilePath());
+        storage = new StorageManager(addressBookStorage, userPrefsStorage, workoutLogBookStorage);
 
         model = initModelManager(storage, userPrefs);
 
@@ -90,7 +97,21 @@ public class MainApp extends Application {
             initialData = new AddressBook();
         }
 
-        return new ModelManager(initialData, userPrefs);
+        Optional<WorkoutLogBook> workoutLogBookOptional;
+        WorkoutLogBook initialLogs;
+        try {
+            workoutLogBookOptional = storage.readWorkoutLogBook();
+            if (!workoutLogBookOptional.isPresent()) {
+                logger.info("Creating new workout log file " + storage.getWorkoutLogBookFilePath());
+            }
+            initialLogs = workoutLogBookOptional.orElseGet(SampleDataUtil::getSampleWorkoutLogBook);
+        } catch (DataLoadingException e) {
+            logger.warning("Workout Log File at " + storage.getWorkoutLogBookFilePath() + " could not be loaded."
+                + " Will be starting with empty workout log book.");
+            initialLogs = new WorkoutLogBook();
+        }
+
+        return new ModelManager(initialData, userPrefs, initialLogs);
     }
 
     private void initLogging(Config config) {
