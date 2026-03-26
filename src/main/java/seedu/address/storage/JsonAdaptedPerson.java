@@ -22,6 +22,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Note;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Plan;
 import seedu.address.model.person.Rate;
 import seedu.address.model.person.Status;
 import seedu.address.model.person.Weight;
@@ -43,6 +44,7 @@ class JsonAdaptedPerson {
     private final String address;
     private final String location;
     private final String note;
+    private final String plan;
     private final String height;
     private final String weight;
     private final String bodyFatPercentage;
@@ -63,6 +65,7 @@ class JsonAdaptedPerson {
             @JsonProperty("address") String address,
             @JsonProperty("location") String location,
             @JsonProperty("note") String note,
+            @JsonProperty("plan") String plan,
             @JsonProperty("rate") String rate,
             @JsonProperty("status") String status,
             @JsonProperty("height") String height,
@@ -78,6 +81,7 @@ class JsonAdaptedPerson {
         this.address = address;
         this.location = location;
         this.note = note;
+        this.plan = plan;
         this.height = height;
         this.weight = weight;
         this.bodyFatPercentage = bodyFatPercentage;
@@ -101,6 +105,7 @@ class JsonAdaptedPerson {
         address = source.getAddress().value;
         location = source.getLocation().value;
         note = source.getNote().value;
+        plan = source.getPlan().value.toString();
         height = source.getHeight().value;
         weight = source.getWeight().value;
         bodyFatPercentage = source.getBodyFatPercentage().value;
@@ -195,6 +200,14 @@ class JsonAdaptedPerson {
         }
         final Note modelNote = new Note(note);
 
+        if (plan == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Plan.class.getSimpleName()));
+        }
+        if (!Plan.isValidPlan(plan.trim().replaceAll("\\s+", " "))) {
+            throw new IllegalValueException(Plan.MESSAGE_CONSTRAINTS);
+        }
+        final Plan modelPlan = new Plan(plan);
+
         if (height == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Height.class.getSimpleName()));
         }
@@ -250,6 +263,7 @@ class JsonAdaptedPerson {
                 modelAddress,
                 modelLocation,
                 modelNote,
+                modelPlan,
                 modelRate,
                 modelStatus,
                 modelHeight,

@@ -15,6 +15,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Note;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Plan;
 import seedu.address.model.person.Rate;
 import seedu.address.model.person.Status;
 import seedu.address.model.person.Weight;
@@ -35,6 +36,7 @@ public class PersonBuilder {
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
     public static final String DEFAULT_LOCATION = "ActiveSG @ Fernvale Square";
     public static final String DEFAULT_NOTE = "";
+    public static final String DEFAULT_PLAN = "Unassigned";
     public static final String DEFAULT_RATE = "";
     public static final String DEFAULT_STATUS = "active";
     public static final String DEFAULT_HEIGHT = "";
@@ -50,6 +52,7 @@ public class PersonBuilder {
     private Address address;
     private Location location;
     private Note note;
+    private Plan plan;
     private Rate rate;
     private Status status;
     private Height height;
@@ -70,6 +73,7 @@ public class PersonBuilder {
         address = new Address(DEFAULT_ADDRESS);
         location = new Location(DEFAULT_LOCATION);
         note = new Note(DEFAULT_NOTE);
+        plan = new Plan(DEFAULT_PLAN);
         rate = new Rate(DEFAULT_RATE);
         status = new Status(DEFAULT_STATUS);
         height = new Height(DEFAULT_HEIGHT);
@@ -91,6 +95,7 @@ public class PersonBuilder {
         address = personToCopy.getAddress();
         location = personToCopy.getLocation();
         note = personToCopy.getNote();
+        plan = personToCopy.getPlan();
         height = personToCopy.getHeight();
         weight = personToCopy.getWeight();
         bodyFatPercentage = personToCopy.getBodyFatPercentage();
@@ -221,11 +226,19 @@ public class PersonBuilder {
     }
 
     /**
+     * Sets the {@code Plan} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withPlan(String plan) {
+        this.plan = new Plan(plan);
+        return this;
+    }
+
+    /**
      * Builds and returns a {@code Person} instance with the configured fields.
      */
     public Person build() {
         return new Person(id, name, gender, dob, phone, email, address, location,
-                note, rate, status, height, weight, bodyFatPercentage, tags);
+                note, plan, rate, status, height, weight, bodyFatPercentage, tags);
     }
 
 }

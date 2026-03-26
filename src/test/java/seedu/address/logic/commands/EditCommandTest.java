@@ -41,6 +41,7 @@ public class EditCommandTest {
 
         Person editedPerson = new PersonBuilder()
                 .withNote(model.getFilteredPersonList().get(0).getNote().value)
+                .withPlan(model.getFilteredPersonList().get(0).getPlan().toString())
                 .withRate(model.getFilteredPersonList().get(0).getRate().value)
                 .withHeight(model.getFilteredPersonList().get(0).getHeight().value)
                 .withWeight(model.getFilteredPersonList().get(0).getWeight().value)

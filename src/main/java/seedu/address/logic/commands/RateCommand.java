@@ -55,7 +55,7 @@ public class RateCommand extends Command {
         Person editedPerson = new Person(personToEdit.getId(), personToEdit.getName(),
                 personToEdit.getGender(), personToEdit.getDateOfBirth(), personToEdit.getPhone(),
                 personToEdit.getEmail(), personToEdit.getAddress(), personToEdit.getLocation(),
-                personToEdit.getNote(), rate, personToEdit.getStatus(),
+                personToEdit.getNote(), personToEdit.getPlan(), rate, personToEdit.getStatus(),
                 personToEdit.getHeight(), personToEdit.getWeight(),
                 personToEdit.getBodyFatPercentage(), personToEdit.getTags());
 

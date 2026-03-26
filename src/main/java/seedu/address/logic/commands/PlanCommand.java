@@ -1,7 +1,6 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_STATUS;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.List;
@@ -12,37 +11,43 @@ import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
-import seedu.address.model.person.Status;
+import seedu.address.model.person.Plan;
 
 /**
- * Changes the status of an existing person in the address book.
+ * Assigns or updates a workout plan for a person identified by index.
  */
-public class StatusCommand extends Command {
+public class PlanCommand extends Command {
 
-    public static final String COMMAND_WORD = "status";
+    public static final String COMMAND_WORD = "plan";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Changes the status of the person identified by the index number used in the displayed person list.\n"
-            + "Parameters: INDEX (must be a positive integer) "
-            + PREFIX_STATUS + "STATUS (must be 'active' or 'inactive')\n"
-            + "Example: " + COMMAND_WORD + " 1 " + PREFIX_STATUS + "inactive";
+            + ": Assigns or replaces the workout plan of the specified person by index number used "
+            + "in the displayed person list.\n"
+            + "Use 'wp/' with a value to set the plan, or 'wp/' with no value to clear it.\n"
+            + "Parameters: INDEX (must be a positive integer) wp/[CATEGORY]\n"
+            + "Examples:\n"
+            + "  " + COMMAND_WORD + " 1 wp/PUSH\n"
+            + "  " + COMMAND_WORD + " 2 wp/LEGS\n"
+            + "  " + COMMAND_WORD + " 3 wp/";
 
-    public static final String MESSAGE_STATUS_PERSON_SUCCESS = "Updated status of Person: %1$s";
-    public static final String MESSAGE_NOT_CHANGED = "Status is already set to %1$s for person: %2$s";
+    public static final String MESSAGE_SUCCESS = "Updated workout plan for person: %1$s";
+    public static final String MESSAGE_CLEAR_SUCCESS = "Workout plan cleared for person: %1$s";
 
     private final Index index;
-    private final Status status;
+    private final Plan plan;
 
     /**
-     * @param index of the person in the filtered person list to update status
-     * @param status new status to set for the person
+     * Creates a PlanCommand to assign/update the specified {@code plan} of the person at the
+     * specified {@code index}.
+     *
+     * @param index of the person in the last person list to edit the workout plan
+     * @param plan of the person to be updated to
      */
-    public StatusCommand(Index index, Status status) {
+    public PlanCommand(Index index, Plan plan) {
         requireNonNull(index);
-        requireNonNull(status);
-
+        requireNonNull(plan);
         this.index = index;
-        this.status = status;
+        this.plan = plan;
     }
 
     @Override
@@ -55,13 +60,6 @@ public class StatusCommand extends Command {
         }
 
         Person personToEdit = lastShownList.get(index.getZeroBased());
-
-        // Check if status is already the same
-        if (personToEdit.getStatus().equals(status)) {
-            return new CommandResult(
-                    String.format(MESSAGE_NOT_CHANGED, status, Messages.format(personToEdit)));
-        }
-
         Person editedPerson = new Person(
                 personToEdit.getId(),
                 personToEdit.getName(),
@@ -72,9 +70,9 @@ public class StatusCommand extends Command {
                 personToEdit.getAddress(),
                 personToEdit.getLocation(),
                 personToEdit.getNote(),
-                personToEdit.getPlan(),
+                plan,
                 personToEdit.getRate(),
-                status, // NEW STATUS
+                personToEdit.getStatus(),
                 personToEdit.getHeight(),
                 personToEdit.getWeight(),
                 personToEdit.getBodyFatPercentage(),
@@ -82,7 +80,9 @@ public class StatusCommand extends Command {
 
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-        return new CommandResult(String.format(MESSAGE_STATUS_PERSON_SUCCESS, Messages.format(editedPerson)));
+
+        String message = plan.isUnassigned() ? MESSAGE_CLEAR_SUCCESS : MESSAGE_SUCCESS;
+        return new CommandResult(String.format(message, Messages.format(editedPerson)));
     }
 
     @Override
@@ -91,20 +91,23 @@ public class StatusCommand extends Command {
             return true;
         }
 
-        if (!(other instanceof StatusCommand)) {
+        if (!(other instanceof PlanCommand)) {
             return false;
         }
 
-        StatusCommand otherStatusCommand = (StatusCommand) other;
-        return index.equals(otherStatusCommand.index)
-                && status.equals(otherStatusCommand.status);
+        PlanCommand otherCommand = (PlanCommand) other;
+        return index.equals(otherCommand.index) && plan.equals(otherCommand.plan);
     }
 
+    /**
+     * Returns a debug-friendly string representation of this command.
+     */
     @Override
     public String toString() {
         return new ToStringBuilder(this)
                 .add("index", index)
-                .add("status", status)
+                .add("plan", plan)
                 .toString();
     }
 }
+

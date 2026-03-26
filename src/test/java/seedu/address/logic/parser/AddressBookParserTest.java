@@ -9,6 +9,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_HEIGHT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_LOCATION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NOTE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NOTE_APPEND;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PLAN;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_RATE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WEIGHT;
 import static seedu.address.testutil.Assert.assertThrows;
@@ -32,6 +33,7 @@ import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.MeasureCommand;
 import seedu.address.logic.commands.NoteCommand;
+import seedu.address.logic.commands.PlanCommand;
 import seedu.address.logic.commands.RateCommand;
 import seedu.address.logic.commands.ViewCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -41,6 +43,7 @@ import seedu.address.model.person.LocationContainsKeywordsPredicate;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Note;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Plan;
 import seedu.address.model.person.Rate;
 import seedu.address.model.person.Weight;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
@@ -114,6 +117,16 @@ public class AddressBookParserTest {
 
         assertEquals(new MeasureCommand(INDEX_FIRST_PERSON,
                 new Height("175.5"), new Weight("72.0"), new BodyFatPercentage("14.8")), command);
+    }
+
+    @Test
+    public void parseCommand_plan() throws Exception {
+        PlanCommand command = (PlanCommand) parser.parseCommand(
+                PlanCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased() + " "
+                        + PREFIX_PLAN + "PUSH");
+
+        Plan expectedPlan = new Plan("PUSH");
+        assertEquals(new PlanCommand(INDEX_FIRST_PERSON, expectedPlan), command);
     }
 
     @Test

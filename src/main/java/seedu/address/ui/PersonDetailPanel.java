@@ -40,6 +40,8 @@ public class PersonDetailPanel extends UiPart<Region> {
     @FXML
     private Label rate;
     @FXML
+    private Label plan;
+    @FXML
     private Label height;
     @FXML
     private Label weight;
@@ -73,6 +75,7 @@ public class PersonDetailPanel extends UiPart<Region> {
         gymLocation.setText(person.getLocation().value);
         address.setText(person.getAddress().value);
         rate.setText(person.getRate().value.isEmpty() ? "N/A" : person.getRate().value);
+        plan.setText(person.getPlan().isUnassigned() ? "N/A" : person.getPlan().toString());
         height.setText(person.getHeight().value.isEmpty() ? "N/A" : person.getHeight().value);
         weight.setText(person.getWeight().value.isEmpty() ? "N/A" : person.getWeight().value);
         bodyFat.setText(person.getBodyFatPercentage().value.isEmpty() ? "N/A" : person.getBodyFatPercentage().value);

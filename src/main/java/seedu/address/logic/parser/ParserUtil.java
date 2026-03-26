@@ -18,6 +18,7 @@ import seedu.address.model.person.Height;
 import seedu.address.model.person.Location;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Plan;
 import seedu.address.model.person.Rate;
 import seedu.address.model.person.Status;
 import seedu.address.model.person.Weight;
@@ -267,5 +268,18 @@ public class ParserUtil {
             throw new ParseException(WorkoutTime.MESSAGE_CONSTRAINTS);
         }
         return new WorkoutTime(trimmedTime);
+    }
+
+
+    /**
+     * Parses one {@code wp/} value into a {@code Plan}.
+     */
+    public static Plan parsePlanCategory(String category) throws ParseException {
+        requireNonNull(category);
+        String normalizedCategory = category.trim().replaceAll("\\s+", " ");
+        if (!Plan.isValidPlan(normalizedCategory)) {
+            throw new ParseException(Plan.MESSAGE_CONSTRAINTS);
+        }
+        return new Plan(normalizedCategory);
     }
 }

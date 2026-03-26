@@ -115,6 +115,7 @@ public class PersonTest {
                 + ", address=" + ALICE.getAddress()
                 + ", location=" + ALICE.getLocation()
                 + ", note=" + ALICE.getNote()
+                + ", plan=" + ALICE.getPlan()
                 + ", rate=" + ALICE.getRate()
                 + ", status=" + ALICE.getStatus()
                 + ", height=" + ALICE.getHeight()

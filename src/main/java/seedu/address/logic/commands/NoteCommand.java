@@ -21,7 +21,8 @@ public class NoteCommand extends Command {
     public static final String COMMAND_WORD = "note";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Adds or appends a note to the specified person by index number used in the last person listing.\n"
+            + ": Adds or appends a note to the specified person by index number used "
+            + "in the displayed person list.\n"
             + "Use 'n/' to replace/delete existing notes, or 'a/' to append to existing notes.\n"
             + "Only one prefix (n/ or a/) should be provided, not both.\n"
             + "Parameters: INDEX (must be a positive integer) [n/NOTE_CONTENT | a/NOTE_CONTENT]\n"
@@ -91,6 +92,7 @@ public class NoteCommand extends Command {
                 personToEdit.getAddress(),
                 personToEdit.getLocation(),
                 finalNote,
+                personToEdit.getPlan(),
                 personToEdit.getRate(),
                 personToEdit.getStatus(),
                 personToEdit.getHeight(),

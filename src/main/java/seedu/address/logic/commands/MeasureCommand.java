@@ -67,6 +67,11 @@ public class MeasureCommand extends Command {
         }
 
         Person personToEdit = lastShownList.get(index.getZeroBased());
+        Height updatedHeight = height != null ? height : personToEdit.getHeight();
+        Weight updatedWeight = weight != null ? weight : personToEdit.getWeight();
+        BodyFatPercentage updatedBodyFatPercentage = bodyFatPercentage != null
+                ? bodyFatPercentage : personToEdit.getBodyFatPercentage();
+
         Person editedPerson = new Person(
                 personToEdit.getId(),
                 personToEdit.getName(),
@@ -77,22 +82,21 @@ public class MeasureCommand extends Command {
                 personToEdit.getAddress(),
                 personToEdit.getLocation(),
                 personToEdit.getNote(),
+                personToEdit.getPlan(),
                 personToEdit.getRate(),
                 personToEdit.getStatus(),
-                height == null ? personToEdit.getHeight() : height,
-                weight == null ? personToEdit.getWeight() : weight,
-                bodyFatPercentage == null ? personToEdit.getBodyFatPercentage() : bodyFatPercentage,
+                updatedHeight,
+                updatedWeight,
+                updatedBodyFatPercentage,
                 personToEdit.getTags());
 
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
-        boolean hasAnyProvidedField = height != null || weight != null || bodyFatPercentage != null;
-        boolean isClearOperation = hasAnyProvidedField
-                && (height == null || height.value.isEmpty())
-                && (weight == null || weight.value.isEmpty())
-                && (bodyFatPercentage == null || bodyFatPercentage.value.isEmpty());
-        String message = isClearOperation ? MESSAGE_CLEAR_SUCCESS : MESSAGE_SET_SUCCESS;
+        boolean allMeasurementsCleared = updatedHeight.value.isEmpty()
+                && updatedWeight.value.isEmpty()
+                && updatedBodyFatPercentage.value.isEmpty();
+        String message = allMeasurementsCleared ? MESSAGE_CLEAR_SUCCESS : MESSAGE_SET_SUCCESS;
         return new CommandResult(String.format(message, Messages.format(editedPerson)));
     }
 

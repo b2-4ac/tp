@@ -28,6 +28,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Note;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Plan;
 import seedu.address.model.person.Rate;
 import seedu.address.model.person.Status;
 import seedu.address.model.person.Weight;
@@ -78,6 +79,7 @@ public class AddCommandParser implements Parser<AddCommand> {
                 argMultimap.getValue(PREFIX_LOCATION).orElse(Location.UNSPECIFIED_LOCATION));
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
         ClientId id = new ClientId(UUID.randomUUID().toString());
+        Plan plan = Plan.getDefaultPlan();
 
         Person person = new Person(
                 id,
@@ -89,6 +91,7 @@ public class AddCommandParser implements Parser<AddCommand> {
                 address,
                 location,
                 new Note(EMPTY_NOTE),
+                plan,
                 new Rate(EMPTY_RATE),
                 new Status("active"),
                 new Height(Height.DEFAULT_HEIGHT_TEXT),

@@ -39,6 +39,7 @@ public class HelpCommand extends Command {
                 + DeleteCommand.MESSAGE_USAGE + "\n\n"
                 + EditCommand.MESSAGE_USAGE + "\n\n"
                 + NoteCommand.MESSAGE_USAGE + "\n\n"
+                + PlanCommand.MESSAGE_USAGE + "\n\n"
                 + StatusCommand.MESSAGE_USAGE + "\n\n"
                 + MeasureCommand.MESSAGE_USAGE + "\n\n"
                 + RateCommand.MESSAGE_USAGE + "\n\n"
@@ -72,6 +73,8 @@ public class HelpCommand extends Command {
             return ExitCommand.MESSAGE_USAGE;
         case NoteCommand.COMMAND_WORD:
             return NoteCommand.MESSAGE_USAGE;
+        case PlanCommand.COMMAND_WORD:
+            return PlanCommand.MESSAGE_USAGE;
         case StatusCommand.COMMAND_WORD:
             return StatusCommand.MESSAGE_USAGE;
         case MeasureCommand.COMMAND_WORD:
