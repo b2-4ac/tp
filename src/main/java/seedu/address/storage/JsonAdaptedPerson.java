@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.person.Address;
+import seedu.address.model.person.ClientId;
 import seedu.address.model.person.DateOfBirth;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Gender;
@@ -29,6 +30,7 @@ class JsonAdaptedPerson {
 
     public static final String MISSING_FIELD_MESSAGE_FORMAT = "Person's %s field is missing!";
 
+    private final String id;
     private final String name;
     private final String gender;
     private final String dob;
@@ -44,7 +46,8 @@ class JsonAdaptedPerson {
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
      */
     @JsonCreator
-    public JsonAdaptedPerson(@JsonProperty("name") String name,
+    public JsonAdaptedPerson(@JsonProperty("id") String id,
+            @JsonProperty("name") String name,
             @JsonProperty("gender") String gender,
             @JsonProperty("dob") String dob,
             @JsonProperty("phone") String phone,
@@ -54,6 +57,7 @@ class JsonAdaptedPerson {
             @JsonProperty("note") String note,
             @JsonProperty("plan") String plan,
             @JsonProperty("tags") List<JsonAdaptedTag> tags) {
+        this.id = id;
         this.name = name;
         this.gender = gender;
         this.dob = dob;
@@ -72,6 +76,7 @@ class JsonAdaptedPerson {
      * Converts a given {@code Person} into this class for Jackson use.
      */
     public JsonAdaptedPerson(Person source) {
+        id = source.getId().value;
         name = source.getName().fullName;
         gender = source.getGender().value.toString();
         dob = source.getDateOfBirth().toString();
@@ -96,6 +101,16 @@ class JsonAdaptedPerson {
         for (JsonAdaptedTag tag : tags) {
             personTags.add(tag.toModelType());
         }
+
+        if (id == null) {
+            throw new IllegalValueException(String.format(
+                    MISSING_FIELD_MESSAGE_FORMAT,
+                    ClientId.class.getSimpleName()));
+        }
+        if (!ClientId.isValidId(id)) {
+            throw new IllegalValueException(ClientId.MESSAGE_CONSTRAINTS);
+        }
+        final ClientId modelId = new ClientId(id);
 
         if (name == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName()));
@@ -169,7 +184,8 @@ class JsonAdaptedPerson {
         final Plan modelPlan = new Plan(plan);
 
         final Set<Tag> modelTags = new HashSet<>(personTags);
-        return new Person(modelName,
+        return new Person(modelId,
+                modelName,
                 modelGender,
                 modelDateOfBirth,
                 modelPhone,

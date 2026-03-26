@@ -19,6 +19,7 @@ import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.WorkoutLogBook;
 import seedu.address.model.person.Note;
 import seedu.address.model.person.Person;
 import seedu.address.testutil.PersonBuilder;
@@ -30,7 +31,7 @@ public class NoteCommandTest {
 
     private static final String NOTE_STUB = "Some note";
 
-    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs(), new WorkoutLogBook());
 
     @Test
     public void execute_addNoteUnfilteredList_success() {
@@ -43,7 +44,7 @@ public class NoteCommandTest {
         String expectedMessage = String.format(NoteCommand.MESSAGE_ADD_SUCCESS, Messages.format(editedPerson));
 
         Model expectedModel =
-                new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+                new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs(), new WorkoutLogBook());
         expectedModel.setPerson(firstPerson, editedPerson);
 
         assertCommandSuccess(noteCommand, model, expectedMessage, expectedModel);
@@ -64,7 +65,7 @@ public class NoteCommandTest {
         String expectedMessage = String.format(NoteCommand.MESSAGE_ADD_SUCCESS, Messages.format(editedPerson));
 
         Model expectedModel =
-                new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+                new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs(), new WorkoutLogBook());
         expectedModel.setPerson(firstPerson, editedPerson);
 
         assertCommandSuccess(noteCommand, model, expectedMessage, expectedModel);
@@ -85,7 +86,7 @@ public class NoteCommandTest {
         String expectedMessage = String.format(NoteCommand.MESSAGE_APPEND_SUCCESS, Messages.format(expectedPerson));
 
         Model expectedModel =
-                new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+                new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs(), new WorkoutLogBook());
         expectedModel.setPerson(personWithNote, expectedPerson);
 
         assertCommandSuccess(noteCommand, model, expectedMessage, expectedModel);
@@ -105,7 +106,7 @@ public class NoteCommandTest {
         String expectedMessage = String.format(NoteCommand.MESSAGE_APPEND_SUCCESS, Messages.format(editedPerson));
 
         Model expectedModel =
-                new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+                new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs(), new WorkoutLogBook());
         expectedModel.setPerson(personWithEmptyNote, editedPerson);
 
         assertCommandSuccess(noteCommand, model, expectedMessage, expectedModel);
@@ -124,7 +125,7 @@ public class NoteCommandTest {
         String expectedMessage = String.format(NoteCommand.MESSAGE_DELETE_SUCCESS, Messages.format(editedPerson));
 
         Model expectedModel =
-                new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+                new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs(), new WorkoutLogBook());
         expectedModel.setPerson(personWithNote, editedPerson);
 
         assertCommandSuccess(noteCommand, model, expectedMessage, expectedModel);
@@ -143,7 +144,7 @@ public class NoteCommandTest {
         String expectedMessage = String.format(NoteCommand.MESSAGE_NOCHANGE_SUCCESS, Messages.format(editedPerson));
 
         Model expectedModel =
-                new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+                new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs(), new WorkoutLogBook());
         expectedModel.setPerson(personWithNote, editedPerson);
 
         assertCommandSuccess(noteCommand, model, expectedMessage, expectedModel);
@@ -201,4 +202,3 @@ public class NoteCommandTest {
                 .equals(new NoteCommand(INDEX_FIRST_PERSON, new Note(VALID_NOTE_AMY), true)));
     }
 }
-

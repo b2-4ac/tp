@@ -25,6 +25,7 @@ import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Address;
+import seedu.address.model.person.ClientId;
 import seedu.address.model.person.DateOfBirth;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Gender;
@@ -104,6 +105,7 @@ public class EditCommand extends Command {
             EditPersonDescriptor editPersonDescriptor) {
         assert personToEdit != null;
 
+        ClientId fixedId = personToEdit.getId();
         Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
         Gender updatedGender = editPersonDescriptor.getGender().orElse(personToEdit.getGender());
         DateOfBirth updatedDob =
@@ -118,7 +120,7 @@ public class EditCommand extends Command {
         Plan oldPlan = personToEdit.getPlan(); // Plan is not editable through EditCommand
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
-        return new Person(updatedName, updatedGender, updatedDob, updatedPhone, updatedEmail,
+        return new Person(fixedId, updatedName, updatedGender, updatedDob, updatedPhone, updatedEmail,
                 updatedAddress, updatedLocation, oldNote, oldPlan, updatedTags);
     }
 

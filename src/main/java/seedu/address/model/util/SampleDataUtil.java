@@ -6,7 +6,9 @@ import java.util.stream.Collectors;
 
 import seedu.address.model.AddressBook;
 import seedu.address.model.ReadOnlyAddressBook;
+import seedu.address.model.WorkoutLogBook;
 import seedu.address.model.person.Address;
+import seedu.address.model.person.ClientId;
 import seedu.address.model.person.DateOfBirth;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Gender;
@@ -17,6 +19,8 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Plan;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.workout.WorkoutLog;
+import seedu.address.model.workout.WorkoutTime;
 
 /**
  * Contains utility methods for populating {@code AddressBook} with sample data.
@@ -25,6 +29,7 @@ public class SampleDataUtil {
     public static Person[] getSamplePersons() {
         return new Person[] {
             new Person(
+                    new ClientId("4f7026f6-af46-437c-8d61-3c4b557146b5"),
                     new Name("Alex Yeoh"),
                     new Gender("M"),
                     new DateOfBirth("14/03/1992"),
@@ -36,6 +41,7 @@ public class SampleDataUtil {
                     new Plan("PUSH"),
                     getTagSet("friends")),
             new Person(
+                    new ClientId("e6e66102-3112-45e3-9975-ed1e35a11c21"),
                     new Name("Bernice Yu"),
                     new Gender("F"),
                     new DateOfBirth("27/11/1987"),
@@ -47,6 +53,7 @@ public class SampleDataUtil {
                     new Plan("PULL"),
                     getTagSet("colleagues", "friends")),
             new Person(
+                    new ClientId("871891b6-7517-48f5-a0c6-3023e1e4a640"),
                     new Name("Charlotte Oliveiro"),
                     new Gender("F"),
                     new DateOfBirth("05/06/2001"),
@@ -58,6 +65,7 @@ public class SampleDataUtil {
                     new Plan("LEGS"),
                     getTagSet("neighbours")),
             new Person(
+                    new ClientId("b450537f-3619-459d-9d48-6a520a22f357"),
                     new Name("David Li"),
                     new Gender("M"),
                     new DateOfBirth("19/09/1995"),
@@ -69,6 +77,7 @@ public class SampleDataUtil {
                     new Plan("FULL_BODY"),
                     getTagSet("family")),
             new Person(
+                    new ClientId("5d3cf4c7-1d6f-4796-9817-d5d36e84d1a5"),
                     new Name("Irfan Ibrahim"),
                     new Gender("M"),
                     new DateOfBirth("02/01/1983"),
@@ -80,6 +89,7 @@ public class SampleDataUtil {
                     new Plan("CORE"),
                     getTagSet("classmates")),
             new Person(
+                    new ClientId("2f65a198-a3f2-4467-b52b-c85d7768d712"),
                     new Name("Roy Balakrishnan"),
                     new Gender("M"),
                     new DateOfBirth("31/07/1998"),
@@ -93,12 +103,33 @@ public class SampleDataUtil {
         };
     }
 
+    public static WorkoutLog[] getSampleWorkoutLogs() {
+        return new WorkoutLog[] {
+            new WorkoutLog(
+                    new ClientId("4f7026f6-af46-437c-8d61-3c4b557146b5"),
+                    new WorkoutTime("25/02/2025 12:00"),
+                    new Location("Anytime Fitness Geylang South East")),
+            new WorkoutLog(
+                    new ClientId("e6e66102-3112-45e3-9975-ed1e35a11c21"),
+                    new WorkoutTime("16/01/2026 15:30"),
+                    new Location("ActiveSG Gym @ Serangoon Central"))
+        };
+    }
+
     public static ReadOnlyAddressBook getSampleAddressBook() {
         AddressBook sampleAb = new AddressBook();
         for (Person samplePerson : getSamplePersons()) {
             sampleAb.addPerson(samplePerson);
         }
         return sampleAb;
+    }
+
+    public static WorkoutLogBook getSampleWorkoutLogBook() {
+        WorkoutLogBook sampleWlb = new WorkoutLogBook();
+        for (WorkoutLog sampleLog : getSampleWorkoutLogs()) {
+            sampleWlb.addLog(sampleLog);
+        }
+        return sampleWlb;
     }
 
     /**

@@ -11,11 +11,13 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Address;
+import seedu.address.model.person.ClientId;
 import seedu.address.model.person.DateOfBirth;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Gender;
@@ -70,10 +72,21 @@ public class AddCommandParser implements Parser<AddCommand> {
         Location location = ParserUtil.parseLocation(
                 argMultimap.getValue(PREFIX_LOCATION).orElse("No Location Specified"));
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
+        ClientId id = new ClientId(UUID.randomUUID().toString());
         Plan plan = Plan.getDefaultPlan();
 
-        Person person = new Person(name, gender, dob, phone, email, address, location, new Note(EMPTY_NOTE),
-                plan, tagList);
+        Person person = new Person(
+                id,
+                name,
+                gender,
+                dob,
+                phone,
+                email,
+                address,
+                location,
+                new Note(EMPTY_NOTE),
+                plan,
+                tagList);
 
         return new AddCommand(person);
     }

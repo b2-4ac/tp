@@ -22,14 +22,15 @@ import org.junit.jupiter.api.Test;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.WorkoutLogBook;
 import seedu.address.model.person.LocationContainsKeywordsPredicate;
 
 /**
  * Contains integration tests (interaction with the Model) for {@code FilterCommand}.
  */
 public class FilterCommandTest {
-    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
-    private Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs(), new WorkoutLogBook());
+    private Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs(), new WorkoutLogBook());
 
     @Test
     public void equals() {

@@ -32,6 +32,8 @@ import seedu.address.testutil.EditPersonDescriptorBuilder;
  */
 public class CommandTestUtil {
 
+    public static final String VALID_ID_AMY = "f0962b9a-41d3-4627-897b-944a195b2173";
+    public static final String VALID_ID_BOB = "bc530490-67c8-4753-8515-86641217e296";
     public static final String VALID_NAME_AMY = "Amy Bee";
     public static final String VALID_NAME_BOB = "Bob Choo";
     public static final String VALID_GENDER_AMY = "F";

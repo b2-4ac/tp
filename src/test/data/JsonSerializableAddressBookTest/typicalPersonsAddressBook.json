@@ -1,6 +1,7 @@
 {
   "_comment": "AddressBook save file which contains the same Person values as in TypicalPersons#getTypicalAddressBook()",
   "persons" : [ {
+    "id" : "4f63c6d5-a3d1-4e78-bc4a-bf60a92f8087",
     "name" : "Alice Pauline",
     "gender" : "F",
     "dob" : "14/10/1992",
@@ -12,6 +13,7 @@
     "plan" : "PUSH",
     "tags" : [ "friends" ]
   }, {
+    "id" : "524f0c90-efc4-4c6e-8270-e5550a26d701",
     "name" : "Benson Meier",
     "gender" : "M",
     "dob" : "03/03/1985",
@@ -23,6 +25,7 @@
     "plan" : "PULL",
     "tags" : [ "friends" ]
   }, {
+    "id" : "d3e9f4c1-4b12-40e1-959c-7e61b7b75294",
     "name" : "Carl Kurz",
     "gender" : "M",
     "dob" : "22/07/2001",
@@ -34,6 +37,7 @@
     "plan" : "CARDIO",
     "tags" : [ ]
   }, {
+    "id" : "ae8677c3-2287-4303-9d41-3510e194916a",
     "name" : "Daniel Meier",
     "gender" : "M",
     "dob" : "11/11/1978",
@@ -45,6 +49,7 @@
     "plan" : "LEGS",
     "tags" : [ "friends" ]
   }, {
+    "id" : "1a4c9c64-0715-467f-8d2b-18a7a0b3f52a",
     "name" : "Elle Meyer",
     "gender" : "F",
     "dob" : "29/02/1996",
@@ -56,6 +61,7 @@
     "plan" : "FULL_BODY",
     "tags" : [ ]
   }, {
+    "id" : "89b9d15e-a28a-40a8-b649-e26b47c47d77",
     "name" : "Fiona Kunz",
     "gender" : "F",
     "dob" : "05/08/2010",
@@ -67,6 +73,7 @@
     "plan" : "CORE",
     "tags" : [ ]
   }, {
+    "id" : "24f9f7a7-53ef-4f1d-b8d9-601e3097c55c",
     "name" : "George Best",
     "gender" : "M",
     "dob" : "19/05/1999",
