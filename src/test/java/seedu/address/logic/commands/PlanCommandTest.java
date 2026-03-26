@@ -19,6 +19,7 @@ import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.WorkoutLogBook;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Plan;
 import seedu.address.testutil.PersonBuilder;
@@ -28,7 +29,7 @@ import seedu.address.testutil.PersonBuilder;
  */
 public class PlanCommandTest {
 
-    private final Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    private final Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs(), new WorkoutLogBook());
 
     @Test
     public void execute_addPlanUnfilteredList_success() {
@@ -39,7 +40,8 @@ public class PlanCommandTest {
 
         String expectedMessage = String.format(PlanCommand.MESSAGE_SUCCESS, Messages.format(editedPerson));
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()),
+                new UserPrefs(), new WorkoutLogBook());
         expectedModel.setPerson(firstPerson, editedPerson);
 
         assertCommandSuccess(planCommand, model, expectedMessage, expectedModel);
@@ -56,7 +58,8 @@ public class PlanCommandTest {
 
         String expectedMessage = String.format(PlanCommand.MESSAGE_SUCCESS, Messages.format(editedPerson));
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()),
+                new UserPrefs(), new WorkoutLogBook());
         expectedModel.setPerson(firstPerson, editedPerson);
 
         assertCommandSuccess(planCommand, model, expectedMessage, expectedModel);

@@ -57,10 +57,18 @@ public class PlanCommand extends Command {
         }
 
         Person personToEdit = lastShownList.get(index.getZeroBased());
-        Person editedPerson = new Person(personToEdit.getName(), personToEdit.getGender(),
-                personToEdit.getDateOfBirth(), personToEdit.getPhone(), personToEdit.getEmail(),
-                personToEdit.getAddress(), personToEdit.getLocation(), personToEdit.getNote(),
-                plan, personToEdit.getTags());
+        Person editedPerson = new Person(
+                personToEdit.getId(),
+                personToEdit.getName(),
+                personToEdit.getGender(),
+                personToEdit.getDateOfBirth(),
+                personToEdit.getPhone(),
+                personToEdit.getEmail(),
+                personToEdit.getAddress(),
+                personToEdit.getLocation(),
+                personToEdit.getNote(),
+                plan,
+                personToEdit.getTags());
 
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
