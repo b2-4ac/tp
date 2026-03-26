@@ -90,6 +90,7 @@ public class NoteCommand extends Command {
                 personToEdit.getAddress(),
                 personToEdit.getLocation(),
                 finalNote,
+                personToEdit.getRate(),
                 personToEdit.getTags());
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);

@@ -19,11 +19,12 @@ public class PersonCard extends UiPart<Region> {
     private static final String LOCATION_LABEL_PREFIX = "Gym Location: ";
 
     /**
-     * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
-     * As a consequence, UI elements' variable names cannot be set to such keywords
-     * or an exception will be thrown by JavaFX during runtime.
+     * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX. As
+     * a consequence, UI elements' variable names cannot be set to such keywords or an exception
+     * will be thrown by JavaFX during runtime.
      *
-     * @see <a href="https://github.com/se-edu/addressbook-level4/issues/336">The issue on AddressBook level 4</a>
+     * @see <a href="https://github.com/se-edu/addressbook-level4/issues/336">The issue on
+     *      AddressBook level 4</a>
      */
 
     public final Person person;
@@ -32,8 +33,6 @@ public class PersonCard extends UiPart<Region> {
     private HBox cardPane;
     @FXML
     private Label name;
-    @FXML
-    private Label id;
     @FXML
     private Label gender;
     @FXML
@@ -49,7 +48,6 @@ public class PersonCard extends UiPart<Region> {
     public PersonCard(Person person, int displayedIndex) {
         super(FXML);
         this.person = person;
-        id.setText(displayedIndex + ". ");
         name.setText(person.getName().fullName);
         gender.setText(person.getGender().value.toString());
         phone.setText(PHONE_LABEL_PREFIX + person.getPhone().value);

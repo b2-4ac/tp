@@ -41,6 +41,7 @@ public class TypicalPersons {
             .withPhone("94351253")
             .withLocation("Jurong West ActiveSG Gym")
             .withNote("Likes morning workouts")
+            .withRate("100.00")
             .withTags("friends")
             .build();
     public static final Person BENSON = new PersonBuilder()
@@ -53,6 +54,7 @@ public class TypicalPersons {
             .withPhone("98765432")
             .withLocation("Clementi ActiveSG Gym")
             .withNote("Focuses on strength training")
+            .withRate("90.00")
             .withTags("friends")
             .build();
     public static final Person CARL = new PersonBuilder()
@@ -65,6 +67,7 @@ public class TypicalPersons {
             .withPhone("95352563")
             .withLocation("Anytime Fitness Tampines East")
             .withNote("Enjoys cardio workouts")
+            .withRate("90.00")
             .build();
     public static final Person DANIEL = new PersonBuilder()
             .withId("ae8677c3-2287-4303-9d41-3510e194916a")
@@ -88,6 +91,7 @@ public class TypicalPersons {
             .withAddress("michegan ave")
             .withLocation("Anytime Fitness Buona Vista")
             .withNote("Loves HIIT")
+            .withRate("85.00")
             .build();
     public static final Person FIONA = new PersonBuilder()
             .withId("89b9d15e-a28a-40a8-b649-e26b47c47d77")
@@ -99,6 +103,7 @@ public class TypicalPersons {
             .withAddress("little tokyo")
             .withLocation("Anytime Fitness Buona Vista")
             .withNote("Enjoys group fitness classes")
+            .withRate("80.00")
             .build();
     public static final Person GEORGE = new PersonBuilder()
             .withId("24f9f7a7-53ef-4f1d-b8d9-601e3097c55c")
@@ -110,6 +115,7 @@ public class TypicalPersons {
             .withAddress("4th street")
             .withLocation("Anytime Fitness Lower Peirce")
             .withNote("Focuses on cardio and HIIT workouts")
+            .withRate("75.00")
             .build();
 
     // Manually added
@@ -123,6 +129,7 @@ public class TypicalPersons {
             .withAddress("little india")
             .withLocation("Heartbeat @ Bedok ActiveSG Gym")
             .withNote("Interested in martial arts")
+            .withRate("70.00")
             .build();
     public static final Person IDA = new PersonBuilder()
             .withId("7efd3761-9c60-4592-8086-4416a9282360")
@@ -134,6 +141,7 @@ public class TypicalPersons {
             .withAddress("chicago ave")
             .withLocation("Jurong Lake Gardens ActiveSG Gym")
             .withNote("Enjoys cardio")
+            .withRate("120.50")
             .build();
 
     // Manually added - Person's details found in {@code CommandTestUtil}
