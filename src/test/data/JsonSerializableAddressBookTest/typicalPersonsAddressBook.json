@@ -11,6 +11,9 @@
     "location" : "Jurong West ActiveSG Gym",
     "note": "Likes morning workouts",
     "rate": "100.00",
+    "height" : "165.2",
+    "weight" : "58.4",
+    "bodyFatPercentage" : "22.1",
     "tags" : [ "friends" ]
   }, {
     "id" : "524f0c90-efc4-4c6e-8270-e5550a26d701",
@@ -23,6 +26,9 @@
     "location" : "Clementi ActiveSG Gym",
     "note" : "Focuses on strength training",
     "rate" : "90.00",
+    "height" : "178.6",
+    "weight" : "76.8",
+    "bodyFatPercentage" : "16.4",
     "tags" : [ "friends" ]
   }, {
     "id" : "d3e9f4c1-4b12-40e1-959c-7e61b7b75294",
@@ -35,6 +41,9 @@
     "location" : "Anytime Fitness Tampines East",
     "note" : "Enjoys cardio workouts",
     "rate" : "90.00",
+    "height" : "172.0",
+    "weight" : "69.5",
+    "bodyFatPercentage" : "14.2",
     "tags" : [ ]
   }, {
     "id" : "ae8677c3-2287-4303-9d41-3510e194916a",
@@ -47,6 +56,9 @@
     "location" : "Anytime Fitness Marine Parade",
     "note" : "Enjoys cardio and yoga",
     "rate" : "",
+    "height" : "180.3",
+    "weight" : "82.7",
+    "bodyFatPercentage" : "19.0",
     "tags" : [ "friends" ]
   }, {
     "id" : "1a4c9c64-0715-467f-8d2b-18a7a0b3f52a",
@@ -59,6 +71,9 @@
     "location" : "Anytime Fitness Buona Vista",
     "note" : "Loves HIIT",
     "rate" : "85.00",
+    "height" : "160.8",
+    "weight" : "54.9",
+    "bodyFatPercentage" : "24.6",
     "tags" : [ ]
   }, {
     "id" : "89b9d15e-a28a-40a8-b649-e26b47c47d77",
@@ -71,6 +86,9 @@
     "location" : "Anytime Fitness Buona Vista",
     "note" : "Enjoys group fitness classes",
     "rate" : "80.00",
+    "height" : "168.1",
+    "weight" : "61.3",
+    "bodyFatPercentage" : "26.2",
     "tags" : [ ]
   }, {
     "id" : "24f9f7a7-53ef-4f1d-b8d9-601e3097c55c",
@@ -83,6 +101,9 @@
     "location" : "Anytime Fitness Lower Peirce",
     "note" : "Focuses on cardio and HIIT workouts",
     "rate" : "75.00",
+    "height" : "175.4",
+    "weight" : "74.0",
+    "bodyFatPercentage" : "18.7",
     "tags" : [ ]
   } ]
 }

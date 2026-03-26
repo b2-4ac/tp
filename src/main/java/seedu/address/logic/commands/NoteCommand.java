@@ -6,6 +6,7 @@ import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import java.util.List;
 
 import seedu.address.commons.core.index.Index;
+import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
@@ -91,6 +92,10 @@ public class NoteCommand extends Command {
                 personToEdit.getLocation(),
                 finalNote,
                 personToEdit.getRate(),
+                personToEdit.getStatus(),
+                personToEdit.getHeight(),
+                personToEdit.getWeight(),
+                personToEdit.getBodyFatPercentage(),
                 personToEdit.getTags());
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
@@ -132,5 +137,14 @@ public class NoteCommand extends Command {
         NoteCommand otherNoteCommand = (NoteCommand) other;
         return index.equals(otherNoteCommand.index) && note.equals(otherNoteCommand.note)
                 && isAppend == otherNoteCommand.isAppend;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .add("index", index)
+                .add("note", note)
+                .add("isAppend", isAppend)
+                .toString();
     }
 }

@@ -91,6 +91,10 @@ public class PersonTest {
         editedAlice = new PersonBuilder(ALICE).withAddress(VALID_ADDRESS_BOB).build();
         assertFalse(ALICE.equals(editedAlice));
 
+        // different status -> returns false
+        editedAlice = new PersonBuilder(ALICE).withStatus("inactive").build();
+        assertFalse(ALICE.equals(editedAlice));
+
         // different tags -> returns false
         editedAlice = new PersonBuilder(ALICE).withTags(VALID_TAG_HUSBAND).build();
         assertFalse(ALICE.equals(editedAlice));
@@ -112,6 +116,10 @@ public class PersonTest {
                 + ", location=" + ALICE.getLocation()
                 + ", note=" + ALICE.getNote()
                 + ", rate=" + ALICE.getRate()
+                + ", status=" + ALICE.getStatus()
+                + ", height=" + ALICE.getHeight()
+                + ", weight=" + ALICE.getWeight()
+                + ", bodyFatPercentage=" + ALICE.getBodyFatPercentage()
                 + ", tags=" + ALICE.getTags() + "}";
         assertEquals(expected, ALICE.toString());
     }

@@ -9,11 +9,16 @@ Class "<<interface>>\nReadOnlyAddressBook" as ReadOnlyAddressBook
 Class "<<interface>>\nReadOnlyUserPrefs" as ReadOnlyUserPrefs
 Class "<<interface>>\nModel" as Model
 Class AddressBook
+Class WorkoutLogBook
 Class ModelManager
 Class UserPrefs
 
 Class UniquePersonList
+Class WorkoutLog
+Class WorkoutTime
 Class Person
+Class PersonComparators
+Class ClientId
 Class Gender
 Class DateOfBirth
 Class Address
@@ -21,6 +26,10 @@ Class Email
 Class Name
 Class Phone
 Class Location
+Class Rate
+Class Height
+Class Weight
+Class BodyFatPercentage
 Class Tag
 
 Class I #FFFFFF
@@ -36,10 +45,18 @@ Model .right.> ReadOnlyUserPrefs
 Model .left.> ReadOnlyAddressBook
 ModelManager -left-> "1" AddressBook
 ModelManager -right-> "1" UserPrefs
+ModelManager -left-> "1" WorkoutLogBook
 UserPrefs .up.|> ReadOnlyUserPrefs
+
+WorkoutLogBook --> "~* all" WorkoutLog
+WorkoutLog --> "1" ClientId
+WorkoutLog --> "1" WorkoutTime
+WorkoutLog --> "1" Location
 
 AddressBook *--> "1" UniquePersonList
 UniquePersonList --> "~* all" Person
+PersonComparators ..> Person : <<uses>>
+Person *--> ClientId
 Person *--> Name
 Person *--> Phone
 Person *--> Email
@@ -48,7 +65,12 @@ Person *--> "*" Tag
 Person *--> Gender
 Person *--> DateOfBirth
 Person *--> Location
-Person *--> "0..1" Note
+Person *--> Note
+Person *--> Rate
+Person *--> Status
+Person *--> Height
+Person *--> Weight
+Person *--> BodyFatPercentage
 
 Person -[hidden]up--> I
 UniquePersonList -[hidden]right-> I

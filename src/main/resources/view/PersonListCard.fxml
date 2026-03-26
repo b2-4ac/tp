@@ -21,7 +21,7 @@
       <padding>
         <Insets bottom="8" left="12" right="10" top="8" />
       </padding>
-      <!-- Name and Gender shown in line -->
+      <!-- Name, Gender and Status shown in line -->
       <HBox alignment="CENTER_LEFT" spacing="8">
         <Label fx:id="id" styleClass="cell_index_label">
           <minWidth>
@@ -34,11 +34,13 @@
           </HBox.margin>
         </Label>
         <Label fx:id="gender" styleClass="cell_big_label" text="\$gender" />
+        <Label fx:id="status" styleClass="cell_status_label" text="\$status" />
       </HBox>
       <!-- Phone number, Location and Tags -->
-        <Label fx:id="phone" styleClass="cell_small_label" text="Phone number: \$phone" />
-        <Label fx:id="gymLocation" styleClass="cell_small_label" text="Gym Location: \$gymLocation" HBox.hgrow="ALWAYS" />
+      <Label fx:id="phone" styleClass="cell_small_label" text="\$phone" />
+      <Label fx:id="gymLocation" styleClass="cell_small_label" text="\$gymLocation" />
       <FlowPane fx:id="tags" prefWrapLength="10" />
     </VBox>
   </GridPane>
 </HBox>
+

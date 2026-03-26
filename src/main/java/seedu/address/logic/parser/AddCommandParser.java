@@ -17,16 +17,20 @@ import java.util.stream.Stream;
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Address;
+import seedu.address.model.person.BodyFatPercentage;
 import seedu.address.model.person.ClientId;
 import seedu.address.model.person.DateOfBirth;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Gender;
+import seedu.address.model.person.Height;
 import seedu.address.model.person.Location;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Note;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Rate;
+import seedu.address.model.person.Status;
+import seedu.address.model.person.Weight;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -71,7 +75,7 @@ public class AddCommandParser implements Parser<AddCommand> {
         Email email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
         Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
         Location location = ParserUtil.parseLocation(
-                argMultimap.getValue(PREFIX_LOCATION).orElse("No Location Specified"));
+                argMultimap.getValue(PREFIX_LOCATION).orElse(Location.UNSPECIFIED_LOCATION));
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
         ClientId id = new ClientId(UUID.randomUUID().toString());
 
@@ -86,6 +90,11 @@ public class AddCommandParser implements Parser<AddCommand> {
                 location,
                 new Note(EMPTY_NOTE),
                 new Rate(EMPTY_RATE),
+                new Status("active"),
+                new Height(Height.DEFAULT_HEIGHT_TEXT),
+                new Weight(Weight.DEFAULT_WEIGHT_TEXT),
+                new BodyFatPercentage(BodyFatPercentage.DEFAULT_BODY_FAT_TEXT),
+
                 tagList);
 
         return new AddCommand(person);

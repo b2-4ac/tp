@@ -13,6 +13,8 @@ public class Location {
         "Locations can take any alphanumeric input and the @ symbol, "
         + "and it should not be blank";
 
+    public static final String UNSPECIFIED_LOCATION = "No Location Specified";
+
     /*
      * The first character of the location must not be a whitespace,
      * otherwise " " (a blank string) becomes a valid input.

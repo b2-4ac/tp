@@ -7,15 +7,18 @@ import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.BENSON;
+import static seedu.address.testutil.TypicalPersons.CARL;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Comparator;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.Person;
 import seedu.address.testutil.AddressBookBuilder;
 
 public class ModelManagerTest {
@@ -91,6 +94,44 @@ public class ModelManagerTest {
     @Test
     public void getFilteredPersonList_modifyList_throwsUnsupportedOperationException() {
         assertThrows(UnsupportedOperationException.class, () -> modelManager.getFilteredPersonList().remove(0));
+    }
+
+    @Test
+    public void updatePersonListComparator_nullComparator_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> modelManager.updatePersonListComparator(null));
+    }
+
+    @Test
+    public void updatePersonListComparator_validComparator_sortsList() {
+        modelManager.addPerson(CARL);
+        modelManager.addPerson(ALICE);
+        modelManager.addPerson(BENSON);
+
+        // Sort by name ascending
+        Comparator<Person> nameComparator = Comparator.comparing(p -> p.getName().fullName.toLowerCase());
+        modelManager.updatePersonListComparator(nameComparator);
+
+        // ALICE, BENSON, CARL (alphabetical order)
+        assertEquals(Arrays.asList(ALICE, BENSON, CARL), modelManager.getFilteredPersonList());
+    }
+
+    @Test
+    public void updatePersonListComparator_sortWithFilter_maintainsFilter() {
+        modelManager.addPerson(ALICE);
+        modelManager.addPerson(BENSON);
+        modelManager.addPerson(CARL);
+
+        // Filter for persons with "Meier" in name
+        String[] keywords = {"Meier"};
+        modelManager.updateFilteredPersonList(new NameContainsKeywordsPredicate(Arrays.asList(keywords)));
+
+        // Sort by name ascending
+        Comparator<Person> nameComparator = Comparator.comparing(p -> p.getName().fullName.toLowerCase());
+        modelManager.updatePersonListComparator(nameComparator);
+
+        // Should have only BENSON (has "Meier" in name)
+        assertEquals(1, modelManager.getFilteredPersonList().size());
+        assertEquals(BENSON, modelManager.getFilteredPersonList().get(0));
     }
 
     @Test

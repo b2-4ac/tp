@@ -30,7 +30,11 @@ public class Person {
     private final Address address;
     private final Location location;
     private final Note note;
+    private final Height height;
+    private final Weight weight;
+    private final BodyFatPercentage bodyFatPercentage;
     private final Rate rate;
+    private final Status status;
     private final Set<Tag> tags = new HashSet<>();
 
     /**
@@ -46,9 +50,13 @@ public class Person {
             Location location,
             Note note,
             Rate rate,
+            Status status,
+            Height height,
+            Weight weight,
+            BodyFatPercentage bodyFatPercentage,
             Set<Tag> tags) {
-        requireAllNonNull(id, name, gender, phone, email, address, location, note, rate, tags);
-
+        requireAllNonNull(id, name, gender, phone, email, address, location, note, rate, status,
+                height, weight, bodyFatPercentage, tags);
         this.id = id;
         this.name = name;
         this.gender = gender;
@@ -59,6 +67,10 @@ public class Person {
         this.location = location;
         this.note = note;
         this.rate = rate;
+        this.status = status;
+        this.height = height;
+        this.weight = weight;
+        this.bodyFatPercentage = bodyFatPercentage;
         this.tags.addAll(tags);
     }
 
@@ -109,6 +121,34 @@ public class Person {
     }
 
     /**
+     * Returns the status of the person.
+     */
+    public Status getStatus() {
+        return status;
+    }
+
+    /**
+     * Returns the height of the person
+     */
+    public Height getHeight() {
+        return height;
+    }
+
+    /**
+     * Returns the weight of the person
+     */
+    public Weight getWeight() {
+        return weight;
+    }
+
+    /**
+     * Returns the body fat percentage of the person
+     */
+    public BodyFatPercentage getBodyFatPercentage() {
+        return bodyFatPercentage;
+    }
+
+    /**
      * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
      * if modification is attempted.
      */
@@ -154,13 +194,18 @@ public class Person {
                 && location.equals(otherPerson.location)
                 && note.equals(otherPerson.note)
                 && rate.equals(otherPerson.rate)
+                && status.equals(otherPerson.status)
+                && height.equals(otherPerson.height)
+                && weight.equals(otherPerson.weight)
+                && bodyFatPercentage.equals(otherPerson.bodyFatPercentage)
                 && tags.equals(otherPerson.tags);
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, gender, dob, phone, email, address, location, note, rate, tags);
+        return Objects.hash(name, gender, dob, phone, email, address, location,
+                note, rate, status, height, weight, bodyFatPercentage, tags);
     }
 
     @Override
@@ -175,6 +220,10 @@ public class Person {
                 .add("location", location)
                 .add("note", note)
                 .add("rate", rate)
+                .add("status", status)
+                .add("height", height)
+                .add("weight", weight)
+                .add("bodyFatPercentage", bodyFatPercentage)
                 .add("tags", tags)
                 .toString();
     }

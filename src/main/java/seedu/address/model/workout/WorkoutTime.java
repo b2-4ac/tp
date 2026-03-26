@@ -47,6 +47,17 @@ public class WorkoutTime {
         return value;
     }
 
+    /**
+     * Returns true if this {@code WorkoutTime} occurs after another
+     * given {@code WorkoutTime}
+     *
+     * @param otherTime Other time to compare to
+     * @return True if this time is after given time, False otherwise
+     */
+    public boolean isAfter(WorkoutTime otherTime) {
+        return value.isAfter(otherTime.value);
+    }
+
     @Override
     public boolean equals(Object other) {
         if (this == other) {
