@@ -6,6 +6,8 @@ import static seedu.address.testutil.Assert.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+
 public class DateOfBirthTest {
 
     @Test
@@ -33,7 +35,12 @@ public class DateOfBirthTest {
         assertFalse(DateOfBirth.isValidDob("")); // empty string
         assertFalse(DateOfBirth.isValidDob("abc")); // alphabets
         assertFalse(DateOfBirth.isValidDob("24-12-2002")); // wrong format
-        assertFalse(DateOfBirth.isValidDob("27/12/2099")); // in the future
+        assertFalse(DateOfBirth.isValidDob("24/15/2002")); // invalid month
+        assertFalse(DateOfBirth.isValidDob("00/12/2002")); // invalid day
+        assertFalse(DateOfBirth.isValidDob(LocalDateTime
+                .now()
+                .plusYears(1)
+                .format(DateOfBirth.FORMATTER))); // in the future
 
         // valid Date of Birth
         assertTrue(DateOfBirth.isValidDob("24/04/1987"));
