@@ -38,8 +38,8 @@ public class MeasureCommand extends Command {
             + PREFIX_WEIGHT + "72.0 "
             + PREFIX_BODY_FAT + "14.8";
 
-    public static final String MESSAGE_NOT_EDITED = "At least one measurement to set must be provided.";
-    public static final String MESSAGE_SUCCESS = "Updated measurements for person: %1$s";
+    public static final String MESSAGE_SET_SUCCESS = "Measurements added/updated for person: %1$s";
+    public static final String MESSAGE_CLEAR_SUCCESS = "Measurements cleared for person: %1$s";
 
     private final Index index;
     private final MeasureDescriptor measureDescriptor;
@@ -84,7 +84,31 @@ public class MeasureCommand extends Command {
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
-        return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(editedPerson)));
+        String message = isClearOperation() ? MESSAGE_CLEAR_SUCCESS : MESSAGE_SET_SUCCESS;
+        return new CommandResult(String.format(message, Messages.format(editedPerson)));
+    }
+
+    private boolean isClearOperation() {
+        boolean hasAnyProvidedField = false;
+        if (measureDescriptor.getHeight().isPresent()) {
+            hasAnyProvidedField = true;
+            if (!measureDescriptor.getHeight().get().value.isEmpty()) {
+                return false;
+            }
+        }
+        if (measureDescriptor.getWeight().isPresent()) {
+            hasAnyProvidedField = true;
+            if (!measureDescriptor.getWeight().get().value.isEmpty()) {
+                return false;
+            }
+        }
+        if (measureDescriptor.getBodyFatPercentage().isPresent()) {
+            hasAnyProvidedField = true;
+            if (!measureDescriptor.getBodyFatPercentage().get().value.isEmpty()) {
+                return false;
+            }
+        }
+        return hasAnyProvidedField;
     }
 
     @Override

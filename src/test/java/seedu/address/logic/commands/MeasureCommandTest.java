@@ -53,7 +53,7 @@ public class MeasureCommandTest {
         descriptor.setBodyFatPercentage(new BodyFatPercentage(VALID_BODY_FAT_AMY));
         MeasureCommand measureCommand = new MeasureCommand(INDEX_FIRST_PERSON, descriptor);
 
-        String expectedMessage = String.format(MeasureCommand.MESSAGE_SUCCESS, Messages.format(editedPerson));
+        String expectedMessage = String.format(MeasureCommand.MESSAGE_SET_SUCCESS, Messages.format(editedPerson));
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()),
                 new UserPrefs(), new WorkoutLogBook());
@@ -78,7 +78,34 @@ public class MeasureCommandTest {
         descriptor.setHeight(new Height(VALID_HEIGHT_AMY));
         MeasureCommand measureCommand = new MeasureCommand(INDEX_FIRST_PERSON, descriptor);
 
-        String expectedMessage = String.format(MeasureCommand.MESSAGE_SUCCESS, Messages.format(editedPerson));
+        String expectedMessage = String.format(MeasureCommand.MESSAGE_SET_SUCCESS, Messages.format(editedPerson));
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()),
+                new UserPrefs(), new WorkoutLogBook());
+        expectedModel.setPerson(firstPerson, editedPerson);
+
+        assertCommandSuccess(measureCommand, model, expectedMessage, expectedModel);
+    }
+
+    /**
+     * Executes measure with blank values to clear measurements and verifies success.
+     */
+    @Test
+    public void execute_clearMeasurements_success() {
+        Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Person editedPerson = new PersonBuilder(firstPerson)
+                .withHeight("")
+                .withWeight("")
+                .withBodyFatPercentage("")
+                .build();
+
+        MeasureDescriptor descriptor = new MeasureDescriptor();
+        descriptor.setHeight(new Height(""));
+        descriptor.setWeight(new Weight(""));
+        descriptor.setBodyFatPercentage(new BodyFatPercentage(""));
+        MeasureCommand measureCommand = new MeasureCommand(INDEX_FIRST_PERSON, descriptor);
+
+        String expectedMessage = String.format(MeasureCommand.MESSAGE_CLEAR_SUCCESS, Messages.format(editedPerson));
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()),
                 new UserPrefs(), new WorkoutLogBook());

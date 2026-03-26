@@ -38,6 +38,9 @@
       <!-- Phone number, Location and Tags -->
         <Label fx:id="phone" styleClass="cell_small_label" text="Phone number: \$phone" />
         <Label fx:id="gymLocation" styleClass="cell_small_label" text="Gym Location: \$gymLocation" HBox.hgrow="ALWAYS" />
+        <Label fx:id="height" styleClass="cell_small_label" text="H: $height cm" />
+        <Label fx:id="weight" styleClass="cell_small_label" text="W: $weight kg" />
+        <Label fx:id="bodyFat" styleClass="cell_small_label" text="BF: $bodyFat %" />
       <FlowPane fx:id="tags" prefWrapLength="10" />
     </VBox>
   </GridPane>
