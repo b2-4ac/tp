@@ -190,6 +190,34 @@ Examples:
 * `list` followed by `delete 2` deletes the 2nd client in the address book.
 * `find Betsy` followed by `delete 1` deletes the 1st client in the results of the `find` command.
 
+### Logging a workout session : `log`
+Logs a workout for the specified client.
+
+Format: `log INDEX [time/TIME] [l/LOCATION]`
+
+* Logs a workout session for the client at the specified `INDEX`
+* The index refers to the index number shown in the displayed client list.
+* The index **must be a positive integer** 1, 2, 3, ...
+* If `TIME` is not declared, the current time will be used.
+* If `LOCATION` is not specified, the client's preset location will be used.
+
+Examples:
+* `log 1` Logs a workout for the first client in the displayed list using the current time and their specified location.
+* `log 3 time/26/03/2026 14:18` Logs a workout for the third client in the displayed list using their specified location and 26/03/2026 14:18 as the workout time.
+* `log 2 l/Sengkang ActiveSG Gym` Logs a workout for the second client in the displayed list using the current time with the location set to "Sengkang ActiveSG Gym"
+
+### Retrieving the most recent session: `last`
+Retrieves the details of the most recent workout for the specified client.
+
+Format: `last INDEX`
+
+* Retrieves details of the most recent workout for the client at the specified `INDEX`
+* The index refers to the index number shown in the displayed client list.
+* The index **must be a positive integer** 1, 2, 3, ...
+
+Examples:
+* `last 5` Retrieves the Date and Location of the last workout for the fifth client in the displayed list.
+
 ### Clearing all entries : `clear`
 
 Clears all entries from the address book.
