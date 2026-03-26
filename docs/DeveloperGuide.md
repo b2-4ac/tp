@@ -755,6 +755,36 @@ phrases.
 
       Use case ends.
 
+**Use case: UC11 \- Assign/Clear a Client's Workout Programme**
+**Preconditions: Trainer has launched PowerRoster. At least one client exists in the displayed list.**
+
+**MSS**
+
+1. Trainer requests to assign a workout programme to a specific client and provides a valid programme category.
+2. PowerRoster locates the client and validates the provided programme category.
+3. PowerRoster updates the client's workout programme.
+4. PowerRoster confirms the successful update to the Trainer.
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. The specified identifier does not match any existing client.
+    * 2a1. PowerRoster informs the Trainer that the identifier was invalid.
+
+      Use case ends.
+
+* 2b. The programme category is invalid.
+    * 2b1. PowerRoster informs the Trainer of the validation error.
+
+      Use case ends.
+
+* 1c. Trainer requests to clear the client's workout programme by passing an empty prefixed value.
+    * 1c1. PowerRoster clears the client's workout programme.
+    * 1c2. PowerRoster confirms the successful update to the Trainer.
+
+      Use case ends.
+
 ### Non-Functional Requirements
 
 1. Should work on any *mainstream OS* as long as it has Java `17` or above installed.

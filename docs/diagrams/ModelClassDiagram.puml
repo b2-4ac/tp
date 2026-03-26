@@ -26,6 +26,7 @@ Class Email
 Class Name
 Class Phone
 Class Location
+Class Plan
 Class Rate
 Class Height
 Class Weight
@@ -66,6 +67,7 @@ Person *--> Gender
 Person *--> DateOfBirth
 Person *--> Location
 Person *--> Note
+Person *--> Plan
 Person *--> Rate
 Person *--> Status
 Person *--> Height

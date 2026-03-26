@@ -152,6 +152,24 @@ Examples:
 * `note 1 n/Prefers morning sessions.` adds the note `Prefers morning sessions.` to the 1st client, replacing any existing notes.
 * `note 2 a/Just recovered from a knee injury.` appends the note `Just recovered from a knee injury.` to the 2nd client's existing notes. If the 2nd client has no existing notes, this behaves the same as `n/Just recovered from a knee injury.`.
 
+### Assigning a client's workout programme : `plan`
+
+Assigns / clears the workout programme of an existing client in PowerRoster.
+
+Format: `plan INDEX wp/PLAN_CATEGORY`
+
+* Assigns/clears the workout programme of the client at the specified `INDEX`. The index refers to the index number shown in the displayed client list. The index **must be a positive integer** 1, 2, 3, ...
+* The `wp/` prefix is required.
+* `PLAN_CATEGORY` must be one of: `PUSH`, `PULL`, `LEGS`, `CORE`, `CARDIO`, `MOBILITY`, `FULL BODY`, `CONDITIONING` (case-insensitive).
+* Entering `wp/` with no value clears the client's assigned workout programme.
+* Duplicate `wp/` prefixes are not allowed.
+* Workout programmes can only be changed using `plan` (not `edit`).
+
+Examples:
+* `plan 1 wp/PUSH` assigns the 1st client to the `PUSH` programme.
+* `plan 2 wp/full body` assigns the 2nd client to the `FULL BODY` programme.
+* `plan 3 wp/` clears the 3rd client's workout programme.
+
 ### Setting a client's session rate : `rate`
 
 Sets / clears the session rate of an existing client in PowerRoster.
@@ -373,6 +391,7 @@ Action     | Format, Examples
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Edit**   | `edit INDEX [n/NAME] [g/GENDER] [dob/DATE_OF_BIRTH] [p/PHONE] [e/EMAIL] [a/ADDRESS] [l/LOCATION] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
 **Note**   | `note INDEX n/NOTE` or `note INDEX a/NOTE`<br> e.g., `note 1 n/Prefers morning sessions.`
+**Plan**   | `plan INDEX wp/PLAN_CATEGORY`<br> e.g., `plan 1 wp/PUSH`, `plan 2 wp/FULL BODY`, `plan 3 wp/`
 **Rate**   | `rate INDEX r/RATE`<br> e.g., `rate 1 r/120.50`, `rate 2 r/`
 **Measure**| `measure INDEX [h/HEIGHT_CM] [w/WEIGHT_KG] [bf/BODY_FAT_PERCENTAGE]`<br> e.g., `measure 1 h/175.5 w/72.0 bf/14.8`, `measure 2 h/`
 **Status** | `status INDEX s/STATUS`<br> e.g., `status 1 s/inactive`
