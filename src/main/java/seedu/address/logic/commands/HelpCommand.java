@@ -42,8 +42,12 @@ public class HelpCommand extends Command {
                 + StatusCommand.MESSAGE_USAGE + "\n\n"
                 + MeasureCommand.MESSAGE_USAGE + "\n\n"
                 + RateCommand.MESSAGE_USAGE + "\n\n"
+                + LogCommand.MESSAGE_USAGE + "\n\n"
+                + LastCommand.MESSAGE_USAGE + "\n\n"
                 + FindCommand.MESSAGE_USAGE + "\n\n"
                 + FilterCommand.MESSAGE_USAGE + "\n\n"
+                + SortCommand.MESSAGE_USAGE + "\n\n"
+                + ViewCommand.MESSAGE_USAGE + "\n\n"
                 + ListCommand.MESSAGE_USAGE + "\n\n"
                 + ClearCommand.MESSAGE_USAGE + "\n\n"
                 + HelpCommand.MESSAGE_USAGE + "\n\n"
@@ -76,6 +80,14 @@ public class HelpCommand extends Command {
             return RateCommand.MESSAGE_USAGE;
         case FilterCommand.COMMAND_WORD:
             return FilterCommand.MESSAGE_USAGE;
+        case LogCommand.COMMAND_WORD:
+            return LogCommand.MESSAGE_USAGE;
+        case LastCommand.COMMAND_WORD:
+            return LastCommand.MESSAGE_USAGE;
+        case SortCommand.COMMAND_WORD:
+            return SortCommand.MESSAGE_USAGE;
+        case ViewCommand.COMMAND_WORD:
+            return ViewCommand.MESSAGE_USAGE;
         case COMMAND_WORD:
             return MESSAGE_USAGE;
         default:
