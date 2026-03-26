@@ -57,12 +57,13 @@ public class PlanCommandParserTest {
         String expectedMessage =
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, PlanCommand.MESSAGE_USAGE);
         assertParseFailure(parser, INDEX_FIRST_PERSON.getOneBased() + " " + VALID_PLAN_AMY, expectedMessage);
+        assertParseFailure(parser, INDEX_FIRST_PERSON.getOneBased() + "", expectedMessage);
     }
 
     @Test
     public void parse_blankPrefixedValue_failure() {
-        assertParseFailure(parser, INDEX_FIRST_PERSON.getOneBased() + " " + PREFIX_PLAN + "   ",
-                Plan.MESSAGE_CONSTRAINTS);
+        PlanCommand expectedCommand = new PlanCommand(INDEX_FIRST_PERSON, Plan.getDefaultPlan());
+        assertParseSuccess(parser, INDEX_FIRST_PERSON.getOneBased() + " " + PREFIX_PLAN + "   ", expectedCommand);
     }
 
     @Test

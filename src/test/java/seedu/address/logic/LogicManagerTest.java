@@ -184,7 +184,6 @@ public class LogicManagerTest {
                 + ADDRESS_DESC_AMY
                 + LOCATION_DESC_AMY;
         Person expectedPerson = new PersonBuilder(AMY)
-                .withPlan(PersonBuilder.DEFAULT_PLAN)
                 .withTags()
                 .build();
         ModelManager expectedModel = new ModelManager();

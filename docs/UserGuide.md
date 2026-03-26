@@ -137,7 +137,64 @@ Format: `note INDEX n/NOTE` or `note INDEX a/NOTE`
 
 Examples:
 * `note 1 n/Prefers morning sessions.` adds the note `Prefers morning sessions.` to the 1st client, replacing any existing notes.
-* `note 2 a/Just recovered from a knee injury.` appends the note `Just recovered from a knee injury.` to the 2nd client’s existing notes. If the 2nd client has no existing notes, this behaves the same as `n/Just recovered from a knee injury.`.
+* `note 2 a/Just recovered from a knee injury.` appends the note `Just recovered from a knee injury.` to the 2nd client's existing notes. If the 2nd client has no existing notes, this behaves the same as `n/Just recovered from a knee injury.`.
+
+### Setting a client's session rate : `rate`
+
+Sets / clears the session rate of an existing client in PowerRoster.
+
+Format: `rate INDEX r/RATE`
+
+* Sets/clears the rate of the client at the specified `INDEX`. The index refers to the index number shown in the displayed client list. The index **must be a positive integer** 1, 2, 3, …​
+* `RATE` must be either blank or a non-negative monetary value with up to 2 decimal places.
+* Valid examples include `120`, `120.5`, `120.50`, `.50`, and `120.`.
+* Invalid examples include `-10`, `1,000`, `100.000`, `$100`.
+* Entering `r/` with no value clears the client's existing rate.
+* Rate values are normalized to 2 decimal places when stored and displayed.
+* Client rates can only be changed using `rate` (not `edit`).
+
+Examples:
+* `rate 1 r/120` sets the 1st client's rate to `120.00`.
+* `rate 2 r/80.5` sets the 2nd client's rate to `80.50`.
+* `rate 3 r/` clears the 3rd client's rate.
+
+### Updating a client's body measurements : `measure`
+
+Sets / clears body measurements of an existing client in PowerRoster.
+
+Format: `measure INDEX [h/HEIGHT_CM] [w/WEIGHT_KG] [bf/BODY_FAT_PERCENTAGE]`
+
+* Sets/clears one or more body measurements of the client at the specified `INDEX`. The index refers to the index number shown in the displayed client list. The index **must be a positive integer** 1, 2, 3, ...
+* At least one of `h/`, `w/`, or `bf/` must be provided.
+* `HEIGHT_CM` must be either blank or a number in cm between `50.0` and `300.0`, with up to 1 decimal place.
+* `WEIGHT_KG` must be either blank or a number in kg between `20.0` and `500.0`, with up to 1 decimal place.
+* `BODY_FAT_PERCENTAGE` must be either blank or a number between `1.0` and `75.0`, with up to 1 decimal place.
+* Entering `h/`, `w/`, or `bf/` with no value clears that specific measurement.
+* Measurements can only be changed using `measure` (not `edit`).
+
+Examples:
+* `measure 1 h/175.5` sets the 1st client's height to `175.5`.
+* `measure 2 w/72.0 bf/14.8` sets the 2nd client's weight and body fat percentage.
+* `measure 3 h/ w/ bf/` clears all three measurements for the 3rd client.
+* `measure 4 w/` clears the 4th client's weight.
+
+### Changing a client's status : `status`
+
+Changes the status of an existing client in PowerRoster between active and inactive.
+
+Format: `status INDEX s/STATUS`
+
+* Changes the status of the client at the specified `INDEX`.
+* The index refers to the index number shown in the displayed client list.
+* The index **must be a positive integer** 1, 2, 3, …​
+* `STATUS` must be either `active` or `inactive` (case-insensitive).
+* New clients are automatically set to `active` status when added.
+* Use this feature to mark clients as inactive while retaining their records for future reference.
+
+Examples:
+* `status 1 s/inactive` changes the 1st client's status to inactive.
+* `status 2 s/active` changes the 2nd client's status to active.
+* `status 3 s/INACTIVE` changes the 3rd client's status to inactive (case-insensitive).
 
 ### Locating clients by name: `find`
 
@@ -165,7 +222,7 @@ Format: `filter l/LOCATION_PHRASE [l/MORE_LOCATION_PHRASES]...`
 
 * At least one `l/` prefix must be provided.
 * The search is case-insensitive. e.g. specifying `l/Clementi` will match `Clementi ActiveSG Gym`.
-* Each `l/` prefix is treated as one location phrase. e.g. `filter l/Anytime Fitness Jurong` will use `Anytime Fitness Jurong` as a phrase to match. 
+* Each `l/` prefix is treated as one location phrase. e.g. `filter l/Anytime Fitness Jurong` will use `Anytime Fitness Jurong` as a phrase to match.
 * Multiple `l/` prefixes for multiple location phrases is supported and clients matching at least one phrase will be returned (i.e. `OR` search). e.g. `filter l/Anytime Fitness l/Jurong` will use `Anytime Fitness` and `Jurong` as separate phrases to match.
 * Extra spaces within a phrase are normalised. e.g. `filter l/Anytime   Fitness` will be treated as `filter l/Anytime Fitness`.
 * Blank prefixed values are considered invalid. e.g. `filter l/` is invalid or `filter l/ l/` is invalid.
@@ -174,6 +231,35 @@ Examples:
 * `filter l/Clementi` returns all clients whose locations contain the phrase `Clementi` such as `Clementi ActiveSG Gym` and `Anytime Fitness Clementi`.
 * `filter l/Anytime Fitness Jurong` returns all clients whose locations contain the phrase `Anytime Fitness Jurong` such as `Anytime Fitness Jurong East` but not `Anytime Fitness Clementi` or `Jurong Point ActiveSG Gym`.
 * `filter l/Anytime Fitness l/Jurong` returns all clients whose locations contain the phrase `Anytime Fitness` or `Jurong` such as `Anytime Fitness Jurong East`, `Anytime Fitness Clementi`, `Jurong Point ActiveSG Gym` but not `Clementi ActiveSG Gym`.
+
+### Sorting clients : `sort`
+
+Sorts the client list by a specified attribute in ascending or descending order.
+
+Format: `sort ATTRIBUTE/ [o/ORDER]`
+
+* Sorts the entire client list by the specified attribute.
+* Only one attribute can be specified at a time.
+* The order parameter is optional and defaults to ascending (`asc`) if not specified.
+* Sorting works with filtering - you can filter clients first, then sort the filtered results.
+* Supported attributes:
+  * `n/` - Sort by name
+  * `l/` - Sort by location
+  * `dob/` - Sort by date of birth
+  * `p/` - Sort by phone number
+  * `e/` - Sort by email address
+  * `a/` - Sort by address
+  * `g/` - Sort by gender
+* Order options:
+  * `o/asc` - Ascending order (A to Z, earliest to latest, 0 to 9)
+  * `o/desc` - Descending order (Z to A, latest to earliest, 9 to 0)
+
+Examples:
+* `sort n/` sorts all clients by name in ascending order (A to Z).
+* `sort n/ o/desc` sorts all clients by name in descending order (Z to A).
+* `sort dob/ o/asc` sorts all clients by date of birth in ascending order (oldest to youngest).
+* `sort l/` sorts all clients by gym location in ascending order.
+* `filter l/Clementi` followed by `sort n/` filters clients at Clementi locations, then sorts them by name.
 
 
 ### Deleting a client : `delete`
@@ -189,6 +275,34 @@ Format: `delete INDEX`
 Examples:
 * `list` followed by `delete 2` deletes the 2nd client in the address book.
 * `find Betsy` followed by `delete 1` deletes the 1st client in the results of the `find` command.
+
+### Logging a workout session : `log`
+Logs a workout for the specified client.
+
+Format: `log INDEX [time/TIME] [l/LOCATION]`
+
+* Logs a workout session for the client at the specified `INDEX`
+* The index refers to the index number shown in the displayed client list.
+* The index **must be a positive integer** 1, 2, 3, ...
+* If `TIME` is not declared, the current time will be used.
+* If `LOCATION` is not specified, the client's preset location will be used.
+
+Examples:
+* `log 1` Logs a workout for the first client in the displayed list using the current time and their specified location.
+* `log 3 time/26/03/2026 14:18` Logs a workout for the third client in the displayed list using their specified location and 26/03/2026 14:18 as the workout time.
+* `log 2 l/Sengkang ActiveSG Gym` Logs a workout for the second client in the displayed list using the current time with the location set to "Sengkang ActiveSG Gym"
+
+### Retrieving the most recent session: `last`
+Retrieves the details of the most recent workout for the specified client.
+
+Format: `last INDEX`
+
+* Retrieves details of the most recent workout for the client at the specified `INDEX`
+* The index refers to the index number shown in the displayed client list.
+* The index **must be a positive integer** 1, 2, 3, ...
+
+Examples:
+* `last 5` Retrieves the Date and Location of the last workout for the fifth client in the displayed list.
 
 ### Clearing all entries : `clear`
 
@@ -246,7 +360,11 @@ Action     | Format, Examples
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Edit**   | `edit INDEX [n/NAME] [g/GENDER] [dob/DATE_OF_BIRTH] [p/PHONE] [e/EMAIL] [a/ADDRESS] [l/LOCATION] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
 **Note**   | `note INDEX n/NOTE` or `note INDEX a/NOTE`<br> e.g., `note 1 n/Prefers morning sessions.`
+**Rate**   | `rate INDEX r/RATE`<br> e.g., `rate 1 r/120.50`, `rate 2 r/`
+**Measure**| `measure INDEX [h/HEIGHT_CM] [w/WEIGHT_KG] [bf/BODY_FAT_PERCENTAGE]`<br> e.g., `measure 1 h/175.5 w/72.0 bf/14.8`, `measure 2 h/`
+**Status** | `status INDEX s/STATUS`<br> e.g., `status 1 s/inactive`
 **Find**   | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **Filter** | `filter l/LOCATION_PHRASE [l/MORE_LOCATION_PHRASES]...`<br> e.g., `filter l/Clementi l/ActiveSG`
+**Sort**   | `sort ATTRIBUTE/ [o/ORDER]`<br> e.g., `sort n/`, `sort dob/ o/desc`
 **List**   | `list`
 **Help**   | `help [COMMAND_WORD]`<br> e.g., `help`, `help add`

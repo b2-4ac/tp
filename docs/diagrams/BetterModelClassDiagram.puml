@@ -21,5 +21,10 @@ Person *--> Phone
 Person *--> Email
 Person *--> Address
 Person *--> Location
-Person *--> "0..1" Note
+Person *--> Note
+Person *--> Rate
+Person *--> Status
+Person *--> Height
+Person *--> Weight
+Person *--> BodyFatPercentage
 @enduml

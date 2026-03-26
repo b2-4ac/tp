@@ -42,6 +42,10 @@ public class TypicalPersons {
             .withLocation("Jurong West ActiveSG Gym")
             .withNote("Likes morning workouts")
             .withPlan("PUSH")
+            .withRate("100.00")
+            .withHeight("165.2")
+            .withWeight("58.4")
+            .withBodyFatPercentage("22.1")
             .withTags("friends")
             .build();
     public static final Person BENSON = new PersonBuilder()
@@ -55,6 +59,10 @@ public class TypicalPersons {
             .withLocation("Clementi ActiveSG Gym")
             .withNote("Focuses on strength training")
             .withPlan("PULL")
+            .withRate("90.00")
+            .withHeight("178.6")
+            .withWeight("76.8")
+            .withBodyFatPercentage("16.4")
             .withTags("friends")
             .build();
     public static final Person CARL = new PersonBuilder()
@@ -68,6 +76,10 @@ public class TypicalPersons {
             .withLocation("Anytime Fitness Tampines East")
             .withNote("Enjoys cardio workouts")
             .withPlan("CARDIO")
+            .withRate("90.00")
+            .withHeight("172.0")
+            .withWeight("69.5")
+            .withBodyFatPercentage("14.2")
             .build();
     public static final Person DANIEL = new PersonBuilder()
             .withId("ae8677c3-2287-4303-9d41-3510e194916a")
@@ -80,6 +92,9 @@ public class TypicalPersons {
             .withLocation("Anytime Fitness Marine Parade")
             .withNote("Enjoys cardio and yoga")
             .withPlan("LEGS")
+            .withHeight("180.3")
+            .withWeight("82.7")
+            .withBodyFatPercentage("19.0")
             .withTags("friends")
             .build();
     public static final Person ELLE = new PersonBuilder()
@@ -93,6 +108,10 @@ public class TypicalPersons {
             .withLocation("Anytime Fitness Buona Vista")
             .withNote("Loves HIIT")
             .withPlan("FULL_BODY")
+            .withRate("85.00")
+            .withHeight("160.8")
+            .withWeight("54.9")
+            .withBodyFatPercentage("24.6")
             .build();
     public static final Person FIONA = new PersonBuilder()
             .withId("89b9d15e-a28a-40a8-b649-e26b47c47d77")
@@ -105,6 +124,10 @@ public class TypicalPersons {
             .withLocation("Anytime Fitness Buona Vista")
             .withNote("Enjoys group fitness classes")
             .withPlan("CORE")
+            .withRate("80.00")
+            .withHeight("168.1")
+            .withWeight("61.3")
+            .withBodyFatPercentage("26.2")
             .build();
     public static final Person GEORGE = new PersonBuilder()
             .withId("24f9f7a7-53ef-4f1d-b8d9-601e3097c55c")
@@ -117,6 +140,10 @@ public class TypicalPersons {
             .withLocation("Anytime Fitness Lower Peirce")
             .withNote("Focuses on cardio and HIIT workouts")
             .withPlan("CONDITIONING")
+            .withRate("75.00")
+            .withHeight("175.4")
+            .withWeight("74.0")
+            .withBodyFatPercentage("18.7")
             .build();
 
     // Manually added
@@ -131,6 +158,10 @@ public class TypicalPersons {
             .withLocation("Heartbeat @ Bedok ActiveSG Gym")
             .withNote("Interested in martial arts")
             .withPlan("CARDIO")
+            .withRate("70.00")
+            .withHeight("171.5")
+            .withWeight("64.2")
+            .withBodyFatPercentage("23.0")
             .build();
     public static final Person IDA = new PersonBuilder()
             .withId("7efd3761-9c60-4592-8086-4416a9282360")
@@ -143,6 +174,10 @@ public class TypicalPersons {
             .withLocation("Jurong Lake Gardens ActiveSG Gym")
             .withNote("Enjoys cardio")
             .withPlan("CONDITIONING")
+            .withRate("120.50")
+            .withHeight("166.4")
+            .withWeight("57.8")
+            .withBodyFatPercentage("25.1")
             .build();
 
     // Manually added - Person's details found in {@code CommandTestUtil}

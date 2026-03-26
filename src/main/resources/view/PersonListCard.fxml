@@ -7,39 +7,40 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
 <HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
-  <GridPane HBox.hgrow="ALWAYS">
+    <GridPane HBox.hgrow="ALWAYS">
     <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="150" />
+      <ColumnConstraints percentWidth="100" />
     </columnConstraints>
-    <VBox alignment="CENTER_LEFT" minHeight="105" GridPane.columnIndex="0">
+    <VBox alignment="CENTER_LEFT" minHeight="80" spacing="5" GridPane.columnIndex="0">
+        <VBox.margin>
+        <Insets top="2" />
+    </VBox.margin>
       <padding>
-        <Insets bottom="5" left="15" right="5" top="5" />
+        <Insets bottom="8" left="12" right="10" top="8" />
       </padding>
-      <HBox alignment="CENTER_LEFT" spacing="0.5">
-        <Label fx:id="id" styleClass="cell_big_label">
+      <!-- Name, Gender and Status shown in line -->
+      <HBox alignment="CENTER_LEFT" spacing="8">
+        <Label fx:id="id" styleClass="cell_index_label">
           <minWidth>
-            <!-- Ensures that the label text is never truncated -->
             <Region fx:constant="USE_PREF_SIZE" />
           </minWidth>
         </Label>
-        <Label fx:id="name" styleClass="cell_big_label" text="\$first">
-               <HBox.margin>
-                  <Insets right="10.0" />
-               </HBox.margin></Label>
+        <Label fx:id="name" styleClass="cell_big_label" text="\$first" HBox.hgrow="ALWAYS">
+          <HBox.margin>
+            <Insets right="6.0" />
+          </HBox.margin>
+        </Label>
         <Label fx:id="gender" styleClass="cell_big_label" text="\$gender" />
+        <Label fx:id="status" styleClass="cell_status_label" text="\$status" />
       </HBox>
-      <FlowPane fx:id="tags" />
-      <Label fx:id="dob" styleClass="cell_small_label" text="\$dob" />
+      <!-- Phone number, Location and Tags -->
       <Label fx:id="phone" styleClass="cell_small_label" text="\$phone" />
-      <Label fx:id="address" styleClass="cell_small_label" text="\$address" />
       <Label fx:id="gymLocation" styleClass="cell_small_label" text="\$gymLocation" />
-      <Label fx:id="note" styleClass="cell_small_label" text="\$note" />
-      <Label fx:id="plan" styleClass="cell_small_label" text="\$plan" />
-      <Label fx:id="email" styleClass="cell_small_label" text="\$email" />
+      <FlowPane fx:id="tags" prefWrapLength="10" />
     </VBox>
   </GridPane>
 </HBox>
+

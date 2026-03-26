@@ -11,16 +11,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.person.Address;
+import seedu.address.model.person.BodyFatPercentage;
 import seedu.address.model.person.ClientId;
 import seedu.address.model.person.DateOfBirth;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Gender;
+import seedu.address.model.person.Height;
 import seedu.address.model.person.Location;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Note;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Plan;
+import seedu.address.model.person.Rate;
+import seedu.address.model.person.Status;
+import seedu.address.model.person.Weight;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -40,6 +45,11 @@ class JsonAdaptedPerson {
     private final String location;
     private final String note;
     private final String plan;
+    private final String height;
+    private final String weight;
+    private final String bodyFatPercentage;
+    private final String rate;
+    private final String status;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
 
     /**
@@ -56,6 +66,11 @@ class JsonAdaptedPerson {
             @JsonProperty("location") String location,
             @JsonProperty("note") String note,
             @JsonProperty("plan") String plan,
+            @JsonProperty("rate") String rate,
+            @JsonProperty("status") String status,
+            @JsonProperty("height") String height,
+            @JsonProperty("weight") String weight,
+            @JsonProperty("bodyFatPercentage") String bodyFatPercentage,
             @JsonProperty("tags") List<JsonAdaptedTag> tags) {
         this.id = id;
         this.name = name;
@@ -67,6 +82,11 @@ class JsonAdaptedPerson {
         this.location = location;
         this.note = note;
         this.plan = plan;
+        this.height = height;
+        this.weight = weight;
+        this.bodyFatPercentage = bodyFatPercentage;
+        this.rate = rate;
+        this.status = status;
         if (tags != null) {
             this.tags.addAll(tags);
         }
@@ -86,6 +106,11 @@ class JsonAdaptedPerson {
         location = source.getLocation().value;
         note = source.getNote().value;
         plan = source.getPlan().value.toString();
+        height = source.getHeight().value;
+        weight = source.getWeight().value;
+        bodyFatPercentage = source.getBodyFatPercentage().value;
+        rate = source.getRate().value;
+        status = source.getStatus().toString();
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
@@ -183,6 +208,51 @@ class JsonAdaptedPerson {
         }
         final Plan modelPlan = new Plan(plan);
 
+        if (height == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Height.class.getSimpleName()));
+        }
+        if (!Height.isValidHeight(height)) {
+            throw new IllegalValueException(Height.MESSAGE_CONSTRAINTS);
+        }
+        final Height modelHeight = new Height(height);
+
+        if (weight == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Weight.class.getSimpleName()));
+        }
+        if (!Weight.isValidWeight(weight)) {
+            throw new IllegalValueException(Weight.MESSAGE_CONSTRAINTS);
+        }
+        final Weight modelWeight = new Weight(weight);
+
+        if (bodyFatPercentage == null) {
+            throw new IllegalValueException(
+                    String.format(MISSING_FIELD_MESSAGE_FORMAT, BodyFatPercentage.class.getSimpleName()));
+        }
+        if (!BodyFatPercentage.isValidBodyFatPercentage(bodyFatPercentage)) {
+            throw new IllegalValueException(BodyFatPercentage.MESSAGE_CONSTRAINTS);
+        }
+        final BodyFatPercentage modelBodyFatPercentage = new BodyFatPercentage(bodyFatPercentage);
+
+        if (rate == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Rate.class.getSimpleName()));
+        }
+        if (!Rate.isValidRate(rate.trim())) {
+            throw new IllegalValueException(Rate.MESSAGE_CONSTRAINTS);
+        }
+        final Rate modelRate = new Rate(rate);
+
+        // Handle migration for old data without status field
+        final Status modelStatus;
+        if (status == null) {
+            // Default to "active" for existing data without status field
+            modelStatus = new Status("active");
+        } else {
+            if (!Status.isValidStatus(status)) {
+                throw new IllegalValueException(Status.MESSAGE_CONSTRAINTS);
+            }
+            modelStatus = new Status(status);
+        }
+
         final Set<Tag> modelTags = new HashSet<>(personTags);
         return new Person(modelId,
                 modelName,
@@ -194,6 +264,11 @@ class JsonAdaptedPerson {
                 modelLocation,
                 modelNote,
                 modelPlan,
+                modelRate,
+                modelStatus,
+                modelHeight,
+                modelWeight,
+                modelBodyFatPercentage,
                 modelTags);
     }
 

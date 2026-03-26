@@ -1,7 +1,6 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_PLAN;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.List;
@@ -22,13 +21,17 @@ public class PlanCommand extends Command {
     public static final String COMMAND_WORD = "plan";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Assigns a workout plan to the specified person by index number used in the last person listing.\n"
-            + "Parameters: INDEX (must be a positive integer) "
-            + PREFIX_PLAN + "CATEGORY\n"
-            + "Example: " + COMMAND_WORD + " 1 " + PREFIX_PLAN
-            + "PUSH";
+            + ": Assigns or replaces the workout plan of the specified person by index number used "
+            + "in the displayed person list.\n"
+            + "Use 'wp/' with a value to set the plan, or 'wp/' with no value to clear it.\n"
+            + "Parameters: INDEX (must be a positive integer) wp/[CATEGORY]\n"
+            + "Examples:\n"
+            + "  " + COMMAND_WORD + " 1 wp/PUSH\n"
+            + "  " + COMMAND_WORD + " 2 wp/LEGS\n"
+            + "  " + COMMAND_WORD + " 3 wp/";
 
     public static final String MESSAGE_SUCCESS = "Updated workout plan for person: %1$s";
+    public static final String MESSAGE_CLEAR_SUCCESS = "Workout plan cleared for person: %1$s";
 
     private final Index index;
     private final Plan plan;
@@ -68,12 +71,18 @@ public class PlanCommand extends Command {
                 personToEdit.getLocation(),
                 personToEdit.getNote(),
                 plan,
+                personToEdit.getRate(),
+                personToEdit.getStatus(),
+                personToEdit.getHeight(),
+                personToEdit.getWeight(),
+                personToEdit.getBodyFatPercentage(),
                 personToEdit.getTags());
 
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
-        return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(editedPerson)));
+        String message = plan.isUnassigned() ? MESSAGE_CLEAR_SUCCESS : MESSAGE_SUCCESS;
+        return new CommandResult(String.format(message, Messages.format(editedPerson)));
     }
 
     @Override

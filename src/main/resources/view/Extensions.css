@@ -4,8 +4,9 @@
 }
 
 .list-cell:empty {
-    /* Empty cells will not have alternating colours */
-    -fx-background: #383838;
+    /* Empty cells match the list-view background — no visible rows below entries */
+    -fx-background-color: #1a2e46;
+    -fx-border-color: transparent;
 }
 
 .tag-selector {

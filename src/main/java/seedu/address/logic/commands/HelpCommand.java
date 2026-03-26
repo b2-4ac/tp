@@ -1,5 +1,7 @@
 package seedu.address.logic.commands;
 
+import static java.util.Objects.requireNonNull;
+
 import seedu.address.model.Model;
 
 /**
@@ -24,11 +26,11 @@ public class HelpCommand extends Command {
 
     @Override
     public CommandResult execute(Model model) {
+        requireNonNull(model);
         if (targetCommand.isEmpty()) {
             return new CommandResult(getAllCommandsUsage(), true, false);
         } else {
-            return new CommandResult(getCommandUsage(targetCommand),
-                    false, false);
+            return new CommandResult(getCommandUsage(targetCommand), false, false);
         }
     }
 
@@ -38,8 +40,15 @@ public class HelpCommand extends Command {
                 + EditCommand.MESSAGE_USAGE + "\n\n"
                 + NoteCommand.MESSAGE_USAGE + "\n\n"
                 + PlanCommand.MESSAGE_USAGE + "\n\n"
+                + StatusCommand.MESSAGE_USAGE + "\n\n"
+                + MeasureCommand.MESSAGE_USAGE + "\n\n"
+                + RateCommand.MESSAGE_USAGE + "\n\n"
+                + LogCommand.MESSAGE_USAGE + "\n\n"
+                + LastCommand.MESSAGE_USAGE + "\n\n"
                 + FindCommand.MESSAGE_USAGE + "\n\n"
                 + FilterCommand.MESSAGE_USAGE + "\n\n"
+                + SortCommand.MESSAGE_USAGE + "\n\n"
+                + ViewCommand.MESSAGE_USAGE + "\n\n"
                 + ListCommand.MESSAGE_USAGE + "\n\n"
                 + ClearCommand.MESSAGE_USAGE + "\n\n"
                 + HelpCommand.MESSAGE_USAGE + "\n\n"
@@ -66,8 +75,22 @@ public class HelpCommand extends Command {
             return NoteCommand.MESSAGE_USAGE;
         case PlanCommand.COMMAND_WORD:
             return PlanCommand.MESSAGE_USAGE;
+        case StatusCommand.COMMAND_WORD:
+            return StatusCommand.MESSAGE_USAGE;
+        case MeasureCommand.COMMAND_WORD:
+            return MeasureCommand.MESSAGE_USAGE;
+        case RateCommand.COMMAND_WORD:
+            return RateCommand.MESSAGE_USAGE;
         case FilterCommand.COMMAND_WORD:
             return FilterCommand.MESSAGE_USAGE;
+        case LogCommand.COMMAND_WORD:
+            return LogCommand.MESSAGE_USAGE;
+        case LastCommand.COMMAND_WORD:
+            return LastCommand.MESSAGE_USAGE;
+        case SortCommand.COMMAND_WORD:
+            return SortCommand.MESSAGE_USAGE;
+        case ViewCommand.COMMAND_WORD:
+            return ViewCommand.MESSAGE_USAGE;
         case COMMAND_WORD:
             return MESSAGE_USAGE;
         default:

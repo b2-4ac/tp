@@ -15,6 +15,13 @@ public class CliSyntax {
     public static final Prefix PREFIX_LOCATION = new Prefix("l/");
     public static final Prefix PREFIX_TAG = new Prefix("t/");
     public static final Prefix PREFIX_NOTE = new Prefix("n/");
+    public static final Prefix PREFIX_STATUS = new Prefix("s/");
     public static final Prefix PREFIX_NOTE_APPEND = new Prefix("a/");
     public static final Prefix PREFIX_PLAN = new Prefix("wp/");
+    public static final Prefix PREFIX_ORDER = new Prefix("o/");
+    public static final Prefix PREFIX_TIME = new Prefix("time/");
+    public static final Prefix PREFIX_RATE = new Prefix("r/");
+    public static final Prefix PREFIX_HEIGHT = new Prefix("h/");
+    public static final Prefix PREFIX_WEIGHT = new Prefix("w/");
+    public static final Prefix PREFIX_BODY_FAT = new Prefix("bf/");
 }

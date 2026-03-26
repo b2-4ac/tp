@@ -13,13 +13,15 @@ public class Location {
         "Locations can take any alphanumeric input and the @ symbol, "
         + "and it should not be blank";
 
+    public static final String UNSPECIFIED_LOCATION = "No Location Specified";
+
     /*
      * The first character of the location must not be a whitespace,
      * otherwise " " (a blank string) becomes a valid input.
      * A valid location includes alphanumeric characters and the
      * @ symbol only.
      */
-    public static final String VALIDATION_REGEX = "[^\\s][a-zA-Z0-9@\\s]*";
+    public static final String VALIDATION_REGEX = "^[a-zA-Z0-9@][a-zA-Z0-9@\\s]*$";
 
     public final String value;
 

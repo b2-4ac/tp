@@ -66,6 +66,22 @@ public class PlanCommandTest {
     }
 
     @Test
+    public void execute_clearPlan_success() {
+        Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Person editedPerson = new PersonBuilder(firstPerson).withPlan(Plan.DEFAULT_PLAN_TEXT).build();
+
+        PlanCommand planCommand = new PlanCommand(INDEX_FIRST_PERSON, Plan.getDefaultPlan());
+
+        String expectedMessage = String.format(PlanCommand.MESSAGE_CLEAR_SUCCESS, Messages.format(editedPerson));
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()),
+                new UserPrefs(), new WorkoutLogBook());
+        expectedModel.setPerson(firstPerson, editedPerson);
+
+        assertCommandSuccess(planCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
     public void execute_invalidPersonIndexUnfilteredList_failure() {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
         PlanCommand planCommand = new PlanCommand(outOfBoundIndex, new Plan(VALID_PLAN_BOB));

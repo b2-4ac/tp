@@ -1,6 +1,7 @@
 package seedu.address.model;
 
 import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
@@ -86,6 +87,12 @@ public interface Model {
      */
     void updateFilteredPersonList(Predicate<Person> predicate);
 
+    /**
+     * Updates the comparator of the person list to sort by the given {@code comparator}.
+     * @throws NullPointerException if {@code comparator} is null.
+     */
+    void updatePersonListComparator(Comparator<Person> comparator);
+
     /** Returns the WorkoutLogBook */
     WorkoutLogBook getWorkoutLogBook();
 
@@ -100,4 +107,10 @@ public interface Model {
      * {@code log} must not already exist in the workout log book.
      */
     void addLog(WorkoutLog log);
+
+    /**
+     * Returns the most recent {@code WorkoutLog} for the specified
+     * {@code Person}.
+     */
+    WorkoutLog lastLog(Person person);
 }

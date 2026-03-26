@@ -118,8 +118,8 @@
 .list-cell {
     -fx-label-padding: 0 0 0 0;
     -fx-graphic-text-gap : 0;
-    -fx-padding: 5 5 5 5;
-    -fx-background-insets: 3 0 3 0;
+    -fx-padding: 4 6 4 6;
+    -fx-background-insets: 4 0 4 0;
 }
 
 .list-cell:filled:even {
@@ -151,14 +151,21 @@
     -fx-text-fill: white;
 }
 
+.cell_index_label {
+    -fx-font-family: "Roboto Mono", monospace;
+    -fx-font-size: 12px;
+    -fx-text-fill: #8fb2d4;
+}
+
 .cell_small_label {
     -fx-font-family: "Google Sans Flex", "Segoe UI";
     -fx-font-size: 13px;
     -fx-text-fill: #c3d1e2;
+    -fx-text-overrun: ellipsis;
 }
 
 .stack-pane {
-     -fx-background-color: #122338;
+     -fx-background-color: transparent;
 }
 
 .pane-with-border {
@@ -283,31 +290,6 @@
     -fx-background-color: #3bdcf2;
 }
 
-.dialog-pane {
-    -fx-background-color: #122338;
-}
-
-.dialog-pane > *.button-bar > *.container {
-    -fx-background-color: #122338;
-}
-
-.dialog-pane > *.label.content {
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
-    -fx-text-fill: white;
-}
-
-.dialog-pane:header *.header-panel {
-    -fx-background-color: #1a2e46;
-}
-
-.dialog-pane:header *.header-panel *.label {
-    -fx-font-size: 18px;
-    -fx-font-style: italic;
-    -fx-fill: white;
-    -fx-text-fill: white;
-}
-
 .scroll-bar {
     -fx-background-color: #122338;
 }
@@ -347,11 +329,11 @@
 
 #commandTextField {
     -fx-background-color: #223a54;
-    -fx-background-insets: 0;
     -fx-border-color: #2f5273;
-    -fx-border-insets: 0;
     -fx-border-width: 1;
     -fx-border-radius: 10;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
     -fx-font-family: "Roboto Mono", monospace;
     -fx-font-size: 11pt;
     -fx-text-fill: white;
@@ -373,6 +355,7 @@
 #tags {
     -fx-hgap: 7;
     -fx-vgap: 3;
+    -fx-pref-wrap-length: 10;
 }
 
 #tags .label {
@@ -386,6 +369,79 @@
 
 #gender {
     -fx-background-color: #10c5de;
+    -fx-text-fill: #052034;
+    -fx-padding: 2 8 2 8;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-font-size: 10;
+}
+
+.inner-split-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+}
+
+.inner-split-pane > .split-pane-divider {
+    -fx-background-color: #2a4562;
+    -fx-padding: 1 0 1 0;
+}
+
+.detail-scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.detail-scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.detail-header-label {
+    -fx-font-size: 17px;
+    -fx-font-family: "Google Sans Flex", "Segoe UI";
+    -fx-text-fill: white;
+    -fx-opacity: 1;
+}
+
+.detail-field-label {
+    -fx-font-size: 14px;
+    -fx-font-family: "Google Sans Flex", "Segoe UI";
+    -fx-text-fill: #9eb0c3;
+    -fx-opacity: 0.9;
+}
+
+.detail-value-label {
+    -fx-font-size: 14px;
+    -fx-font-family: "Google Sans Flex", "Segoe UI";
+    -fx-text-fill: white;
+    -fx-opacity: 1;
+}
+
+.detail-placeholder-title {
+    -fx-font-size: 14px;
+    -fx-font-family: "Google Sans Flex", "Segoe UI";
+    -fx-text-fill: white;
+    -fx-opacity: 1;
+}
+
+.detail-placeholder-subtitle {
+    -fx-font-size: 14px;
+    -fx-font-family: "Google Sans Flex", "Segoe UI";
+    -fx-text-fill: #9eb0c3;
+    -fx-opacity: 0.9;
+}
+
+.cell_status_active {
+    -fx-background-color: #009512;
+    -fx-text-fill: #052034;
+    -fx-padding: 2 8 2 8;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-font-size: 10;
+}
+
+.cell_status_inactive {
+    -fx-background-color: #525252;
     -fx-text-fill: #052034;
     -fx-padding: 2 8 2 8;
     -fx-border-radius: 12;

@@ -17,9 +17,16 @@ import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FilterCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
+import seedu.address.logic.commands.LastCommand;
 import seedu.address.logic.commands.ListCommand;
+import seedu.address.logic.commands.LogCommand;
+import seedu.address.logic.commands.MeasureCommand;
 import seedu.address.logic.commands.NoteCommand;
 import seedu.address.logic.commands.PlanCommand;
+import seedu.address.logic.commands.RateCommand;
+import seedu.address.logic.commands.SortCommand;
+import seedu.address.logic.commands.StatusCommand;
+import seedu.address.logic.commands.ViewCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
 /**
@@ -71,6 +78,15 @@ public class AddressBookParser {
         case PlanCommand.COMMAND_WORD:
             return new PlanCommandParser().parse(arguments);
 
+        case StatusCommand.COMMAND_WORD:
+            return new StatusCommandParser().parse(arguments);
+
+        case RateCommand.COMMAND_WORD:
+            return new RateCommandParser().parse(arguments);
+
+        case MeasureCommand.COMMAND_WORD:
+            return new MeasureCommandParser().parse(arguments);
+
         case DeleteCommand.COMMAND_WORD:
             return new DeleteCommandParser().parse(arguments);
 
@@ -83,14 +99,26 @@ public class AddressBookParser {
         case FilterCommand.COMMAND_WORD:
             return new FilterCommandParser().parse(arguments);
 
+        case LastCommand.COMMAND_WORD:
+            return new LastCommandParser().parse(arguments);
+
         case ListCommand.COMMAND_WORD:
             return new ListCommand();
+
+        case SortCommand.COMMAND_WORD:
+            return new SortCommandParser().parse(arguments);
+
+        case LogCommand.COMMAND_WORD:
+            return new LogCommandParser().parse(arguments);
 
         case ExitCommand.COMMAND_WORD:
             return new ExitCommand();
 
         case HelpCommand.COMMAND_WORD:
             return new HelpCommandParser().parse(arguments);
+
+        case ViewCommand.COMMAND_WORD:
+            return new ViewCommandParser().parse(arguments);
 
         default:
             logger.finer("This user input caused a ParseException: " + userInput);

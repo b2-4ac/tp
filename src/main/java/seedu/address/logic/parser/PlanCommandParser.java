@@ -29,12 +29,18 @@ public class PlanCommandParser implements Parser<PlanCommand> {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, PlanCommand.MESSAGE_USAGE), pe);
         }
 
+        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_PLAN);
+
         if (argMultimap.getValue(PREFIX_PLAN).isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, PlanCommand.MESSAGE_USAGE));
         }
-        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_PLAN);
 
-        Plan plan = ParserUtil.parsePlanCategory(argMultimap.getValue(PREFIX_PLAN).get());
+        Plan plan;
+        if (argMultimap.getValue(PREFIX_PLAN).get().trim().isEmpty()) {
+            plan = Plan.getDefaultPlan();
+        } else {
+            plan = ParserUtil.parsePlanCategory(argMultimap.getValue(PREFIX_PLAN).get());
+        }
         return new PlanCommand(index, plan);
     }
 }

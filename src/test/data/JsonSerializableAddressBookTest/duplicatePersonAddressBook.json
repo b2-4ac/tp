@@ -10,6 +10,10 @@
     "location": "Sengkang ActiveSG Gym",
     "note": "Likes to workout in the morning",
     "plan" : "PUSH",
+    "rate": "100.00",
+    "height" : "166.0",
+    "weight" : "59.2",
+    "bodyFatPercentage" : "21.8",
     "tags": [ "friends" ]
   }, {
     "id": "4f63c6d5-a3d1-4e78-bc4a-bf60a92f8087",
@@ -21,6 +25,10 @@
     "address": "4th street",
     "location": "Pasir Ris ActiveSG Gym",
     "note": "Likes to workout in the morning",
-    "plan" : "PUSH"
+    "plan" : "PUSH",
+    "rate": "100.00",
+    "height" : "167.4",
+    "weight" : "60.5",
+    "bodyFatPercentage" : "22.4"
   } ]
 }

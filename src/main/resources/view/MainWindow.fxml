@@ -35,45 +35,49 @@
           </Menu>
         </MenuBar>
 
-        <SplitPane dividerPositions="0.3" VBox.vgrow="ALWAYS">
+        <SplitPane fx:id="mainHorizontalSplitPane" dividerPositions="0.35" VBox.vgrow="ALWAYS">
           <items>
-            <VBox fx:id="personList" prefWidth="320" styleClass="pane-with-border">
-                <HBox alignment="CENTER_LEFT">
-                    <Label styleClass="label-bright" text="Clients" />
-                        <VBox.margin>
-                           <Insets bottom="5.0" />
-                        </VBox.margin>
-                </HBox>
-                <StackPane fx:id="personListPanelPlaceholder" prefWidth="195.0" VBox.vgrow="ALWAYS" />
-                <padding>
-                    <Insets bottom="10" left="10" right="10" top="10" />
-                </padding>
+            <!-- Client list on the left -->
+            <VBox fx:id="personList" styleClass="pane-with-border">
+              <HBox alignment="CENTER_LEFT">
+                <Label styleClass="label-bright" text="Clients" />
+                <VBox.margin>
+                  <Insets bottom="5.0" />
+                </VBox.margin>
+              </HBox>
+              <StackPane fx:id="personListPanelPlaceholder" VBox.vgrow="ALWAYS" />
+              <padding>
+                <Insets bottom="10" left="10" right="10" top="10" />
+              </padding>
             </VBox>
 
+            <!-- Client details, output result display and command box on the right -->
             <VBox spacing="10" styleClass="pane-with-border">
+              <padding>
+                <Insets bottom="10" left="10" right="10" top="10" />
+              </padding>
+
+              <HBox alignment="CENTER_RIGHT">
+                <Label styleClass="label-bright" text="Type 'help' for available commands" />
+              </HBox>
+
+              <SplitPane fx:id="verticalSplitPane" orientation="VERTICAL" dividerPositions="0.7" styleClass="inner-split-pane" VBox.vgrow="ALWAYS">
+                <items>
+                  <StackPane fx:id="personDetailPanelPlaceholder" styleClass="pane-with-border" />
+                  <StackPane fx:id="resultDisplayPlaceholder" styleClass="pane-with-border" />
+                </items>
+              </SplitPane>
+
+              <StackPane fx:id="commandBoxPlaceholder" VBox.vgrow="NEVER">
                 <padding>
-                    <Insets bottom="10" left="10" right="10" top="10" />
+                  <Insets bottom="5" left="10" right="10" top="5" />
                 </padding>
-
-                <HBox alignment="CENTER_RIGHT">
-                    <Label styleClass="label-bright" text="Type 'help' for available commands" />
-                </HBox>
-
-                <StackPane fx:id="resultDisplayPlaceholder" minHeight="100" prefHeight="100" styleClass="pane-with-border" VBox.vgrow="ALWAYS">
-                    <padding>
-                        <Insets bottom="5" left="10" right="10" top="5" />
-                    </padding>
-                </StackPane>
-
-                <StackPane fx:id="commandBoxPlaceholder" styleClass="pane-with-border" VBox.vgrow="NEVER">
-                    <padding>
-                        <Insets bottom="5" left="10" right="10" top="5" />
-                    </padding>
-                </StackPane>
+              </StackPane>
             </VBox>
           </items>
         </SplitPane>
 
+        <!-- Bar showing the json file path -->
         <StackPane fx:id="statusbarPlaceholder" VBox.vgrow="NEVER" />
       </VBox>
     </Scene>

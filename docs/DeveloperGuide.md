@@ -127,6 +127,7 @@ The `Model` component,
 * stores the address book data i.e., all `Person` objects (which are contained in a `UniquePersonList` object).
 * stores the currently 'selected' `Person` objects (e.g., results of a search query) as a separate _filtered_ list which is exposed to outsiders as an unmodifiable `ObservableList<Person>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
 * stores a `UserPref` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
+* stores the workout logs in an `ArrayList` of `WorkoutLog` objects
 * does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
 
 <box type="info" seamless>
@@ -145,8 +146,8 @@ The `Model` component,
 <puml src="diagrams/StorageClassDiagram.puml" width="550" />
 
 The `Storage` component,
-* can save both address book data and user preference data in JSON format, and read them back into corresponding objects.
-* inherits from both `AddressBookStorage` and `UserPrefStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
+* can save address book data, workout log book data and user preference data in JSON format, and read them back into corresponding objects.
+* inherits from `AddressBookStorage`, `WorkoutLogBookStorage`, and `UserPrefStorage`, which means it can be treated as any one (if only the functionality of only one is needed).
 * depends on some classes in the `Model` component (because the `Storage` component's job is to save/retrieve objects that belong to the `Model`)
 
 ### Common classes
@@ -158,6 +159,116 @@ Classes used by multiple components are in the `seedu.address.commons` package.
 ## **Implementation**
 
 This section describes some noteworthy details on how certain features are implemented.
+
+### Sort feature
+
+#### Implementation
+
+The sort feature allows users to sort the client list by various attributes in ascending or descending order. It uses JavaFX's `SortedList` wrapper to maintain reactivity with the UI.
+
+The sort mechanism is facilitated by three main components:
+* `SortCommand` - Stores attribute name and order, reconstructs the `Comparator<Person>` during execution
+* `SortCommandParser` - Parses user input using a map-based approach to validate attributes and order
+* `PersonComparators` - Utility class that centralizes all comparison logic for `Person` attributes
+
+The `ModelManager` wraps the `FilteredList` with a `SortedList`, allowing sorting and filtering to work together. When `SortCommand.execute()` is called, it retrieves the appropriate comparator from `PersonComparators` and updates the model's comparator. The UI's `ListView` automatically updates through JavaFX's observable pattern.
+
+#### Design considerations:
+
+**Aspect: Where to store comparator logic**
+
+* **Alternative 1 (current choice):** Centralize in `PersonComparators` utility class.
+  * Pros: Follows Single Responsibility Principle, easy to extend.
+  * Cons: One additional class to maintain.
+
+* **Alternative 2:** Keep comparators in `SortCommandParser`.
+  * Pros: Fewer classes.
+  * Cons: Mixes parsing and business logic, harder to test.
+
+### Status Feature
+
+The status feature allows trainers to mark clients as either active or inactive, enabling them to focus on current clients while retaining historical records.
+
+#### Implementation
+
+The status mechanism is implemented through the following components:
+
+* `Status` — A class that represents a client's status, containing a nested `StatusEnum` with two values: `ACTIVE` and `INACTIVE`.
+* `StatusCommand` — Executes the status change operation on a specified client.
+* `StatusCommandParser` — Parses user input to create a `StatusCommand`.
+
+The `Status` class enforces validation to ensure only valid status values ("active" or "inactive", case-insensitive) are accepted.
+
+#### Key Design Decisions
+
+**Storage and Migration:**
+* New clients are automatically assigned `active` status when created via `AddCommand`.
+* The `JsonAdaptedPerson` class handles backward compatibility by defaulting missing status fields to "active" when loading old data files.
+* Status is persisted alongside other client fields in the JSON storage.
+
+**Immutability:**
+* Following the existing Person class design pattern, changing a client's status creates a new Person object with the updated status while preserving all other fields.
+* This maintains data consistency and simplifies undo/redo operations if implemented in the future.
+
+**Validation:**
+* The `Status` class validates input using a regex pattern, rejecting invalid values like "pending" or "unknown".
+* Duplicate status prefixes (e.g., `status 1 s/active s/inactive`) are detected and rejected by the parser.
+
+### Rate Feature
+
+The rate feature allows trainers to store a per-client session rate and update it via a dedicated command.
+
+#### Implementation
+
+The rate mechanism is implemented through the following components:
+
+* `Rate` — A value class that represents a client's session rate.
+* `RateCommand` — Replaces or clears the rate for a specified client.
+* `RateCommandParser` — Parses user input to create a `RateCommand`.
+
+The `Rate` class normalizes valid values to 2 decimal places (e.g., `120`, `120.`, and `.5` are stored as `120.00`, `120.00`, and `0.50` respectively).
+
+#### Key Design Decisions
+
+**Dedicated command for rate changes:**
+* Rate updates are performed only through `rate INDEX r/RATE`.
+* `EditCommand` intentionally preserves the existing rate to keep rate updates explicit and auditable.
+
+**Storage and Migration:**
+* `JsonAdaptedPerson` persists `rate` in the data file. For old data files without a `rate` field, the user/developer has to manually add it in the JSON file (e.g., `"rate": "120.00"`) to avoid errors when loading the data.
+
+**Immutability:**
+* Following the existing model pattern, updating a rate creates a new `Person` instance with only the `rate` field changed while preserving all other fields.
+
+### Body Measurement Feature
+
+The body measurement feature allows trainers to store and update a client's height, weight, and body fat percentage via a dedicated command.
+
+#### Implementation
+
+The measurement mechanism is implemented through the following components:
+
+* `Height`, `Weight`, `BodyFatPercentage` - Value classes representing each measurement field.
+* `MeasureCommand` - Replaces and/or clears measurements for a specified client.
+* `MeasureCommandParser` - Parses user input to create a `MeasureCommand`.
+
+The three value classes enforce numeric range and format constraints (up to 1 decimal place), while still allowing blank values for explicit clear operations.
+
+#### Key Design Decisions
+
+**Dedicated command for measurement changes:**
+* Measurement updates are performed through `measure INDEX [h/...] [w/...] [bf/...]`.
+* Omitted measurement prefixes preserve existing values.
+
+**Clear semantics:**
+* Providing a prefix with no value clears that specific measurement field.
+* `MeasureCommand` returns a clear-success message when all provided measurement fields are blank.
+
+**Immutability:**
+* Following the existing model pattern, updating measurements creates a new `Person` instance with only the measurement fields changed while preserving all other fields.
+
+**Storage and Migration:**
+* `JsonAdaptedPerson` persists `height`, `weight`, and `bodyFatPercentage` in the data file and validates these values when converting to model objects.
 
 ### \[Proposed\] Undo/redo feature
 
@@ -483,7 +594,7 @@ phrases.
       Use case resumes from step 3
 
 **Use case: UC07 \- Add/Append a Note to a Client**  
-**Preconditions: Trainer has launched PowerRoster.**
+**Preconditions: Trainer has launched PowerRoster. At least one client exists in the displayed list.**
 
 **MSS:**
 
@@ -511,7 +622,99 @@ phrases.
       Use case ends.
 * 2d. Trainer requests to append and provides an empty note.
     * 2d1. PowerRoster does not change the existing note.
-        
+
+      Use case ends.
+
+**Use case: UC08 \- Change a Client's Status**
+**Preconditions: Trainer has launched PowerRoster. At least one client exists in the displayed list.**
+
+**MSS**
+    
+1. Trainer requests to list all clients or performs a search/filter.
+2. PowerRoster shows a list of clients.
+3. Trainer requests to change the status of a specific client by providing the index and new status (active/inactive).
+4. PowerRoster updates the client's status and confirms the change.
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. The list is empty.
+
+      Use case ends.
+
+* 3a. The given index is invalid.
+    * 3a1. PowerRoster shows an error message.
+
+      Use case ends.
+
+* 3b. The given status is invalid (not "active" or "inactive").
+    * 3b1. PowerRoster shows an error message.
+
+      Use case ends.
+
+* 3c. The client already has the specified status.
+    * 3c1. PowerRoster indicates that no changes were made.
+
+      Use case ends.
+
+**Use case: UC09 \- Set/Clear a Client's Session Rate**
+**Preconditions: Trainer has launched PowerRoster. At least one client exists in the displayed list.**
+
+**MSS**
+
+1. Trainer requests to set the rate of a specific client and provides the rate.
+2. PowerRoster locates the client and validates the rate.
+3. PowerRoster sets the client's rate and confirms the successful update to the Trainer.
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. The specified identifier does not match any existing client.
+    * 2a1. PowerRoster informs the Trainer that the identifier was invalid.
+
+      Use case ends.
+
+* 2b. The rate is invalid
+    * 2b1. PowerRoster informs the user of the error.
+
+      Use case ends.
+
+* 1c. Trainer requests to clear a client's rate.
+    * 1c1. PowerRoster locates the client and clears the client's existing rate.
+    * 1c2. PowerRoster confirms the successful update to the Trainer.
+
+      Use case ends.
+
+**Use case: UC10 \- Set/Clear a Client's Body Measurements**
+**Preconditions: Trainer has launched PowerRoster. At least one client exists in the displayed list.**
+
+**MSS**
+
+1. Trainer requests to set one or more measurements of a specific client and provides valid values.
+2. PowerRoster locates the client and validates the provided measurements.
+3. PowerRoster updates the specified measurement fields.
+4. PowerRoster confirms the successful update to the Trainer.
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. The specified identifier does not match any existing client.
+    * 2a1. PowerRoster informs the Trainer that the identifier was invalid.
+
+      Use case ends.
+
+* 2b. One or more measurement values are invalid.
+    * 2b1. PowerRoster informs the Trainer of the validation error.
+
+      Use case ends.
+
+* 1c. Trainer requests to clear one or more measurement fields by passing empty prefixed values.
+    * 1c1. PowerRoster clears the corresponding measurement fields.
+    * 1c2. PowerRoster confirms the successful update to the Trainer.
+
       Use case ends.
 
 ### Non-Functional Requirements

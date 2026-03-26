@@ -3,16 +3,20 @@ package seedu.address.logic.commands;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_BODY_FAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DOB;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_GENDER;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_HEIGHT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_LOCATION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NOTE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NOTE_APPEND;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PLAN;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_RATE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_WEIGHT;
 import static seedu.address.testutil.Assert.assertThrows;
 
 import java.util.ArrayList;
@@ -55,6 +59,14 @@ public class CommandTestUtil {
     public static final String VALID_NOTE_APPEND = "Likes to work out on weekends.";
     public static final String VALID_PLAN_AMY = "PUSH";
     public static final String VALID_PLAN_BOB = "PULL";
+    public static final String VALID_RATE_AMY = "80.00";
+    public static final String VALID_RATE_BOB = "120.50";
+    public static final String VALID_HEIGHT_AMY = "165.5";
+    public static final String VALID_HEIGHT_BOB = "180.0";
+    public static final String VALID_WEIGHT_AMY = "58.0";
+    public static final String VALID_WEIGHT_BOB = "80.5";
+    public static final String VALID_BODY_FAT_AMY = "22.5";
+    public static final String VALID_BODY_FAT_BOB = "15.0";
 
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
@@ -75,6 +87,14 @@ public class CommandTestUtil {
     public static final String NOTE_APPEND_DESC = " " + PREFIX_NOTE_APPEND + VALID_NOTE_APPEND;
     public static final String PLAN_DESC_AMY = " " + PREFIX_PLAN + VALID_PLAN_AMY;
     public static final String PLAN_DESC_BOB = " " + PREFIX_PLAN + VALID_PLAN_BOB;
+    public static final String RATE_DESC_AMY = " " + PREFIX_RATE + VALID_RATE_AMY;
+    public static final String RATE_DESC_BOB = " " + PREFIX_RATE + VALID_RATE_BOB;
+    public static final String HEIGHT_DESC_AMY = " " + PREFIX_HEIGHT + VALID_HEIGHT_AMY;
+    public static final String HEIGHT_DESC_BOB = " " + PREFIX_HEIGHT + VALID_HEIGHT_BOB;
+    public static final String WEIGHT_DESC_AMY = " " + PREFIX_WEIGHT + VALID_WEIGHT_AMY;
+    public static final String WEIGHT_DESC_BOB = " " + PREFIX_WEIGHT + VALID_WEIGHT_BOB;
+    public static final String BODY_FAT_DESC_AMY = " " + PREFIX_BODY_FAT + VALID_BODY_FAT_AMY;
+    public static final String BODY_FAT_DESC_BOB = " " + PREFIX_BODY_FAT + VALID_BODY_FAT_BOB;
     public static final String TAG_DESC_FRIEND = " " + PREFIX_TAG + VALID_TAG_FRIEND;
     public static final String TAG_DESC_HUSBAND = " " + PREFIX_TAG + VALID_TAG_HUSBAND;
 
@@ -92,6 +112,12 @@ public class CommandTestUtil {
     public static final String INVALID_ADDRESS_DESC = " " + PREFIX_ADDRESS;
     // empty string not allowed for locations
     public static final String INVALID_LOCATION_DESC = " " + PREFIX_LOCATION;
+    // height out of valid range
+    public static final String INVALID_HEIGHT_DESC = " " + PREFIX_HEIGHT + "49.9";
+    // weight out of valid range
+    public static final String INVALID_WEIGHT_DESC = " " + PREFIX_WEIGHT + "10.0";
+    // body fat percentage out of valid range
+    public static final String INVALID_BODY_FAT_DESC = " " + PREFIX_BODY_FAT + "90.0";
     // '*' not allowed in tags
     public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + "hubby*";
 
