@@ -17,10 +17,12 @@ import java.util.stream.Stream;
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Address;
+import seedu.address.model.person.BodyFatPercentage;
 import seedu.address.model.person.ClientId;
 import seedu.address.model.person.DateOfBirth;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Gender;
+import seedu.address.model.person.Height;
 import seedu.address.model.person.Location;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Note;
@@ -28,6 +30,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Rate;
 import seedu.address.model.person.Status;
+import seedu.address.model.person.Weight;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -88,6 +91,10 @@ public class AddCommandParser implements Parser<AddCommand> {
                 new Note(EMPTY_NOTE),
                 new Rate(EMPTY_RATE),
                 new Status("active"),
+                new Height(Height.DEFAULT_HEIGHT_TEXT),
+                new Weight(Weight.DEFAULT_WEIGHT_TEXT),
+                new BodyFatPercentage(BodyFatPercentage.DEFAULT_BODY_FAT_TEXT),
+
                 tagList);
 
         return new AddCommand(person);

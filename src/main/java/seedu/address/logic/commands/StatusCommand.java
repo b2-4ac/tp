@@ -74,6 +74,9 @@ public class StatusCommand extends Command {
                 personToEdit.getNote(),
                 personToEdit.getRate(),
                 status, // NEW STATUS
+                personToEdit.getHeight(),
+                personToEdit.getWeight(),
+                personToEdit.getBodyFatPercentage(),
                 personToEdit.getTags());
 
         model.setPerson(personToEdit, editedPerson);

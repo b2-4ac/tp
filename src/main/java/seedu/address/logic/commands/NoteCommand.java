@@ -93,6 +93,9 @@ public class NoteCommand extends Command {
                 finalNote,
                 personToEdit.getRate(),
                 personToEdit.getStatus(),
+                personToEdit.getHeight(),
+                personToEdit.getWeight(),
+                personToEdit.getBodyFatPercentage(),
                 personToEdit.getTags());
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);

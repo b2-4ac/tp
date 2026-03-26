@@ -430,3 +430,21 @@
     -fx-text-fill: #9eb0c3;
     -fx-opacity: 0.9;
 }
+
+.cell_status_active {
+    -fx-background-color: #009512;
+    -fx-text-fill: #052034;
+    -fx-padding: 2 8 2 8;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-font-size: 10;
+}
+
+.cell_status_inactive {
+    -fx-background-color: #525252;
+    -fx-text-fill: #052034;
+    -fx-padding: 2 8 2 8;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-font-size: 10;
+}

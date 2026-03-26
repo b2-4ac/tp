@@ -68,7 +68,9 @@ public class AddCommandParserTest {
 
     @Test
     public void parse_allFieldsPresent_success() {
-        Person expectedPerson = new PersonBuilder(BOB).withTags(VALID_TAG_FRIEND).build();
+        Person expectedPerson = new PersonBuilder(BOB)
+                .withTags(VALID_TAG_FRIEND)
+                .build();
 
         // whitespace only preamble
         assertParseSuccess(parser,
@@ -85,7 +87,8 @@ public class AddCommandParserTest {
 
 
         // multiple tags - all accepted
-        Person expectedPersonMultipleTags = new PersonBuilder(BOB).withTags(VALID_TAG_FRIEND, VALID_TAG_HUSBAND)
+        Person expectedPersonMultipleTags = new PersonBuilder(BOB)
+                .withTags(VALID_TAG_FRIEND, VALID_TAG_HUSBAND)
                 .build();
         assertParseSuccess(parser,
                 NAME_DESC_BOB
@@ -221,7 +224,9 @@ public class AddCommandParserTest {
     @Test
     public void parse_optionalFieldsMissing_success() {
         // zero tags
-        Person expectedPerson = new PersonBuilder(AMY).withTags().build();
+        Person expectedPerson = new PersonBuilder(AMY)
+                .withTags()
+                .build();
         assertParseSuccess(parser,
                 NAME_DESC_AMY
                 + GENDER_DESC_AMY
@@ -233,7 +238,9 @@ public class AddCommandParserTest {
                 new AddCommand(expectedPerson));
 
         //no location
-        Person expectedNoLocationPerson = new PersonBuilder(AMY).withLocation("No Location Specified").build();
+        Person expectedNoLocationPerson = new PersonBuilder(AMY)
+                .withLocation("No Location Specified")
+                .build();
         assertParseSuccess(parser,
                 NAME_DESC_AMY
                 + GENDER_DESC_AMY

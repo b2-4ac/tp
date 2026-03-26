@@ -95,6 +95,27 @@
           </VBox>
         </GridPane>
 
+        <!-- Measurements -->
+        <GridPane hgap="20">
+          <columnConstraints>
+            <ColumnConstraints percentWidth="33.33" />
+            <ColumnConstraints percentWidth="33.33" />
+            <ColumnConstraints percentWidth="33.34" />
+          </columnConstraints>
+          <VBox spacing="3" GridPane.columnIndex="0">
+            <Label styleClass="detail-field-label" text="Height (cm)" />
+            <Label fx:id="height" styleClass="detail-value-label" />
+          </VBox>
+          <VBox spacing="3" GridPane.columnIndex="1">
+            <Label styleClass="detail-field-label" text="Weight (kg)" />
+            <Label fx:id="weight" styleClass="detail-value-label" />
+          </VBox>
+          <VBox spacing="3" GridPane.columnIndex="2">
+            <Label styleClass="detail-field-label" text="Body Fat (%)" />
+            <Label fx:id="bodyFat" styleClass="detail-value-label" />
+          </VBox>
+        </GridPane>
+
         <!-- Note -->
         <VBox spacing="3">
           <Label styleClass="detail-field-label" text="Note" />

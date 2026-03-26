@@ -11,38 +11,37 @@
 
 <HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
     <GridPane HBox.hgrow="ALWAYS">
-    <columnConstraints>
-      <ColumnConstraints percentWidth="100" />
-    </columnConstraints>
-    <VBox alignment="CENTER_LEFT" minHeight="80" spacing="5" GridPane.columnIndex="0">
-        <VBox.margin>
-        <Insets top="2" />
-    </VBox.margin>
-      <padding>
-        <Insets bottom="8" left="12" right="10" top="8" />
-      </padding>
-      <!-- Name and Gender shown in line -->
-      <HBox alignment="CENTER_LEFT" spacing="8">
-        <Label fx:id="id" styleClass="cell_index_label">
-          <minWidth>
-            <Region fx:constant="USE_PREF_SIZE" />
-          </minWidth>
-        </Label>
-        <Label fx:id="name" styleClass="cell_big_label" text="\$first" HBox.hgrow="ALWAYS">
-          <HBox.margin>
-            <Insets right="6.0" />
-          </HBox.margin>
-        </Label>
-        <Label fx:id="gender" styleClass="cell_big_label" text="\$gender" />
-      </HBox>
-      <!-- Phone number, Location and Tags -->
-      <Label fx:id="phone" styleClass="cell_small_label" text="\$phone" />
-      <Label fx:id="gymLocation" styleClass="cell_small_label" text="\$gymLocation" />
-      <Label fx:id="note" styleClass="cell_small_label" text="\$note" />
-      <Label fx:id="rate" styleClass="cell_small_label" text="\$rate" />
-      <Label fx:id="email" styleClass="cell_small_label" text="\$email" />
-      <Label fx:id="status" styleClass="cell_small_label" text="\$status" />
-      <FlowPane fx:id="tags" prefWrapLength="10" />
-    </VBox>
-  </GridPane>
+        <columnConstraints>
+            <ColumnConstraints percentWidth="100" />
+        </columnConstraints>
+        <VBox alignment="CENTER_LEFT" minHeight="80" spacing="5" GridPane.columnIndex="0">
+            <VBox.margin>
+                <Insets top="2" />
+            </VBox.margin>
+            <padding>
+                <Insets bottom="8" left="12" right="10" top="8" />
+            </padding>
+            <!-- Name, Gender and Status shown in line -->
+            <HBox alignment="CENTER_LEFT" spacing="8">
+                <Label fx:id="id" styleClass="cell_index_label">
+                    <minWidth>
+                        <Region fx:constant="USE_PREF_SIZE" />
+                    </minWidth>
+                </Label>
+                <Label fx:id="name" styleClass="cell_big_label" text="\$first" HBox.hgrow="ALWAYS">
+                    <HBox.margin>
+                        <Insets right="6.0" />
+                    </HBox.margin>
+                </Label>
+                <Label fx:id="gender" styleClass="cell_big_label" text="\$gender" />
+                <Label fx:id="status" styleClass="cell_status_label" text="\$status" />
+            </HBox>
+            <!-- Phone number, Location and Tags -->
+            <Label fx:id="phone" styleClass="cell_small_label" text="\$phone" />
+            <Label fx:id="gymLocation" styleClass="cell_small_label" text="\$gymLocation" />
+            <FlowPane fx:id="tags" prefWrapLength="10" />
+        </VBox>
+    </GridPane>
+
 </HBox>
+

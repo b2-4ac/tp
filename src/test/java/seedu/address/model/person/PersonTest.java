@@ -117,6 +117,9 @@ public class PersonTest {
                 + ", note=" + ALICE.getNote()
                 + ", rate=" + ALICE.getRate()
                 + ", status=" + ALICE.getStatus()
+                + ", height=" + ALICE.getHeight()
+                + ", weight=" + ALICE.getWeight()
+                + ", bodyFatPercentage=" + ALICE.getBodyFatPercentage()
                 + ", tags=" + ALICE.getTags() + "}";
         assertEquals(expected, ALICE.toString());
     }
