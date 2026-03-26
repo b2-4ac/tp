@@ -240,6 +240,36 @@ The `Rate` class normalizes valid values to 2 decimal places (e.g., `120`, `120.
 **Immutability:**
 * Following the existing model pattern, updating a rate creates a new `Person` instance with only the `rate` field changed while preserving all other fields.
 
+### Body Measurement Feature
+
+The body measurement feature allows trainers to store and update a client's height, weight, and body fat percentage via a dedicated command.
+
+#### Implementation
+
+The measurement mechanism is implemented through the following components:
+
+* `Height`, `Weight`, `BodyFatPercentage` - Value classes representing each measurement field.
+* `MeasureCommand` - Replaces and/or clears measurements for a specified client.
+* `MeasureCommandParser` - Parses user input to create a `MeasureCommand`.
+
+The three value classes enforce numeric range and format constraints (up to 1 decimal place), while still allowing blank values for explicit clear operations.
+
+#### Key Design Decisions
+
+**Dedicated command for measurement changes:**
+* Measurement updates are performed through `measure INDEX [h/...] [w/...] [bf/...]`.
+* Omitted measurement prefixes preserve existing values.
+
+**Clear semantics:**
+* Providing a prefix with no value clears that specific measurement field.
+* `MeasureCommand` returns a clear-success message when all provided measurement fields are blank.
+
+**Immutability:**
+* Following the existing model pattern, updating measurements creates a new `Person` instance with only the measurement fields changed while preserving all other fields.
+
+**Storage and Migration:**
+* `JsonAdaptedPerson` persists `height`, `weight`, and `bodyFatPercentage` in the data file and validates these values when converting to model objects.
+
 ### \[Proposed\] Undo/redo feature
 
 #### Proposed Implementation
@@ -653,6 +683,36 @@ phrases.
 
 * 1c. Trainer requests to clear a client's rate.
     * 1c1. PowerRoster locates the client and clears the client's existing rate.
+    * 1c2. PowerRoster confirms the successful update to the Trainer.
+
+      Use case ends.
+
+**Use case: UC10 \- Set/Clear a Client's Body Measurements**
+**Preconditions: Trainer has launched PowerRoster. At least one client exists in the displayed list.**
+
+**MSS**
+
+1. Trainer requests to set one or more measurements of a specific client and provides valid values.
+2. PowerRoster locates the client and validates the provided measurements.
+3. PowerRoster updates the specified measurement fields.
+4. PowerRoster confirms the successful update to the Trainer.
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. The specified identifier does not match any existing client.
+    * 2a1. PowerRoster informs the Trainer that the identifier was invalid.
+
+      Use case ends.
+
+* 2b. One or more measurement values are invalid.
+    * 2b1. PowerRoster informs the Trainer of the validation error.
+
+      Use case ends.
+
+* 1c. Trainer requests to clear one or more measurement fields by passing empty prefixed values.
+    * 1c1. PowerRoster clears the corresponding measurement fields.
     * 1c2. PowerRoster confirms the successful update to the Trainer.
 
       Use case ends.

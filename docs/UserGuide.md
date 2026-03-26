@@ -158,6 +158,26 @@ Examples:
 * `rate 2 r/80.5` sets the 2nd client's rate to `80.50`.
 * `rate 3 r/` clears the 3rd client's rate.
 
+### Updating a client's body measurements : `measure`
+
+Sets / clears body measurements of an existing client in PowerRoster.
+
+Format: `measure INDEX [h/HEIGHT_CM] [w/WEIGHT_KG] [bf/BODY_FAT_PERCENTAGE]`
+
+* Sets/clears one or more body measurements of the client at the specified `INDEX`. The index refers to the index number shown in the displayed client list. The index **must be a positive integer** 1, 2, 3, ...
+* At least one of `h/`, `w/`, or `bf/` must be provided.
+* `HEIGHT_CM` must be either blank or a number in cm between `50.0` and `300.0`, with up to 1 decimal place.
+* `WEIGHT_KG` must be either blank or a number in kg between `20.0` and `500.0`, with up to 1 decimal place.
+* `BODY_FAT_PERCENTAGE` must be either blank or a number between `1.0` and `75.0`, with up to 1 decimal place.
+* Entering `h/`, `w/`, or `bf/` with no value clears that specific measurement.
+* Measurements can only be changed using `measure` (not `edit`).
+
+Examples:
+* `measure 1 h/175.5` sets the 1st client's height to `175.5`.
+* `measure 2 w/72.0 bf/14.8` sets the 2nd client's weight and body fat percentage.
+* `measure 3 h/ w/ bf/` clears all three measurements for the 3rd client.
+* `measure 4 w/` clears the 4th client's weight.
+
 ### Changing a client's status : `status`
 
 Changes the status of an existing client in PowerRoster between active and inactive.
@@ -341,6 +361,7 @@ Action     | Format, Examples
 **Edit**   | `edit INDEX [n/NAME] [g/GENDER] [dob/DATE_OF_BIRTH] [p/PHONE] [e/EMAIL] [a/ADDRESS] [l/LOCATION] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
 **Note**   | `note INDEX n/NOTE` or `note INDEX a/NOTE`<br> e.g., `note 1 n/Prefers morning sessions.`
 **Rate**   | `rate INDEX r/RATE`<br> e.g., `rate 1 r/120.50`, `rate 2 r/`
+**Measure**| `measure INDEX [h/HEIGHT_CM] [w/WEIGHT_KG] [bf/BODY_FAT_PERCENTAGE]`<br> e.g., `measure 1 h/175.5 w/72.0 bf/14.8`, `measure 2 h/`
 **Status** | `status INDEX s/STATUS`<br> e.g., `status 1 s/inactive`
 **Find**   | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **Filter** | `filter l/LOCATION_PHRASE [l/MORE_LOCATION_PHRASES]...`<br> e.g., `filter l/Clementi l/ActiveSG`

@@ -27,6 +27,9 @@ Class Name
 Class Phone
 Class Location
 Class Rate
+Class Height
+Class Weight
+Class BodyFatPercentage
 Class Tag
 
 Class I #FFFFFF
@@ -65,6 +68,9 @@ Person *--> Location
 Person *--> Note
 Person *--> Rate
 Person *--> Status
+Person *--> Height
+Person *--> Weight
+Person *--> BodyFatPercentage
 
 Person -[hidden]up--> I
 UniquePersonList -[hidden]right-> I

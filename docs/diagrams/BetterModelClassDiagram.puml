@@ -24,4 +24,7 @@ Person *--> Location
 Person *--> Note
 Person *--> Rate
 Person *--> Status
+Person *--> Height
+Person *--> Weight
+Person *--> BodyFatPercentage
 @enduml
