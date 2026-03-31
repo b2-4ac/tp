@@ -40,9 +40,6 @@ public class SortCommandTest {
 
     @Test
     public void equals() {
-        Comparator<Person> nameComparator = Comparator.comparing(p -> p.getName().fullName.toLowerCase());
-        Comparator<Person> locationComparator = Comparator.comparing(p -> p.getLocation().value.toLowerCase());
-
         SortCommand sortByNameCommand = new SortCommand("name", "asc");
         SortCommand sortByLocationCommand = new SortCommand("location", "asc");
 
@@ -168,8 +165,44 @@ public class SortCommandTest {
     }
 
     @Test
+    public void execute_sortByStatusAscending_success() {
+        String expectedMessage = String.format(SortCommand.MESSAGE_SUCCESS, "status", "asc");
+        Comparator<Person> statusComparator = Comparator.comparing(p -> p.getStatus().value.name());
+        SortCommand command = new SortCommand("status", "asc");
+        expectedModel.updatePersonListComparator(statusComparator);
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        // All typical persons are ACTIVE by default, so all 7 should be present
+        assertEquals(7, model.getFilteredPersonList().size());
+    }
+
+    @Test
+    public void execute_sortByPlanAscending_success() {
+        String expectedMessage = String.format(SortCommand.MESSAGE_SUCCESS, "plan", "asc");
+        Comparator<Person> planComparator = Comparator.comparing(p -> p.getPlan().value.name());
+        SortCommand command = new SortCommand("plan", "asc");
+        expectedModel.updatePersonListComparator(planComparator);
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        // Alphabetical by enum name: CARDIO (CARL), CONDITIONING (GEORGE), CORE (FIONA),
+        // FULL_BODY (ELLE), LEGS (DANIEL), PULL (BENSON), PUSH (ALICE)
+        assertEquals(Arrays.asList(CARL, GEORGE, FIONA, ELLE, DANIEL, BENSON, ALICE),
+                model.getFilteredPersonList());
+    }
+
+    @Test
+    public void execute_sortByRateAscending_success() {
+        String expectedMessage = String.format(SortCommand.MESSAGE_SUCCESS, "rate", "asc");
+        Comparator<Person> rateComparator = Comparator.comparingDouble((Person p) ->
+                p.getRate().value.isEmpty() ? -1.0 : Double.parseDouble(p.getRate().value));
+        SortCommand command = new SortCommand("rate", "asc");
+        expectedModel.updatePersonListComparator(rateComparator);
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        // DANIEL (no rate = -1), GEORGE (75), FIONA (80), ELLE (85), BENSON (90), CARL (90), ALICE (100)
+        assertEquals(Arrays.asList(DANIEL, GEORGE, FIONA, ELLE, BENSON, CARL, ALICE),
+                model.getFilteredPersonList());
+    }
+
+    @Test
     public void toStringMethod() {
-        Comparator<Person> nameComparator = Comparator.comparing(p -> p.getName().fullName.toLowerCase());
         SortCommand sortCommand = new SortCommand("name", "asc");
         String expected = SortCommand.class.getCanonicalName()
                 + "{attribute=name, order=asc}";

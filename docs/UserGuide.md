@@ -281,6 +281,9 @@ Format: `sort ATTRIBUTE/ [o/ORDER]`
   * `e/` - Sort by email address
   * `a/` - Sort by address
   * `g/` - Sort by gender
+  * `s/` - Sort by status (active before inactive)
+  * `wp/` - Sort by workout plan (alphabetical)
+  * `r/` - Sort by session rate (clients with no rate set sort first)
 * Order options:
   * `o/asc` - Ascending order (A to Z, earliest to latest, 0 to 9)
   * `o/desc` - Descending order (Z to A, latest to earliest, 9 to 0)
@@ -290,6 +293,9 @@ Examples:
 * `sort n/ o/desc` sorts all clients by name in descending order (Z to A).
 * `sort dob/ o/asc` sorts all clients by date of birth in ascending order (oldest to youngest).
 * `sort l/` sorts all clients by gym location in ascending order.
+* `sort s/` sorts all clients by status, active clients first.
+* `sort r/ o/desc` sorts all clients by session rate, highest rate first.
+* `sort wp/` sorts all clients by workout plan alphabetically.
 * `filter l/Clementi` followed by `sort n/` filters clients at Clementi locations, then sorts them by name.
 
 
@@ -397,7 +403,7 @@ Action     | Format, Examples
 **Status** | `status INDEX s/STATUS`<br> e.g., `status 1 s/inactive`
 **Find**   | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **Filter** | `filter l/LOCATION_PHRASE [l/MORE_LOCATION_PHRASES]...`<br> e.g., `filter l/Clementi l/ActiveSG`
-**Sort**   | `sort ATTRIBUTE/ [o/ORDER]`<br> e.g., `sort n/`, `sort dob/ o/desc`
+**Sort**   | `sort ATTRIBUTE/ [o/ORDER]`<br> e.g., `sort n/`, `sort dob/ o/desc`, `sort r/ o/desc`, `sort s/`, `sort wp/`
 **List**   | `list`
 **View**   | `view INDEX`<br> e.g., `view 1`
 **Help**   | `help [COMMAND_WORD]`<br> e.g., `help`, `help add`

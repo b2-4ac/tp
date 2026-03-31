@@ -9,6 +9,9 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_LOCATION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ORDER;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PLAN;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_RATE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_STATUS;
 import static seedu.address.model.person.PersonComparators.ATTRIBUTE_ADDRESS;
 import static seedu.address.model.person.PersonComparators.ATTRIBUTE_DOB;
 import static seedu.address.model.person.PersonComparators.ATTRIBUTE_EMAIL;
@@ -16,6 +19,9 @@ import static seedu.address.model.person.PersonComparators.ATTRIBUTE_GENDER;
 import static seedu.address.model.person.PersonComparators.ATTRIBUTE_LOCATION;
 import static seedu.address.model.person.PersonComparators.ATTRIBUTE_NAME;
 import static seedu.address.model.person.PersonComparators.ATTRIBUTE_PHONE;
+import static seedu.address.model.person.PersonComparators.ATTRIBUTE_PLAN;
+import static seedu.address.model.person.PersonComparators.ATTRIBUTE_RATE;
+import static seedu.address.model.person.PersonComparators.ATTRIBUTE_STATUS;
 import static seedu.address.model.person.PersonComparators.DEFAULT_ORDER;
 import static seedu.address.model.person.PersonComparators.ORDER_ASC;
 import static seedu.address.model.person.PersonComparators.ORDER_DESC;
@@ -27,7 +33,6 @@ import java.util.logging.Logger;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.commands.SortCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.PersonComparators;
 
 /**
  * Parses input arguments and creates a new SortCommand object.
@@ -48,6 +53,9 @@ public class SortCommandParser implements Parser<SortCommand> {
         PREFIX_TO_ATTRIBUTE.put(PREFIX_EMAIL, ATTRIBUTE_EMAIL);
         PREFIX_TO_ATTRIBUTE.put(PREFIX_ADDRESS, ATTRIBUTE_ADDRESS);
         PREFIX_TO_ATTRIBUTE.put(PREFIX_GENDER, ATTRIBUTE_GENDER);
+        PREFIX_TO_ATTRIBUTE.put(PREFIX_STATUS, ATTRIBUTE_STATUS);
+        PREFIX_TO_ATTRIBUTE.put(PREFIX_PLAN, ATTRIBUTE_PLAN);
+        PREFIX_TO_ATTRIBUTE.put(PREFIX_RATE, ATTRIBUTE_RATE);
     }
 
     /**
@@ -60,7 +68,8 @@ public class SortCommandParser implements Parser<SortCommand> {
 
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args,
                 PREFIX_NAME, PREFIX_GENDER, PREFIX_DOB, PREFIX_PHONE,
-                PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_LOCATION, PREFIX_ORDER);
+                PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_LOCATION, PREFIX_ORDER,
+                PREFIX_STATUS, PREFIX_PLAN, PREFIX_RATE);
 
         // Find which attribute to sort by
         String attribute = null;
@@ -95,14 +104,7 @@ public class SortCommandParser implements Parser<SortCommand> {
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, SortCommand.MESSAGE_USAGE));
         }
 
-        // Validate that the attribute is supported
         assert attribute != null : "Attribute should not be null after validation";
-        if (!PersonComparators.isValidAttribute(attribute)) {
-            logger.finer("Invalid attribute specified: " + attribute);
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, SortCommand.MESSAGE_USAGE));
-        }
-
         logger.fine("Sort command parsed successfully - attribute: " + attribute + ", order: " + order);
         return new SortCommand(attribute, order);
     }

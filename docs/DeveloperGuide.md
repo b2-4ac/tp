@@ -189,6 +189,10 @@ The sort mechanism is facilitated by three main components:
 * `SortCommandParser` - Parses user input using a map-based approach to validate attributes and order
 * `PersonComparators` - Utility class that centralizes all comparison logic for `Person` attributes
 
+The sequence diagram below illustrates the interactions within the `Logic` component when the user executes `sort n/ o/asc`:
+
+<puml src="diagrams/SortSequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `sort n/ o/asc` Command" />
+
 The `ModelManager` wraps the `FilteredList` with a `SortedList`, allowing sorting and filtering to work together. When `SortCommand.execute()` is called, it retrieves the appropriate comparator from `PersonComparators` and updates the model's comparator. The UI's `ListView` automatically updates through JavaFX's observable pattern.
 
 #### Design considerations:
