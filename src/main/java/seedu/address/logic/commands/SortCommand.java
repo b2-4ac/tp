@@ -22,7 +22,8 @@ public class SortCommand extends Command {
             + ": Sorts the person list by the specified attribute.\n"
             + "Parameters: ATTRIBUTE/ [o/ORDER]\n"
             + "Supported attributes: n/ (name), l/ (location), dob/ (date of birth), "
-            + "p/ (phone), e/ (email), a/ (address), g/ (gender)\n"
+            + "p/ (phone), e/ (email), a/ (address), g/ (gender), "
+            + "s/ (status), wp/ (plan), r/ (rate)\n"
             + "Order: asc (ascending, default) or desc (descending)\n"
             + "Example: " + COMMAND_WORD + " n/ o/asc";
 

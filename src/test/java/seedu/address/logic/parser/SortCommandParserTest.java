@@ -9,15 +9,15 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_LOCATION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ORDER;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PLAN;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_RATE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_STATUS;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
-
-import java.util.Comparator;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.SortCommand;
-import seedu.address.model.person.Person;
 
 public class SortCommandParserTest {
 
@@ -43,7 +43,6 @@ public class SortCommandParserTest {
 
     @Test
     public void parse_sortByNameAscending_success() {
-        Comparator<Person> expectedComparator = Comparator.comparing(p -> p.getName().fullName.toLowerCase());
         SortCommand expectedCommand = new SortCommand("name", "asc");
 
         // with explicit ascending order
@@ -55,66 +54,66 @@ public class SortCommandParserTest {
 
     @Test
     public void parse_sortByNameDescending_success() {
-        Comparator<Person> expectedComparator =
-                Comparator.comparing((Person p) -> p.getName().fullName.toLowerCase()).reversed();
         SortCommand expectedCommand = new SortCommand("name", "desc");
-
         assertParseSuccess(parser, " " + PREFIX_NAME + " " + PREFIX_ORDER + "desc", expectedCommand);
     }
 
     @Test
     public void parse_sortByLocationAscending_success() {
-        Comparator<Person> expectedComparator = Comparator.comparing(p -> p.getLocation().value.toLowerCase());
         SortCommand expectedCommand = new SortCommand("location", "asc");
-
         assertParseSuccess(parser, " " + PREFIX_LOCATION, expectedCommand);
     }
 
     @Test
     public void parse_sortByDateOfBirthDescending_success() {
-        Comparator<Person> expectedComparator =
-                Comparator.comparing((Person p) -> p.getDateOfBirth().value).reversed();
         SortCommand expectedCommand = new SortCommand("date of birth", "desc");
-
         assertParseSuccess(parser, " " + PREFIX_DOB + " " + PREFIX_ORDER + "desc", expectedCommand);
     }
 
     @Test
     public void parse_sortByPhoneAscending_success() {
-        Comparator<Person> expectedComparator = Comparator.comparing(p -> p.getPhone().value);
         SortCommand expectedCommand = new SortCommand("phone", "asc");
-
         assertParseSuccess(parser, " " + PREFIX_PHONE, expectedCommand);
     }
 
     @Test
     public void parse_sortByEmailAscending_success() {
-        Comparator<Person> expectedComparator = Comparator.comparing(p -> p.getEmail().value.toLowerCase());
         SortCommand expectedCommand = new SortCommand("email", "asc");
-
         assertParseSuccess(parser, " " + PREFIX_EMAIL, expectedCommand);
     }
 
     @Test
     public void parse_sortByAddressDescending_success() {
-        Comparator<Person> expectedComparator =
-                Comparator.comparing((Person p) -> p.getAddress().value.toLowerCase()).reversed();
         SortCommand expectedCommand = new SortCommand("address", "desc");
-
         assertParseSuccess(parser, " " + PREFIX_ADDRESS + " " + PREFIX_ORDER + "desc", expectedCommand);
     }
 
     @Test
     public void parse_sortByGenderAscending_success() {
-        Comparator<Person> expectedComparator = Comparator.comparing(p -> p.getGender().value);
         SortCommand expectedCommand = new SortCommand("gender", "asc");
-
         assertParseSuccess(parser, " " + PREFIX_GENDER, expectedCommand);
     }
 
     @Test
+    public void parse_sortByStatusAscending_success() {
+        SortCommand expectedCommand = new SortCommand("status", "asc");
+        assertParseSuccess(parser, " " + PREFIX_STATUS, expectedCommand);
+    }
+
+    @Test
+    public void parse_sortByPlanDescending_success() {
+        SortCommand expectedCommand = new SortCommand("plan", "desc");
+        assertParseSuccess(parser, " " + PREFIX_PLAN + " " + PREFIX_ORDER + "desc", expectedCommand);
+    }
+
+    @Test
+    public void parse_sortByRateAscending_success() {
+        SortCommand expectedCommand = new SortCommand("rate", "asc");
+        assertParseSuccess(parser, " " + PREFIX_RATE, expectedCommand);
+    }
+
+    @Test
     public void parse_caseInsensitiveOrder_success() {
-        Comparator<Person> expectedComparator = Comparator.comparing(p -> p.getName().fullName.toLowerCase());
         SortCommand expectedCommand = new SortCommand("name", "asc");
 
         // uppercase order
