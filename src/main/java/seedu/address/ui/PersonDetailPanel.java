@@ -74,7 +74,7 @@ public class PersonDetailPanel extends UiPart<Region> {
         dob.setText(person.getDateOfBirth().toString());
         phone.setText(person.getPhone().value);
         email.setText(person.getEmail().value);
-        gymLocation.setText(person.getLocation().value);
+        gymLocation.setText(person.getLocation().value.isEmpty() ? "N/A" : person.getLocation().value);
         address.setText(person.getAddress().value);
         rate.setText(person.getRate().value.isEmpty() ? "N/A" : person.getRate().value);
         plan.setText(person.getPlan().isUnassigned() ? "N/A" : person.getPlan().toString());

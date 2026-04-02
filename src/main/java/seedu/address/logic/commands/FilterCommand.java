@@ -16,12 +16,16 @@ public class FilterCommand extends Command {
 
     public static final String COMMAND_WORD = "filter";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Filter all persons whose location contain any of "
-            + "the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"
-            + "Parameters: "
-            + PREFIX_LOCATION + "LOCATION_PHRASE [" + PREFIX_LOCATION + "LOCATION_PHRASE]...\n"
-            + "Example: " + COMMAND_WORD + " " + PREFIX_LOCATION
-            + "Anytime Fitness Buona " + PREFIX_LOCATION + "Clementi ActiveSG";
+    public static final String MESSAGE_USAGE = COMMAND_WORD
+            + ": Filters clients whose location contains the specified phrase (case-insensitive), "
+            + "or filters clients with no specified location when the phrase is blank.\n"
+            + "Use one or more l/ prefixes.\n"
+            + "If multiple l/ prefixes are provided, each must have a non-blank value.\n"
+            + "Parameters: " + PREFIX_LOCATION + "LOCATION_PHRASE [" + PREFIX_LOCATION + "MORE_LOCATION_PHRASES]...\n"
+            + "Examples:\n"
+            + "  " + COMMAND_WORD + " " + PREFIX_LOCATION + "Anytime Fitness Buona\n"
+            + "  " + COMMAND_WORD + " " + PREFIX_LOCATION + "Anytime Fitness " + PREFIX_LOCATION + "Clementi\n"
+            + "  " + COMMAND_WORD + " " + PREFIX_LOCATION;
 
     private final LocationContainsKeywordsPredicate predicate;
 

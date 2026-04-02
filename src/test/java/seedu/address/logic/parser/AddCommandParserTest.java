@@ -239,7 +239,7 @@ public class AddCommandParserTest {
 
         //no location
         Person expectedNoLocationPerson = new PersonBuilder(AMY)
-                .withLocation("No Location Specified")
+                .withLocation("")
                 .build();
         assertParseSuccess(parser,
                 NAME_DESC_AMY

@@ -190,7 +190,7 @@ class JsonAdaptedPerson {
             throw new IllegalValueException(
                     String.format(MISSING_FIELD_MESSAGE_FORMAT, Location.class.getSimpleName()));
         }
-        if (!Location.isValidLocation(location)) {
+        if (!location.isEmpty() && !Location.isValidLocation(location)) {
             throw new IllegalValueException(Location.MESSAGE_CONSTRAINTS);
         }
         final Location modelLocation = new Location(location);

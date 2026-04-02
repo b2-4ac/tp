@@ -62,7 +62,8 @@ public class PersonCard extends UiPart<Region> {
         gender.setText(person.getGender().value.toString());
         styleGenderPill(person.getGender().value);
         phone.setText(PREFIX_PHONE_LABEL + person.getPhone().value);
-        gymLocation.setText(PREFIX_LOCATION_LABEL + person.getLocation().value);
+        gymLocation.setText(PREFIX_LOCATION_LABEL
+                + (person.getLocation().value.isEmpty() ? "N/A" : person.getLocation().value));
         status.setText(person.getStatus().value.toString());
         styleStatusPill(person.getStatus().value);
         person.getTags().stream().sorted(Comparator.comparing(tag -> tag.tagName))

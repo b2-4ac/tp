@@ -75,8 +75,9 @@ public class AddCommandParser implements Parser<AddCommand> {
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
         Email email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
         Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
-        Location location = ParserUtil.parseLocation(
-                argMultimap.getValue(PREFIX_LOCATION).orElse(Location.UNSPECIFIED_LOCATION));
+        Location location = argMultimap.getValue(PREFIX_LOCATION).isPresent()
+                ? ParserUtil.parseLocation(argMultimap.getValue(PREFIX_LOCATION).get())
+                : new Location(Location.EMPTY_LOCATION);
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
         ClientId id = new ClientId(UUID.randomUUID().toString());
         Plan plan = Plan.getDefaultPlan();

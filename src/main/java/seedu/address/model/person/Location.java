@@ -4,16 +4,16 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.AppUtil.checkArgument;
 
 /**
- * Represents a Person's preferred gym location in the address book.
+ * Represents a client's preferred gym location in the address book.
  * Guarantees: immutable; is valid as declared in
  * {@link #isValidLocation(String)}
  */
 public class Location {
     public static final String MESSAGE_CONSTRAINTS =
-        "Locations can take any alphanumeric input and the @ symbol, "
-        + "and it should not be blank";
+        "Locations can take any alphanumeric input and the @ symbol. "
+        + "Leave it blank to indicate no specified location.";
 
-    public static final String UNSPECIFIED_LOCATION = "No Location Specified";
+    public static final String EMPTY_LOCATION = "";
 
     /*
      * The first character of the location must not be a whitespace,
@@ -40,7 +40,8 @@ public class Location {
      * Returns true if a given string is a valid location.
      */
     public static boolean isValidLocation(String test) {
-        return test.matches(VALIDATION_REGEX);
+        requireNonNull(test);
+        return EMPTY_LOCATION.equals(test) || test.matches(VALIDATION_REGEX);
     }
 
     @Override

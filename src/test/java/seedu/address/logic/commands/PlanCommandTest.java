@@ -60,6 +60,7 @@ public class PlanCommandTest {
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()),
                 new UserPrefs(), new WorkoutLogBook());
+        showPersonAtIndex(expectedModel, INDEX_FIRST_PERSON);
         expectedModel.setPerson(firstPerson, editedPerson);
 
         assertCommandSuccess(planCommand, model, expectedMessage, expectedModel);

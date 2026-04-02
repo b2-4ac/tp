@@ -29,6 +29,7 @@ public class LastCommand extends Command {
             + "Location: %s";
 
     public static final String MESSAGE_NO_LOGS_FOUND_FAILURE = "No Logs found for: %s";
+    private static final String UNSET_LOCATION_DISPLAY = "N/A";
 
     private final Index targetIndex;
 
@@ -51,9 +52,13 @@ public class LastCommand extends Command {
             return new CommandResult(String.format(MESSAGE_NO_LOGS_FOUND_FAILURE, personToSearch.getName()));
         }
 
+        String locationToDisplay = latest.getLocation().value.isEmpty()
+                ? UNSET_LOCATION_DISPLAY
+                : latest.getLocation().toString();
+
         return new CommandResult(String.format(MESSAGE_RETRIEVE_LOG_SUCCESS,
                 personToSearch.getName(),
                 latest.getTime(),
-                latest.getLocation()));
+                locationToDisplay));
     }
 }
