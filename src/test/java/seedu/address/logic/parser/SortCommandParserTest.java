@@ -135,6 +135,13 @@ public class SortCommandParserTest {
     }
 
     @Test
+    public void parse_attributePrefixWithTrailingText_throwsParseException() {
+        // dob/test o/desc — dob/ receives value "test", which is invalid even though o/desc is valid
+        assertParseFailure(parser, " " + PREFIX_DOB + "test " + PREFIX_ORDER + "desc",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, SortCommand.MESSAGE_USAGE));
+    }
+
+    @Test
     public void parse_caseInsensitiveOrder_success() {
         SortCommand expectedCommand = new SortCommand("name", "asc");
 
