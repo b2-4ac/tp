@@ -7,6 +7,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_TIME;
 import java.util.List;
 
 import seedu.address.commons.core.index.Index;
+import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
@@ -30,7 +31,11 @@ public class LogCommand extends Command {
             + "[" + PREFIX_TIME + "TIME] "
             + "[" + PREFIX_LOCATION + "LOCATION]";
 
-    public static final String MESSAGE_LOG_WORKOUT_SUCCESS = "Workout Logged for: %1$s";
+    public static final String MESSAGE_LOG_WORKOUT_SUCCESS = "Workout Logged for: %s\n"
+            + "Date: %s\n"
+            + "Location: %s";
+
+    public static final String MESSAGE_DUPLICATE_LOG = "This workout log already exists.";
 
     private final Index targetIndex;
     private final WorkoutTime time;
@@ -72,7 +77,41 @@ public class LogCommand extends Command {
         }
         WorkoutLog newLog = new WorkoutLog(traineeId, time, workoutLocation);
 
+        if (model.hasLog(newLog)) {
+            throw new CommandException(MESSAGE_DUPLICATE_LOG);
+        }
+
         model.addLog(newLog);
-        return new CommandResult(String.format(MESSAGE_LOG_WORKOUT_SUCCESS, Messages.format(personToLog)));
+        return new CommandResult(String.format(MESSAGE_LOG_WORKOUT_SUCCESS,
+                personToLog.getName(),
+                time.toString(),
+                workoutLocation.toString()
+        ));
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+
+        // instanceof handles nulls
+        if (!(other instanceof LogCommand)) {
+            return false;
+        }
+
+        LogCommand otherLogCommand = (LogCommand) other;
+        return targetIndex.equals(otherLogCommand.targetIndex)
+                && time.equals(otherLogCommand.time)
+                && location.equals(otherLogCommand.location);
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .add("targetIndex", targetIndex)
+                .add("time", time)
+                .add("location", location)
+                .toString();
     }
 }

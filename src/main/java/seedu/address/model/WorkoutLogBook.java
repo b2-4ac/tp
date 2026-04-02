@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import seedu.address.model.person.Person;
+import seedu.address.model.person.exceptions.DuplicateLogException;
 import seedu.address.model.workout.WorkoutLog;
 
 /**
@@ -40,7 +41,7 @@ public class WorkoutLogBook {
     public boolean hasLog(WorkoutLog log) {
         requireNonNull(log);
 
-        return logs.contains(log);
+        return logs.stream().anyMatch(log::isSameLog);
     }
 
     /**
@@ -50,6 +51,10 @@ public class WorkoutLogBook {
      */
     public void addLog(WorkoutLog log) {
         requireNonNull(log);
+
+        if (hasLog(log)) {
+            throw new DuplicateLogException();
+        }
 
         logs.add(log);
     }
