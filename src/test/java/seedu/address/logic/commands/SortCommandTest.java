@@ -92,20 +92,20 @@ public class SortCommandTest {
     public void execute_sortByLocationAscending_success() {
         String expectedMessage = String.format(SortCommand.MESSAGE_SUCCESS, "location", "asc");
         Comparator<Person> locationComparator = (p1, p2) -> {
-            String v1 = p1.getLocation().value;
-            String v2 = p2.getLocation().value;
-            boolean u1 = v1.equals(Location.EMPTY_LOCATION);
-            boolean u2 = v2.equals(Location.EMPTY_LOCATION);
-            if (u1 && u2) {
+            String firstLocation = p1.getLocation().value;
+            String secondLocation = p2.getLocation().value;
+            boolean isFirstEmpty = firstLocation.equals(Location.EMPTY_LOCATION);
+            boolean isSecondEmpty = secondLocation.equals(Location.EMPTY_LOCATION);
+            if (isFirstEmpty && isSecondEmpty) {
                 return 0;
             }
-            if (u1) {
+            if (isFirstEmpty) {
                 return 1;
             }
-            if (u2) {
+            if (isSecondEmpty) {
                 return -1;
             }
-            return v1.compareToIgnoreCase(v2);
+            return firstLocation.compareToIgnoreCase(secondLocation);
         };
         SortCommand command = new SortCommand("location", "asc");
         expectedModel.updatePersonListComparator(locationComparator);

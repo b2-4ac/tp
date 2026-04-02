@@ -60,20 +60,20 @@ public class PersonComparators {
     static {
         COMPARATORS.put(ATTRIBUTE_NAME, Comparator.comparing(p -> p.getName().fullName.toLowerCase()));
         COMPARATORS.put(ATTRIBUTE_LOCATION, (p1, p2) -> {
-            String v1 = p1.getLocation().value;
-            String v2 = p2.getLocation().value;
-            boolean u1 = v1.equals(Location.EMPTY_LOCATION);
-            boolean u2 = v2.equals(Location.EMPTY_LOCATION);
-            if (u1 && u2) {
+            String firstLocation = p1.getLocation().value;
+            String secondLocation = p2.getLocation().value;
+            boolean isFirstEmpty = firstLocation.equals(Location.EMPTY_LOCATION);
+            boolean isSecondEmpty = secondLocation.equals(Location.EMPTY_LOCATION);
+            if (isFirstEmpty && isSecondEmpty) {
                 return 0;
             }
-            if (u1) {
+            if (isFirstEmpty) {
                 return 1;
             }
-            if (u2) {
+            if (isSecondEmpty) {
                 return -1;
             }
-            return v1.compareToIgnoreCase(v2);
+            return firstLocation.compareToIgnoreCase(secondLocation);
         });
         COMPARATORS.put(ATTRIBUTE_DOB, Comparator.comparing(p -> p.getDateOfBirth().value));
         COMPARATORS.put(ATTRIBUTE_PHONE, Comparator.comparing(p -> p.getPhone().value));
