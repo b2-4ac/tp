@@ -659,7 +659,13 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
         
       Use case ends.
 * 2d. Trainer requests to append and provides an empty note.
+
     * 2d1. PowerRoster does not change the existing note.
+
+      Use case ends.
+* 2e. Trainer requests to add or append more than one note at a time.
+
+    * 2e1. PowerRoster informs the Trainer that it is not possible to do so.
 
       Use case ends.
 

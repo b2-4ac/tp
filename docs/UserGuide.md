@@ -144,7 +144,8 @@ Adds / appends a note to an existing client in PowerRoster.
 Format: `note INDEX n/NOTE` or `note INDEX a/NOTE`
 
 * Adds/appends a note to the client at the specified `INDEX`. The index refers to the index number shown in the displayed client list. The index **must be a positive integer** 1, 2, 3, …​
-* At least one of `n/NOTE` and `a/NOTE` must be provided, but not both.
+* At least one of `n/NOTE` and `a/NOTE` must be provided, but not both. 
+* Repeated use of the same prefix (e.g., `n/first n/second`) is not allowed.
 * `n/NOTE` adds a note to the client. Any existing notes will be replaced by the new note.
 * `a/NOTE` appends a note to the client's existing notes (if any) with a space in between. If the client has no existing notes, `a/NOTE` behaves the same as `n/NOTE`.
 * You can delete an existing client note by typing `n/` without specifying any note after it.
