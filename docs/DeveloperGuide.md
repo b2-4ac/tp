@@ -589,7 +589,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 **Preconditions: Trainer has launched PowerRoster. At least one client in the *roster* has a gym location specified.**
 **Guarantees: All clients who train at the specified gym location are displayed.**
 **MSS:**
-1. Trainer requests to filter clients by gym location and provides one or more location phrases with the `l/` prefix.
+1. Trainer requests to filter clients by gym location and provides one or more location phrases.
 2. PowerRoster retrieves and displays all clients whose gym location matches at least one provided location phrase.
 3. PowerRoster confirms the number of clients found for the specified gym location to the Trainer.
 
