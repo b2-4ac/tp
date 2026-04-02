@@ -14,11 +14,11 @@ public class Rate {
 
     public static final String MESSAGE_CONSTRAINTS =
             "Rate must be a non-negative amount with up to 2 decimal places "
-                    + "(e.g. 120, 120.5, 120.50).";
+                    + "(e.g. 120, 120.5, 120.50). No currency symbols allowed.";
 
-    // Accepts: 120, 120.5, 120.50, .50
-    // Rejects: 120., -1, 1,000, $100
-    public static final String VALIDATION_REGEX = "(?:\\d+|\\d*\\.\\d{0,2})";
+    // Accepts: 120, 120., 120.5, 120.50, .50
+    // Rejects: -1, 1,000, $100
+    public static final String VALIDATION_REGEX = "(?:\\d+(?:\\.\\d{0,2})?|\\.\\d{1,2})";
 
     public final String value;
 
@@ -51,8 +51,12 @@ public class Rate {
             return false;
         }
 
-        BigDecimal amount = new BigDecimal(test);
-        return amount.signum() >= 0;
+        try {
+            BigDecimal amount = new BigDecimal(test);
+            return amount.signum() >= 0;
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
     }
 
     private static String normaliseRate(String rate) {

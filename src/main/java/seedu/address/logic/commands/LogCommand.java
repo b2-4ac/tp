@@ -65,7 +65,7 @@ public class LogCommand extends Command {
         Person personToLog = lastShownList.get(targetIndex.getZeroBased());
         ClientId traineeId = new ClientId(personToLog.getId().toString());
         Location workoutLocation;
-        if (location.toString().equals(Location.UNSPECIFIED_LOCATION)) {
+        if (location.toString().isEmpty()) {
             workoutLocation = new Location(personToLog.getLocation().toString());
         } else {
             workoutLocation = location;

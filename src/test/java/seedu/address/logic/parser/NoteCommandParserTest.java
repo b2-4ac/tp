@@ -10,6 +10,7 @@ import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.index.Index;
+import seedu.address.logic.Messages;
 import seedu.address.logic.commands.NoteCommand;
 import seedu.address.model.person.Note;
 
@@ -73,5 +74,21 @@ public class NoteCommandParserTest {
         String userInput = INDEX_FIRST_PERSON.getOneBased() + " " + PREFIX_NOTE + nonEmptyNote
                 + " " + PREFIX_NOTE_APPEND + nonEmptyNote;
         assertParseFailure(parser, userInput, expectedMessage);
+    }
+
+    @Test
+    public void parse_duplicateNotePrefixes_failure() {
+        String userInput = INDEX_FIRST_PERSON.getOneBased() + " " + PREFIX_NOTE + "first"
+                + " " + PREFIX_NOTE + "second";
+        assertParseFailure(parser, userInput,
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_NOTE));
+    }
+
+    @Test
+    public void parse_duplicateAppendPrefixes_failure() {
+        String userInput = INDEX_FIRST_PERSON.getOneBased() + " " + PREFIX_NOTE_APPEND + "first"
+                + " " + PREFIX_NOTE_APPEND + "second";
+        assertParseFailure(parser, userInput,
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_NOTE_APPEND));
     }
 }

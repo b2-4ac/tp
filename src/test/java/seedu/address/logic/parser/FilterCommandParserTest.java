@@ -28,16 +28,18 @@ public class FilterCommandParserTest {
     }
 
     @Test
-    public void parse_blankPrefixedValues_throwsParseException() {
-        assertParseFailure(parser, " l/   l/   ",
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FilterCommand.MESSAGE_USAGE));
+    public void parse_multiplePrefixesWithBlankValue_throwsParseException() {
+        assertParseFailure(parser, " l/Anytime Fitness Jurong l/   ",
+                FilterCommandParser.MESSAGE_MULTIPLE_PREFIXES_CANNOT_BE_BLANK);
+
+        assertParseFailure(parser, " l/   l/Clementi",
+                FilterCommandParser.MESSAGE_MULTIPLE_PREFIXES_CANNOT_BE_BLANK);
     }
 
     @Test
     public void parse_validArgs_returnsFilterCommand() {
         // no leading and trailing whitespaces
         String[] testSingleLocationArray = {"Anytime Fitness Jurong"};
-        String[] testMultiLocationArray = {"Anytime Fitness Jurong", "Clementi"};
         FilterCommand expectedSingleFilterCommand =
                 new FilterCommand(new LocationContainsKeywordsPredicate(Arrays.asList(testSingleLocationArray)));
         assertParseSuccess(parser, " l/Anytime Fitness Jurong", expectedSingleFilterCommand);
@@ -47,14 +49,19 @@ public class FilterCommandParserTest {
                 new FilterCommand(new LocationContainsKeywordsPredicate(Arrays.asList(testSingleLocationArray)));
         assertParseSuccess(parser, " l/Anytime   Fitness    Jurong", expectedNormalizedSingleFilterCommand);
 
-        // multiple l/ phrases
+        // blank value filters clients with no specified location
+        FilterCommand expectedBlankFilterCommand =
+                new FilterCommand(new LocationContainsKeywordsPredicate(Arrays.asList("")));
+        assertParseSuccess(parser, " l/", expectedBlankFilterCommand);
+
+        // multiple l/ phrases are supported
         FilterCommand expectedMultiplePhrasesFilterCommand =
                 new FilterCommand(new LocationContainsKeywordsPredicate(
-                        Arrays.asList(testMultiLocationArray)));
+                        Arrays.asList("Anytime Fitness Jurong", "Clementi")));
         assertParseSuccess(parser, " l/Anytime Fitness Jurong l/Clementi",
                 expectedMultiplePhrasesFilterCommand);
 
-        // mixed-case phrases should be accepted as it is by parser
+        // mixed-case phrases should be accepted as-is by parser
         FilterCommand expectedMixedCaseFilterCommand =
                 new FilterCommand(new LocationContainsKeywordsPredicate(
                         Arrays.asList("aNyTiMe FiTnEsS jUrOnG", "cLeMeNtI")));

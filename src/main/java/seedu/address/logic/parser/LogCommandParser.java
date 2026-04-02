@@ -42,7 +42,7 @@ public class LogCommandParser implements Parser<LogCommand> {
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_TIME, PREFIX_LOCATION);
 
         String timeToParse = argMultimap.getValue(PREFIX_TIME).orElse(LocalDateTime.now().format(FORMATTER));
-        String locationToParse = argMultimap.getValue(PREFIX_LOCATION).orElse(Location.UNSPECIFIED_LOCATION);
+        String locationToParse = argMultimap.getValue(PREFIX_LOCATION).orElse(Location.EMPTY_LOCATION);
 
         WorkoutTime time = ParserUtil.parseTime(timeToParse);
         Location location = ParserUtil.parseLocation(locationToParse);

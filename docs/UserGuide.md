@@ -91,6 +91,8 @@ Adds a client to PowerRoster.
 
 Format: `add n/NAME g/GENDER dob/DATE_OF_BIRTH p/PHONE_NUMBER e/EMAIL_ADDRESS a/ADDRESS [l/LOCATION] [t/TAG]…​​`
 
+* If `l/LOCATION` is omitted, the client is treated as having no specified location and the UI displays `N/A`.
+
 <box type="tip" seamless>
 
 **Tip:** A client can have any number of tags (including 0)
@@ -142,7 +144,8 @@ Adds / appends a note to an existing client in PowerRoster.
 Format: `note INDEX n/NOTE` or `note INDEX a/NOTE`
 
 * Adds/appends a note to the client at the specified `INDEX`. The index refers to the index number shown in the displayed client list. The index **must be a positive integer** 1, 2, 3, …​
-* At least one of `n/NOTE` and `a/NOTE` must be provided, but not both.
+* At least one of `n/NOTE` and `a/NOTE` must be provided, but not both. 
+* Repeated use of the same prefix (e.g., `n/first n/second`) is not allowed.
 * `n/NOTE` adds a note to the client. Any existing notes will be replaced by the new note.
 * `a/NOTE` appends a note to the client's existing notes (if any) with a space in between. If the client has no existing notes, `a/NOTE` behaves the same as `n/NOTE`.
 * You can delete an existing client note by typing `n/` without specifying any note after it.
@@ -254,14 +257,16 @@ Format: `filter l/LOCATION_PHRASE [l/MORE_LOCATION_PHRASES]...`
 * At least one `l/` prefix must be provided.
 * The search is case-insensitive. e.g. specifying `l/Clementi` will match `Clementi ActiveSG Gym`.
 * Each `l/` prefix is treated as one location phrase. e.g. `filter l/Anytime Fitness Jurong` will use `Anytime Fitness Jurong` as a phrase to match.
-* Multiple `l/` prefixes for multiple location phrases is supported and clients matching at least one phrase will be returned (i.e. `OR` search). e.g. `filter l/Anytime Fitness l/Jurong` will use `Anytime Fitness` and `Jurong` as separate phrases to match.
+* Multiple `l/` prefixes are supported and clients matching at least one phrase are returned (i.e. `OR` search).
 * Extra spaces within a phrase are normalised. e.g. `filter l/Anytime   Fitness` will be treated as `filter l/Anytime Fitness`.
-* Blank prefixed values are considered invalid. e.g. `filter l/` is invalid or `filter l/ l/` is invalid.
+* Entering `l/` with no value filters clients with no specified location.
+* If multiple `l/` prefixes are provided, each must have a non-blank value. e.g. `filter l/Clementi l/` is invalid.
 
 Examples:
 * `filter l/Clementi` returns all clients whose locations contain the phrase `Clementi` such as `Clementi ActiveSG Gym` and `Anytime Fitness Clementi`.
 * `filter l/Anytime Fitness Jurong` returns all clients whose locations contain the phrase `Anytime Fitness Jurong` such as `Anytime Fitness Jurong East` but not `Anytime Fitness Clementi` or `Jurong Point ActiveSG Gym`.
-* `filter l/Anytime Fitness l/Jurong` returns all clients whose locations contain the phrase `Anytime Fitness` or `Jurong` such as `Anytime Fitness Jurong East`, `Anytime Fitness Clementi`, `Jurong Point ActiveSG Gym` but not `Clementi ActiveSG Gym`.
+* `filter l/Anytime Fitness l/Clementi` returns clients whose locations contain `Anytime Fitness` or `Clementi`.
+* `filter l/` returns clients with no specified location.
 
 ### Sorting clients : `sort`
 
@@ -402,7 +407,7 @@ Action     | Format, Examples
 **Measure**| `measure INDEX [h/HEIGHT_CM] [w/WEIGHT_KG] [bf/BODY_FAT_PERCENTAGE]`<br> e.g., `measure 1 h/175.5 w/72.0 bf/14.8`, `measure 2 h/`
 **Status** | `status INDEX s/STATUS`<br> e.g., `status 1 s/inactive`
 **Find**   | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
-**Filter** | `filter l/LOCATION_PHRASE [l/MORE_LOCATION_PHRASES]...`<br> e.g., `filter l/Clementi l/ActiveSG`
+**Filter** | `filter l/LOCATION_PHRASE [l/MORE_LOCATION_PHRASES]...`<br> e.g., `filter l/Clementi`, `filter l/Anytime Fitness l/Clementi`, `filter l/`
 **Sort**   | `sort ATTRIBUTE/ [o/ORDER]`<br> e.g., `sort n/`, `sort dob/ o/desc`, `sort r/ o/desc`, `sort s/`, `sort wp/`
 **List**   | `list`
 **View**   | `view INDEX`<br> e.g., `view 1`

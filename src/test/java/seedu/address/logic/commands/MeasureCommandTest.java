@@ -78,6 +78,7 @@ public class MeasureCommandTest {
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()),
                 new UserPrefs(), new WorkoutLogBook());
+        showPersonAtIndex(expectedModel, INDEX_FIRST_PERSON);
         expectedModel.setPerson(firstPerson, editedPerson);
 
         assertCommandSuccess(measureCommand, model, expectedMessage, expectedModel);

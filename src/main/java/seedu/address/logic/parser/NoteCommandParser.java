@@ -32,6 +32,8 @@ public class NoteCommandParser implements Parser<NoteCommand> {
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, NoteCommand.MESSAGE_USAGE), pe);
         }
 
+        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NOTE, PREFIX_NOTE_APPEND);
+
         boolean hasNotePrefix = argMultimap.getValue(PREFIX_NOTE).isPresent();
         boolean hasAppendPrefix = argMultimap.getValue(PREFIX_NOTE_APPEND).isPresent();
 

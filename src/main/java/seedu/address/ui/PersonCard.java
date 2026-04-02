@@ -1,8 +1,5 @@
 package seedu.address.ui;
 
-import static seedu.address.model.person.Status.StatusEnum.ACTIVE;
-import static seedu.address.model.person.Status.StatusEnum.INACTIVE;
-
 import java.util.Comparator;
 
 import javafx.fxml.FXML;
@@ -10,7 +7,9 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import seedu.address.model.person.GenderEnum;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Status.StatusEnum;
 
 /**
  * An UI component that displays a summary of a {@code Person} in the client list.
@@ -20,6 +19,9 @@ public class PersonCard extends UiPart<Region> {
     private static final String FXML = "PersonListCard.fxml";
     private static final String PREFIX_PHONE_LABEL = "Phone number: ";
     private static final String PREFIX_LOCATION_LABEL = "Gym Location: ";
+    private static final String GENDER_PILL_STYLE_CLASS = "gender-pill";
+    private static final String MALE_GENDER_PILL_STYLE_CLASS = "gender-pill-male";
+    private static final String FEMALE_GENDER_PILL_STYLE_CLASS = "gender-pill-female";
 
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX. As
@@ -58,18 +60,37 @@ public class PersonCard extends UiPart<Region> {
         id.setText(String.valueOf(displayedIndex));
         name.setText(person.getName().fullName);
         gender.setText(person.getGender().value.toString());
+        styleGenderPill(person.getGender().value);
         phone.setText(PREFIX_PHONE_LABEL + person.getPhone().value);
-        gymLocation.setText(PREFIX_LOCATION_LABEL + person.getLocation().value);
+        gymLocation.setText(PREFIX_LOCATION_LABEL
+                + (person.getLocation().value.isEmpty() ? "N/A" : person.getLocation().value));
         status.setText(person.getStatus().value.toString());
-        status.getStyleClass().removeAll("cell_status_active", "cell_status_inactive");
-        switch (person.getStatus().value) {
-        case ACTIVE -> status.getStyleClass().add("cell_status_active");
-        case INACTIVE -> status.getStyleClass().add("cell_status_inactive");
-        default -> throw new IllegalStateException(
-                "Unexpected status value: " + person.getStatus().value);
-        }
+        styleStatusPill(person.getStatus().value);
         person.getTags().stream().sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+    }
+
+    private void styleStatusPill(StatusEnum statusValue) {
+        status.getStyleClass().removeAll("cell_status_active", "cell_status_inactive");
+        switch (statusValue) {
+        case ACTIVE -> status.getStyleClass().add("cell_status_active");
+        case INACTIVE -> status.getStyleClass().add("cell_status_inactive");
+        default -> throw new IllegalStateException("Unexpected status value: " + statusValue);
+        }
+    }
+
+    private void styleGenderPill(GenderEnum genderValue) {
+        gender.getStyleClass().removeAll(
+                GENDER_PILL_STYLE_CLASS,
+                MALE_GENDER_PILL_STYLE_CLASS,
+                FEMALE_GENDER_PILL_STYLE_CLASS);
+        gender.getStyleClass().add(GENDER_PILL_STYLE_CLASS);
+
+        switch (genderValue) {
+        case M -> gender.getStyleClass().add(MALE_GENDER_PILL_STYLE_CLASS);
+        case F -> gender.getStyleClass().add(FEMALE_GENDER_PILL_STYLE_CLASS);
+        default -> throw new IllegalStateException("Unexpected gender value: " + genderValue);
+        }
     }
 }
 

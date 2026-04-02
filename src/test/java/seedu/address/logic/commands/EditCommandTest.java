@@ -112,6 +112,7 @@ public class EditCommandTest {
 
         Model expectedModel =
                 new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs(), new WorkoutLogBook());
+        showPersonAtIndex(expectedModel, INDEX_FIRST_PERSON);
         expectedModel.setPerson(model.getFilteredPersonList().get(0), editedPerson);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);

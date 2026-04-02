@@ -25,7 +25,7 @@
 
     <Label styleClass="detail-header-label" text="Client Details" />
 
-    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="detail-scroll-pane">
+    <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" VBox.vgrow="ALWAYS" styleClass="detail-scroll-pane">
       <VBox spacing="14">
         <padding>
           <Insets top="12" />
@@ -39,11 +39,15 @@
           </columnConstraints>
           <VBox spacing="3" GridPane.columnIndex="0">
             <Label styleClass="detail-field-label" text="Name" />
-            <Label fx:id="name" styleClass="detail-value-label" />
+            <ScrollPane fitToHeight="true" fitToWidth="false" hbarPolicy="AS_NEEDED" vbarPolicy="NEVER" styleClass="detail-field-scroll">
+              <Label fx:id="name" styleClass="detail-value-label" />
+            </ScrollPane>
           </VBox>
           <VBox spacing="3" GridPane.columnIndex="1">
             <Label styleClass="detail-field-label" text="Gender" />
-            <Label fx:id="gender" styleClass="detail-value-label" />
+            <ScrollPane fitToHeight="true" fitToWidth="false" hbarPolicy="AS_NEEDED" vbarPolicy="NEVER" styleClass="detail-field-scroll">
+              <Label fx:id="gender" styleClass="detail-value-label" />
+            </ScrollPane>
           </VBox>
         </GridPane>
 
@@ -55,15 +59,19 @@
           </columnConstraints>
           <VBox spacing="3" GridPane.columnIndex="0">
             <Label styleClass="detail-field-label" text="Date of Birth" />
-            <Label fx:id="dob" styleClass="detail-value-label" />
+            <ScrollPane fitToHeight="true" fitToWidth="false" hbarPolicy="AS_NEEDED" vbarPolicy="NEVER" styleClass="detail-field-scroll">
+              <Label fx:id="dob" styleClass="detail-value-label" />
+            </ScrollPane>
           </VBox>
           <VBox spacing="3" GridPane.columnIndex="1">
             <Label styleClass="detail-field-label" text="Location" />
-            <Label fx:id="gymLocation" styleClass="detail-value-label" wrapText="true" />
+            <ScrollPane fitToHeight="true" fitToWidth="false" hbarPolicy="AS_NEEDED" vbarPolicy="NEVER" styleClass="detail-field-scroll">
+              <Label fx:id="gymLocation" styleClass="detail-value-label" />
+            </ScrollPane>
           </VBox>
         </GridPane>
 
-        <!-- Email and Location in line -->
+        <!-- Phone and Email in line -->
         <GridPane hgap="20">
           <columnConstraints>
             <ColumnConstraints percentWidth="50" />
@@ -71,11 +79,15 @@
           </columnConstraints>
           <VBox spacing="3" GridPane.columnIndex="0">
             <Label styleClass="detail-field-label" text="Phone" />
-            <Label fx:id="phone" styleClass="detail-value-label" />
+            <ScrollPane fitToHeight="true" fitToWidth="false" hbarPolicy="AS_NEEDED" vbarPolicy="NEVER" styleClass="detail-field-scroll">
+              <Label fx:id="phone" styleClass="detail-value-label" />
+            </ScrollPane>
           </VBox>
           <VBox spacing="3" GridPane.columnIndex="1">
             <Label styleClass="detail-field-label" text="Email" />
-            <Label fx:id="email" styleClass="detail-value-label" />
+            <ScrollPane fitToHeight="true" fitToWidth="false" hbarPolicy="AS_NEEDED" vbarPolicy="NEVER" styleClass="detail-field-scroll">
+              <Label fx:id="email" styleClass="detail-value-label" />
+            </ScrollPane>
           </VBox>
         </GridPane>
 
@@ -87,18 +99,24 @@
           </columnConstraints>
           <VBox spacing="3" GridPane.columnIndex="0">
             <Label styleClass="detail-field-label" text="Rate" />
-            <Label fx:id="rate" styleClass="detail-value-label" />
+            <ScrollPane fitToHeight="true" fitToWidth="false" hbarPolicy="AS_NEEDED" vbarPolicy="NEVER" styleClass="detail-field-scroll">
+              <Label fx:id="rate" styleClass="detail-value-label" />
+            </ScrollPane>
           </VBox>
           <VBox spacing="3" GridPane.columnIndex="1">
             <Label styleClass="detail-field-label" text="Plan" />
-            <Label fx:id="plan" styleClass="detail-value-label" />
+            <ScrollPane fitToHeight="true" fitToWidth="false" hbarPolicy="AS_NEEDED" vbarPolicy="NEVER" styleClass="detail-field-scroll">
+              <Label fx:id="plan" styleClass="detail-value-label" />
+            </ScrollPane>
           </VBox>
         </GridPane>
 
         <!-- Address in line -->
-        <VBox spacing="3" GridPane.columnIndex="0">
+        <VBox spacing="3">
           <Label styleClass="detail-field-label" text="Address" />
-          <Label fx:id="address" styleClass="detail-value-label" wrapText="true" />
+          <ScrollPane fitToHeight="true" fitToWidth="false" hbarPolicy="AS_NEEDED" vbarPolicy="NEVER" styleClass="detail-field-scroll">
+            <Label fx:id="address" styleClass="detail-value-label" />
+          </ScrollPane>
         </VBox>
 
         <!-- Measurements -->
@@ -110,22 +128,30 @@
           </columnConstraints>
           <VBox spacing="3" GridPane.columnIndex="0">
             <Label styleClass="detail-field-label" text="Height (cm)" />
-            <Label fx:id="height" styleClass="detail-value-label" />
+            <ScrollPane fitToHeight="true" fitToWidth="false" hbarPolicy="AS_NEEDED" vbarPolicy="NEVER" styleClass="detail-field-scroll">
+              <Label fx:id="height" styleClass="detail-value-label" />
+            </ScrollPane>
           </VBox>
           <VBox spacing="3" GridPane.columnIndex="1">
             <Label styleClass="detail-field-label" text="Weight (kg)" />
-            <Label fx:id="weight" styleClass="detail-value-label" />
+            <ScrollPane fitToHeight="true" fitToWidth="false" hbarPolicy="AS_NEEDED" vbarPolicy="NEVER" styleClass="detail-field-scroll">
+              <Label fx:id="weight" styleClass="detail-value-label" />
+            </ScrollPane>
           </VBox>
           <VBox spacing="3" GridPane.columnIndex="2">
             <Label styleClass="detail-field-label" text="Body Fat (%)" />
-            <Label fx:id="bodyFat" styleClass="detail-value-label" />
+            <ScrollPane fitToHeight="true" fitToWidth="false" hbarPolicy="AS_NEEDED" vbarPolicy="NEVER" styleClass="detail-field-scroll">
+              <Label fx:id="bodyFat" styleClass="detail-value-label" />
+            </ScrollPane>
           </VBox>
         </GridPane>
 
         <!-- Note -->
         <VBox spacing="3">
           <Label styleClass="detail-field-label" text="Note" />
-          <Label fx:id="note" styleClass="detail-value-label" wrapText="true" />
+          <ScrollPane fitToHeight="true" fitToWidth="false" hbarPolicy="AS_NEEDED" vbarPolicy="NEVER" styleClass="detail-field-scroll">
+            <Label fx:id="note" styleClass="detail-value-label" />
+          </ScrollPane>
         </VBox>
 
         <!-- Tags -->

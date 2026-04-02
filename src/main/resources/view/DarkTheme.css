@@ -259,7 +259,7 @@
 }
 
 .button:hover {
-        -fx-background-color: #3bdcf2;
+    -fx-background-color: #3bdcf2;
 }
 
 .button:pressed, .button:default:hover:pressed {
@@ -367,13 +367,26 @@
     -fx-font-size: 11;
 }
 
-#gender {
-    -fx-background-color: #10c5de;
-    -fx-text-fill: #052034;
+.gender-pill {
+    -fx-text-fill: black;
     -fx-padding: 2 8 2 8;
     -fx-border-radius: 12;
     -fx-background-radius: 12;
     -fx-font-size: 10;
+}
+
+/* To override the default label styling which is a white text fill */
+.detail-value-label.gender-pill,
+.cell_big_label.gender-pill {
+    -fx-text-fill: black;
+}
+
+.gender-pill-male {
+    -fx-background-color: #10c5de;
+}
+
+.gender-pill-female {
+    -fx-background-color: #ff99c8;
 }
 
 .inner-split-pane {
@@ -393,6 +406,24 @@
 }
 
 .detail-scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.detail-scroll-pane > .corner {
+    -fx-background-color: transparent;
+}
+
+.detail-field-scroll {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+}
+
+.detail-field-scroll > .viewport {
+    -fx-background-color: transparent;
+}
+
+.detail-field-scroll > .corner {
     -fx-background-color: transparent;
 }
 

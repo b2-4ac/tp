@@ -180,6 +180,20 @@ public class Person {
     }
 
     /**
+     * Returns true if both persons have the same ID.
+     * This defines a weaker notion of equality between two persons.
+     * This is used to check if two Person objects refer to the same real-world person, even if their names are changed.
+     */
+    public boolean isSamePersonId(Person otherPerson) {
+        if (otherPerson == this) {
+            return true;
+        }
+
+        return otherPerson != null
+                && otherPerson.getId().equals(getId());
+    }
+
+    /**
      * Returns true if both persons have the same identity and data fields.
      * This defines a stronger notion of equality between two persons.
      */

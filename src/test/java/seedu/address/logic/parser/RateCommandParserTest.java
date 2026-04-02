@@ -48,4 +48,10 @@ public class RateCommandParserTest {
                 + PREFIX_RATE + "120.00 " + PREFIX_RATE + "100.00";
         assertParseFailure(parser, userInput, getErrorMessageForDuplicatePrefixes(PREFIX_RATE));
     }
+
+    @Test
+    public void parse_invalidRate_failure() {
+        String userInput = INDEX_FIRST_PERSON.getOneBased() + " " + PREFIX_RATE + ".";
+        assertParseFailure(parser, userInput, Rate.MESSAGE_CONSTRAINTS);
+    }
 }

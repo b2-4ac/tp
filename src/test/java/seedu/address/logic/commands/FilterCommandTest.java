@@ -15,6 +15,7 @@ import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
@@ -24,6 +25,8 @@ import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.WorkoutLogBook;
 import seedu.address.model.person.LocationContainsKeywordsPredicate;
+import seedu.address.model.person.Person;
+import seedu.address.testutil.PersonBuilder;
 
 /**
  * Contains integration tests (interaction with the Model) for {@code FilterCommand}.
@@ -90,6 +93,25 @@ public class FilterCommandTest {
     }
 
     @Test
+    public void execute_blankPhrase_filtersPersonsWithEmptyLocation() {
+        Person noLocationPerson = new PersonBuilder()
+                .withId(UUID.randomUUID().toString())
+                .withName("No Location Client")
+                .withLocation("")
+                .build();
+        model.addPerson(noLocationPerson);
+        expectedModel.addPerson(noLocationPerson);
+
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
+        LocationContainsKeywordsPredicate predicate = preparePredicate("");
+        FilterCommand command = new FilterCommand(predicate);
+        expectedModel.updateFilteredPersonList(predicate);
+
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        assertEquals(Collections.singletonList(noLocationPerson), model.getFilteredPersonList());
+    }
+
+    @Test
     public void toStringMethod() {
         LocationContainsKeywordsPredicate predicate = new LocationContainsKeywordsPredicate(Arrays.asList("keyword"));
         FilterCommand filterCommand = new FilterCommand(predicate);
@@ -104,7 +126,6 @@ public class FilterCommandTest {
         return new LocationContainsKeywordsPredicate(Arrays.stream(phrases)
                 .map(String::trim)
                 .map(s -> s.replaceAll("\\s+", " "))
-                .filter(s -> !s.isEmpty())
                 .collect(Collectors.toList()));
     }
 

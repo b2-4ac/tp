@@ -39,7 +39,7 @@ public class RateCommandTest {
         RateCommand rateCommand = new RateCommand(INDEX_FIRST_PERSON, new Rate(VALID_RATE_AMY));
 
         String expectedMessage =
-                String.format(RateCommand.MESSAGE_SET_SUCCESS, Messages.format(editedPerson));
+                String.format(RateCommand.MESSAGE_SET_SUCCESS, editedPerson.getName(), editedPerson.getRate().value);
 
         Model expectedModel =
                 new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs(), getTypicalWorkoutLogBook());
@@ -59,11 +59,30 @@ public class RateCommandTest {
         RateCommand rateCommand = new RateCommand(INDEX_FIRST_PERSON, new Rate(""));
 
         String expectedMessage =
-                String.format(RateCommand.MESSAGE_CLEAR_SUCCESS, Messages.format(editedPerson));
+                String.format(RateCommand.MESSAGE_CLEAR_SUCCESS, editedPerson.getName(), editedPerson.getRate().value);
 
         Model expectedModel =
                 new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs(), getTypicalWorkoutLogBook());
         expectedModel.setPerson(personWithRate, editedPerson);
+
+        assertCommandSuccess(rateCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_clearRateAlreadyCleared_success() {
+        Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Person editedPerson = new PersonBuilder(firstPerson).withRate("").build();
+        model.setPerson(firstPerson, editedPerson);
+
+        RateCommand rateCommand = new RateCommand(INDEX_FIRST_PERSON, new Rate(""));
+
+        String expectedMessage =
+                String.format(RateCommand.MESSAGE_RATE_ALREADY_CLEARED, editedPerson.getName());
+
+        Model expectedModel =
+                new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs(), getTypicalWorkoutLogBook());
+        firstPerson = expectedModel.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        expectedModel.setPerson(firstPerson, editedPerson);
 
         assertCommandSuccess(rateCommand, model, expectedMessage, expectedModel);
     }

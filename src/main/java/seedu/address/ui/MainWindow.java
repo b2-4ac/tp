@@ -28,8 +28,6 @@ public class MainWindow extends UiPart<Stage> {
     private static final String FXML = "MainWindow.fxml";
     private static final Boolean IS_COMMAND_BOOLEAN = true;
     private static final Boolean IS_NOT_COMMAND_BOOLEAN = false;
-    private static final String MESSAGE_DELETE_STRING = "Deleted Person:";
-    private static final String MESSAGE_CLEAR_STRING = "Address book has been cleared!";
 
     private final Logger logger = LogsCenter.getLogger(getClass());
 
@@ -192,20 +190,18 @@ public class MainWindow extends UiPart<Stage> {
     }
 
     /**
-     * Clears the detail panel if the currently viewed person no longer exists in the address book.
+     * Keeps the detail panel in sync with model updates for the currently viewed person.
+     * Clears the detail panel only when the person no longer exists.
      */
-    private void clearDetailViewIfViewedPersonDeleted(CommandResult commandResult) {
+    private void refreshDetailViewForCurrentPerson() {
         if (personDetailPanel.getCurrentPerson() == null) {
             return;
         }
-        String feedback = commandResult.getFeedbackToUser();
-        if (feedback.contains(MESSAGE_DELETE_STRING) || feedback.contains(MESSAGE_CLEAR_STRING)) {
-            boolean stillExists = logic.getAddressBook().getPersonList().stream()
-                    .anyMatch(p -> p.isSamePerson(personDetailPanel.getCurrentPerson()));
-            if (!stillExists) {
-                personDetailPanel.clearPerson();
-            }
-        }
+
+        logic.getAddressBook().getPersonList().stream()
+                .filter(p -> p.isSamePersonId(personDetailPanel.getCurrentPerson()))
+                .findFirst()
+                .ifPresentOrElse(personDetailPanel::displayPerson, personDetailPanel::clearPerson);
     }
 
     /**
@@ -230,7 +226,7 @@ public class MainWindow extends UiPart<Stage> {
             if (commandResult.isShowPersonView()) {
                 personDetailPanel.displayPerson(commandResult.getPersonToView());
             } else {
-                clearDetailViewIfViewedPersonDeleted(commandResult);
+                refreshDetailViewForCurrentPerson();
             }
 
             return commandResult;

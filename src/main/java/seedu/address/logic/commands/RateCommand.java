@@ -1,7 +1,6 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.List;
 
@@ -20,21 +19,23 @@ public class RateCommand extends Command {
     public static final String COMMAND_WORD = "rate";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Adds or replaces the session rate of the specified person by index number used "
-            + "in the displayed person list.\n"
+            + ": Adds or replaces the session rate of the specified client by index number used "
+            + "in the displayed client list.\n"
             + "Use 'r/' with a value to set the rate, or 'r/' with no value to clear it.\n"
             + "Parameters: INDEX (must be a positive integer) r/[RATE]\n" + "Examples:\n" + "  "
             + COMMAND_WORD + " 1 r/120.50\n" + "  " + COMMAND_WORD + " 2 r/199\n" + "  "
             + COMMAND_WORD + " 3 r/";
 
-    public static final String MESSAGE_SET_SUCCESS = "Rate added/updated for person: %1$s";
-    public static final String MESSAGE_CLEAR_SUCCESS = "Rate cleared for person: %1$s";
+    public static final String MESSAGE_SET_SUCCESS = "Rate added/updated to %2$s for client: %1$s";
+    public static final String MESSAGE_CLEAR_SUCCESS = "Rate cleared for client: %1$s";
+    public static final String MESSAGE_RATE_ALREADY_CLEARED =
+            "Rate is already cleared for client: %1$s";
 
     private final Index index;
     private final Rate rate;
 
     /**
-     * Creates a RateCommand to add/replace the rate of the person at the specified {@code index}.
+     * Creates a RateCommand to add/replace the rate of the client at the specified {@code index}.
      */
     public RateCommand(Index index, Rate rate) {
         requireNonNull(index);
@@ -60,12 +61,20 @@ public class RateCommand extends Command {
                 personToEdit.getBodyFatPercentage(), personToEdit.getTags());
 
         model.setPerson(personToEdit, editedPerson);
-        model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
-        // Change this when we want to change the message to "-" to indicate cleared rate instead of
-        // empty string
-        String message = rate.value.isEmpty() ? MESSAGE_CLEAR_SUCCESS : MESSAGE_SET_SUCCESS;
-        return new CommandResult(String.format(message, Messages.format(editedPerson)));
+        String message;
+        boolean oldRateEmpty = personToEdit.getRate().value.isEmpty();
+        boolean newRateEmpty = rate.value.isEmpty();
+
+        if (newRateEmpty && oldRateEmpty) {
+            message = MESSAGE_RATE_ALREADY_CLEARED;
+        } else if (newRateEmpty && !oldRateEmpty) {
+            message = MESSAGE_CLEAR_SUCCESS;
+        } else {
+            message = MESSAGE_SET_SUCCESS;
+        }
+
+        return new CommandResult(String.format(message, editedPerson.getName(), rate.value));
     }
 
     @Override

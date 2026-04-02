@@ -589,9 +589,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 **Preconditions: Trainer has launched PowerRoster. At least one client in the *roster* has a gym location specified.**
 **Guarantees: All clients who train at the specified gym location are displayed.**
 **MSS:**
-1. Trainer requests to filter clients by gym location and provides one or more gym location phrases to filter by.
-2. PowerRoster retrieves and displays all clients whose gym location matches at least one of the provided location 
-phrases.
+1. Trainer requests to filter clients by gym location and provides one or more location phrases.
+2. PowerRoster retrieves and displays all clients whose gym location matches at least one provided location phrase.
 3. PowerRoster confirms the number of clients found for the specified gym location to the Trainer.
 
    Use case ends.
@@ -601,19 +600,18 @@ phrases.
     * 1a1. PowerRoster informs the Trainer that the command format is invalid and shows the expected command format.  
       
       Use case ends.
-* 1b. Trainer provides only blank location values.
-    * 1b1. PowerRoster informs the Trainer that the command format is invalid and shows the expected command format.  
-      
-      Use case ends.
+* 1b. Trainer provides a blank location value for filtering.
+    * 1b1. PowerRoster displays clients with no specified location.
+
+      Use case resumes from step 3.
 *2a.  No clients match the filter criteria.
     * 2a1. PowerRoster informs the Trainer that no clients were found for the specified gym location.
 
       Use case ends.
-* 2b. Trainer provides multiple gym location phrases
-    * 2b1. PowerRoster retrieves and displays all clients whose gym location matches at least one of the provided
-      location phrases.
+* 1c. Trainer provides multiple location values for filtering, with at least one blank value.
+    * 1c1. PowerRoster informs the Trainer that the command format is invalid.
 
-      Use case resumes from step 3
+      Use case ends.
 
 **Use case: UC07 \- View a Client's Full Profile**  
 **Preconditions: Trainer has launched PowerRoster. At least one client is shown in the current list.**
@@ -661,7 +659,13 @@ phrases.
         
       Use case ends.
 * 2d. Trainer requests to append and provides an empty note.
+
     * 2d1. PowerRoster does not change the existing note.
+
+      Use case ends.
+* 2e. Trainer requests to add or append more than one note at a time.
+
+    * 2e1. PowerRoster informs the Trainer that it is not possible to do so.
 
       Use case ends.
 

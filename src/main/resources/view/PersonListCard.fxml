@@ -10,14 +10,14 @@
 <?import javafx.scene.layout.VBox?>
 
 <HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
-    <GridPane HBox.hgrow="ALWAYS">
+  <GridPane HBox.hgrow="ALWAYS">
     <columnConstraints>
       <ColumnConstraints percentWidth="100" />
     </columnConstraints>
     <VBox alignment="CENTER_LEFT" minHeight="80" spacing="5" GridPane.columnIndex="0">
-        <VBox.margin>
+      <VBox.margin>
         <Insets top="2" />
-    </VBox.margin>
+      </VBox.margin>
       <padding>
         <Insets bottom="8" left="12" right="10" top="8" />
       </padding>
