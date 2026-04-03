@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import seedu.address.model.person.Person;
-import seedu.address.model.person.exceptions.DuplicateLogException;
 import seedu.address.model.workout.WorkoutLog;
+import seedu.address.model.workout.exceptions.DuplicateLogException;
 
 /**
  * Wraps all data at the Workout Log Book level
@@ -82,7 +82,7 @@ public class WorkoutLogBook {
      */
     public WorkoutLog lastLog(Person person) {
         List<WorkoutLog> personLogs = fetchLogs(person);
-        if (personLogs.size() == 0) {
+        if (personLogs.isEmpty()) {
             return null;
         }
         WorkoutLog latest = personLogs.get(0);
