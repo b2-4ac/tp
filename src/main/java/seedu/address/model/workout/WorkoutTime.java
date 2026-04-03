@@ -12,7 +12,8 @@ import java.time.format.DateTimeParseException;
  */
 public class WorkoutTime {
 
-    public static final String MESSAGE_CONSTRAINTS = "Workout Time must follow the format: dd/MM/yyyy HH:mm";
+    public static final String MESSAGE_CONSTRAINTS = "Workout Time must follow the format: dd/MM/yyyy HH:mm\n"
+            + "Workout Time cannot be in the future or more than 50 years in the past.";
     public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     private final LocalDateTime value;
@@ -36,7 +37,14 @@ public class WorkoutTime {
      */
     public static boolean isValidTime(String test) {
         try {
-            LocalDateTime.parse(test, FORMATTER);
+            LocalDateTime parsed = LocalDateTime.parse(test, FORMATTER);
+            if (parsed.isAfter(LocalDateTime.now())) {
+                return false;
+            }
+            LocalDateTime threshold = LocalDateTime.now().minusYears(50);
+            if (parsed.isBefore(threshold)) {
+                return false;
+            }
             return true;
         } catch (DateTimeParseException e) {
             return false;

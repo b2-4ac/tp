@@ -185,6 +185,11 @@ public class AddCommandTest {
         public WorkoutLog lastLog(Person person) {
             throw new AssertionError("This method should not be called.");
         }
+
+        @Override
+        public void clearLogs(Person person) {
+            throw new AssertionError("This method should not be called.");
+        }
     }
 
     /**

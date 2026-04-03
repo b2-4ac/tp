@@ -22,7 +22,7 @@ public class TypicalWorkoutLogs {
     public static final WorkoutLog ALICE_LOG_2 = new WorkoutLogBuilder()
             .withId("4f63c6d5-a3d1-4e78-bc4a-bf60a92f8087")
             .withTime("25/03/2026 09:45")
-            .withLocation("Jurong West ActiveSG Gym")
+            .withLocation("Clementi ActiveSG Gym")
             .build();
 
     public static final WorkoutLog BENSON_LOG_1 = new WorkoutLogBuilder()

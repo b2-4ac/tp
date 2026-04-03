@@ -53,6 +53,21 @@ public class WorkoutLog {
         return time;
     }
 
+    /**
+     * Returns true if both logs are linked to the same client and occur at
+     * the same time.
+     * This defines a weaker notion of equality between two workout logs.
+     */
+    public boolean isSameLog(WorkoutLog otherLog) {
+        if (otherLog == this) {
+            return true;
+        }
+
+        return otherLog != null
+                && traineeId.equals(otherLog.traineeId)
+                && time.equals(otherLog.time);
+    }
+
     @Override
     public boolean equals(Object other) {
         if (other == this) {

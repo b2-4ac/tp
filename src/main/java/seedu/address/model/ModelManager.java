@@ -155,10 +155,11 @@ public class ModelManager implements Model {
         ModelManager otherModelManager = (ModelManager) other;
         return addressBook.equals(otherModelManager.addressBook)
                 && userPrefs.equals(otherModelManager.userPrefs)
-                && filteredPersons.equals(otherModelManager.filteredPersons);
+                && filteredPersons.equals(otherModelManager.filteredPersons)
+                && workoutLogBook.equals(otherModelManager.workoutLogBook);
     }
 
-    // =========== WorkoutLog Book ==================================================================
+    // =========== WorkoutLog Book =====================================================================================
 
     @Override
     public WorkoutLogBook getWorkoutLogBook() {
@@ -181,5 +182,11 @@ public class ModelManager implements Model {
     public WorkoutLog lastLog(Person person) {
         requireNonNull(person);
         return workoutLogBook.lastLog(person);
+    }
+
+    @Override
+    public void clearLogs(Person person) {
+        requireNonNull(person);
+        workoutLogBook.clearLogs(person);
     }
 }

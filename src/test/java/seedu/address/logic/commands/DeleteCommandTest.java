@@ -38,6 +38,7 @@ public class DeleteCommandTest {
 
         ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs(), new WorkoutLogBook());
         expectedModel.deletePerson(personToDelete);
+        expectedModel.clearLogs(personToDelete);
 
         assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
     }
@@ -62,6 +63,7 @@ public class DeleteCommandTest {
 
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs(), new WorkoutLogBook());
         expectedModel.deletePerson(personToDelete);
+        expectedModel.clearLogs(personToDelete);
         showNoPerson(expectedModel);
 
         assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);

@@ -4,9 +4,11 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import seedu.address.model.person.Person;
 import seedu.address.model.workout.WorkoutLog;
+import seedu.address.model.workout.exceptions.DuplicateLogException;
 
 /**
  * Wraps all data at the Workout Log Book level
@@ -40,7 +42,7 @@ public class WorkoutLogBook {
     public boolean hasLog(WorkoutLog log) {
         requireNonNull(log);
 
-        return logs.contains(log);
+        return logs.stream().anyMatch(log::isSameLog);
     }
 
     /**
@@ -50,6 +52,10 @@ public class WorkoutLogBook {
      */
     public void addLog(WorkoutLog log) {
         requireNonNull(log);
+
+        if (hasLog(log)) {
+            throw new DuplicateLogException();
+        }
 
         logs.add(log);
     }
@@ -76,7 +82,7 @@ public class WorkoutLogBook {
      */
     public WorkoutLog lastLog(Person person) {
         List<WorkoutLog> personLogs = fetchLogs(person);
-        if (personLogs.size() == 0) {
+        if (personLogs.isEmpty()) {
             return null;
         }
         WorkoutLog latest = personLogs.get(0);
@@ -86,6 +92,18 @@ public class WorkoutLogBook {
             }
         }
         return latest;
+    }
+
+    /**
+     * Deletes all {@code WorkoutLog} objects for the specified
+     * {@code Person}.
+     *
+     * @param person Person whose logs to delete
+     */
+    public void clearLogs(Person person) {
+        logs = logs.stream()
+                .filter(log -> !(log.getTrainee().equals(person.getId())))
+                .collect(Collectors.toList());
     }
 
     @Override

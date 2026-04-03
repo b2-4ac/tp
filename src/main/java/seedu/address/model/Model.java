@@ -113,4 +113,10 @@ public interface Model {
      * {@code Person}.
      */
     WorkoutLog lastLog(Person person);
+
+    /**
+     * Deletes all {@code WorkoutLog} objects for the specified
+     * {@code Person}.
+     */
+    void clearLogs(Person person);
 }
