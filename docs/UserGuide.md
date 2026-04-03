@@ -91,6 +91,9 @@ Adds a client to PowerRoster.
 
 Format: `add n/NAME g/GENDER dob/DATE_OF_BIRTH p/PHONE_NUMBER e/EMAIL_ADDRESS a/ADDRESS [l/LOCATION] [t/TAG]…​​`
 
+* `GENDER` must be either `M` or `F` (case-insensitive)
+* `DATE_OF_BIRTH` must follow the format 'DD/MM/YYYY'
+* `DATE_OF_BIRTH` must be a valid date, not in the future, and not more than 100 years in the past.
 * If `l/LOCATION` is omitted, the client is treated as having no specified location and the UI displays `N/A`.
 
 <box type="tip" seamless>
@@ -332,8 +335,11 @@ Format: `log INDEX [time/TIME] [l/LOCATION]`
 * Logs a workout session for the client at the specified `INDEX`
 * The index refers to the index number shown in the displayed client list.
 * The index **must be a positive integer** 1, 2, 3, ...
+* `TIME` must be a valid Datetime not in the future, nor more than 50 years in the past.
+* `TIME` must be in the format: "DD/MM/YYYY HH:mm"
 * If `TIME` is not declared, the current time will be used.
 * If `LOCATION` is not specified, the client's preset location will be used.
+* If `LOCATION` is not specified and the client does not have a preset location, `N/A` will be used.
 
 Examples:
 * `log 1` Logs a workout for the first client in the displayed list using the current time and their specified location.
@@ -383,6 +389,16 @@ Furthermore, certain edits can cause the PowerRoster to behave in unexpected way
 
 _Details coming soon ..._
 
+### Viewing all workout logs `[coming soon]`
+* Users will be able to view the entire workout log history of a specified client.
+
+_Details coming soon ..._
+
+### Editing and Deleting workout logs `[coming soon]`
+* Users will be able to edit and delete workout logs.
+
+_Details coming soon ..._
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## FAQ
@@ -406,6 +422,8 @@ Action     | Format, Examples
 **Add**    | `add n/NAME g/GENDER dob/DATE_OF_BIRTH p/PHONE_NUMBER e/EMAIL_ADDRESS a/ADDRESS [l/LOCATION] [t/TAG]…​` <br> e.g., `add n/James Ho g/M dob/09/12/1977 p/92224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/beginner`
 **Clear**  | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
+**Log**    | `log INDEX [time/TIME] [l/LOCATION]` <br> e.g., `log 2 l/Sengkang ActiveSG Gym`
+**Last**   | `last INDEX` <br> e.g., `last 5`
 **Edit**   | `edit INDEX [n/NAME] [g/GENDER] [dob/DATE_OF_BIRTH] [p/PHONE] [e/EMAIL] [a/ADDRESS] [l/LOCATION] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
 **Note**   | `note INDEX n/NOTE` or `note INDEX a/NOTE`<br> e.g., `note 1 n/Prefers morning sessions.`
 **Plan**   | `plan INDEX wp/PLAN_CATEGORY`<br> e.g., `plan 1 wp/PUSH`, `plan 2 wp/FULL BODY`, `plan 3 wp/`
