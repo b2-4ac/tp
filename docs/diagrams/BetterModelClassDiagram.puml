@@ -3,6 +3,7 @@
 skinparam arrowThickness 1.1
 skinparam arrowColor MODEL_COLOR
 skinparam classBackgroundColor MODEL_COLOR
+skinparam ClassAttributeFontColor #FFFFFF
 
 AddressBook *-right-> "1" UniquePersonList
 AddressBook *-right-> "1" UniqueTagList
@@ -15,32 +16,23 @@ UniquePersonList -right-> Person
 Person -up-> "*" Tag
 
 class Person {
-  -- Identity --
   clientId: ClientId
-
-  -- Basic Information --
   name: Name
   gender: Gender
   dateOfBirth: DateOfBirth
-
-  -- Contact Details --
   phone: Phone
   email: Email
   address: Address
   location: Location
-
-  -- Fitness Tracking --
   height: Height
   weight: Weight
   bodyFatPercentage: BodyFatPercentage
-
-  -- Session & Program --
   plan: Plan
   rate: Rate
   status: Status
   note: Note
-
-  -- Tags --
-  tags: Tag[*]
+  tags: Tag[]
 }
+
+show Person members
 @enduml
