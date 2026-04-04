@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
 
@@ -35,14 +35,36 @@ public class DateOfBirthTest {
         assertFalse(DateOfBirth.isValidDob("")); // empty string
         assertFalse(DateOfBirth.isValidDob("abc")); // alphabets
         assertFalse(DateOfBirth.isValidDob("24-12-2002")); // wrong format
-        assertFalse(DateOfBirth.isValidDob("24/15/2002")); // invalid month
-        assertFalse(DateOfBirth.isValidDob("00/12/2002")); // invalid day
-        assertFalse(DateOfBirth.isValidDob(LocalDateTime
+
+        // Invalid Month
+        assertFalse(DateOfBirth.isValidDob("24/00/2002"));
+        assertFalse(DateOfBirth.isValidDob("24/13/2002"));
+
+        // Invalid Day
+        assertFalse(DateOfBirth.isValidDob("00/12/2002"));
+        assertFalse(DateOfBirth.isValidDob("32/12/2002"));
+
+        // Non-existent Dates
+        assertFalse(DateOfBirth.isValidDob("29/02/2002")); // not a leap year
+        assertFalse(DateOfBirth.isValidDob("31/04/2002"));
+
+        // Future Dates (Invalid)
+        assertFalse(DateOfBirth.isValidDob(LocalDate
                 .now()
                 .plusYears(1)
-                .format(DateOfBirth.FORMATTER))); // in the future
+                .format(DateOfBirth.FORMATTER)));
+
+        // Dates more than 100 years in the past (Invalid)
+        assertFalse(DateOfBirth.isValidDob(LocalDate.now()
+                .minusYears(100)
+                .minusDays(1)
+                .format(DateOfBirth.FORMATTER)));
+        assertFalse(DateOfBirth.isValidDob("01/01/1000"));
 
         // valid Date of Birth
+        assertTrue(DateOfBirth.isValidDob(LocalDate.now()
+                .minusYears(100)
+                .format(DateOfBirth.FORMATTER)));
         assertTrue(DateOfBirth.isValidDob("24/04/1987"));
     }
 

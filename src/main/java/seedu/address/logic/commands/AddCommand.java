@@ -17,13 +17,13 @@ import seedu.address.model.Model;
 import seedu.address.model.person.Person;
 
 /**
- * Adds a person to the address book.
+ * Adds a client to PowerRoster.
  */
 public class AddCommand extends Command {
 
     public static final String COMMAND_WORD = "add";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a person to the address book. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a client to PowerRoster.\n"
             + "Parameters: "
             + PREFIX_NAME + "NAME "
             + PREFIX_GENDER + "GENDER "
@@ -34,17 +34,17 @@ public class AddCommand extends Command {
             + "[" + PREFIX_LOCATION + "LOCATION]"
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example: " + COMMAND_WORD + " "
-            + PREFIX_NAME + "John Doe "
+            + PREFIX_NAME + "John Tan "
             + PREFIX_GENDER + "M "
-            + PREFIX_DOB + "23/05/1956 "
+            + PREFIX_DOB + "24/12/1999 "
             + PREFIX_PHONE + "98765432 "
-            + PREFIX_EMAIL + "johnd@example.com "
-            + PREFIX_ADDRESS + "311, Clementi Ave 2, #02-25 "
-            + PREFIX_LOCATION + "Clementi ActiveSG Gym "
-            + PREFIX_TAG + "friends ";
+            + PREFIX_EMAIL + "johnt@example.com "
+            + PREFIX_ADDRESS + "123 Sengkang East, #01-01 "
+            + PREFIX_LOCATION + "ActiveSG @ Fernvale Square "
+            + PREFIX_TAG + "beginner";
 
-    public static final String MESSAGE_SUCCESS = "New person added: %1$s";
-    public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book";
+    public static final String MESSAGE_SUCCESS = "New client added: %1$s";
+    public static final String MESSAGE_DUPLICATE_PERSON = "This client already exists in PowerRoster";
 
     private final Person toAdd;
 

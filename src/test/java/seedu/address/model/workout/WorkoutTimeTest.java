@@ -34,21 +34,46 @@ public class WorkoutTimeTest {
         assertFalse(WorkoutTime.isValidTime("")); // empty string
         assertFalse(WorkoutTime.isValidTime("abc")); // alphabets
         assertFalse(WorkoutTime.isValidTime("24-12-2002 1400")); // wrong format
-        assertFalse(WorkoutTime.isValidTime("24/15/2002 14:00")); // invalid month
-        assertFalse(WorkoutTime.isValidTime("00/12/2002 14:00")); // invalid day
+
+        // Invalid Month
+        assertFalse(WorkoutTime.isValidTime("24/00/2002 14:00"));
+        assertFalse(WorkoutTime.isValidTime("24/13/2002 14:00"));
+
+        // Invalid Day
+        assertFalse(WorkoutTime.isValidTime("00/12/2002 14:00"));
+
+        // Non-existent Date
+        assertFalse(WorkoutTime.isValidTime("29/02/2025 14:00")); //not a leap year
+        assertFalse(WorkoutTime.isValidTime("31/04/2025 14:00"));
+
+        // Invalid Hour
+        assertFalse(WorkoutTime.isValidTime("25/04/2025 25:00"));
+
+        // Invalid Minute
+        assertFalse(WorkoutTime.isValidTime("25/04/2025 14:60"));
+
+        // Future Dates (Invalid)
         assertFalse(WorkoutTime.isValidTime(LocalDateTime.now()
                 .plusYears(1)
-                .format(WorkoutTime.FORMATTER))); // in the future
+                .format(WorkoutTime.FORMATTER)));
+
+        // Dates more than 50 years older (Invalid)
         assertFalse(WorkoutTime.isValidTime(LocalDateTime.now()
                 .minusYears(50)
-                .format(WorkoutTime.FORMATTER))); // too far in the past
+                .minusSeconds(1)
+                .format(WorkoutTime.FORMATTER)));
+
+        // Date less than 50 years old (Valid)
+        assertTrue(WorkoutTime.isValidTime(LocalDateTime.now()
+                .minusYears(50)
+                .plusMinutes(1)
+                .format(WorkoutTime.FORMATTER)));
+
+        // Valid Leap Year
+        assertTrue(WorkoutTime.isValidTime("29/02/2024 14:00"));
 
         // valid Workout Time
         assertTrue(WorkoutTime.isValidTime("24/04/1987 14:00"));
-        assertTrue(WorkoutTime.isValidTime(LocalDateTime.now()
-                .minusYears(50)
-                .plusDays(1)
-                .format(WorkoutTime.FORMATTER)));
     }
 
     @Test

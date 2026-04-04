@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 
 /**
  * Represents the time when a Workout took place.
@@ -12,9 +13,12 @@ import java.time.format.DateTimeParseException;
  */
 public class WorkoutTime {
 
-    public static final String MESSAGE_CONSTRAINTS = "Workout Time must follow the format: dd/MM/yyyy HH:mm\n"
+    public static final String MESSAGE_CONSTRAINTS =
+            "Workout Time must be a valid date in the format: dd/MM/yyyy HH:mm\n"
             + "Workout Time cannot be in the future or more than 50 years in the past.";
-    public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+    public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/uuuu HH:mm")
+            .withResolverStyle(ResolverStyle.STRICT);
 
     private final LocalDateTime value;
 

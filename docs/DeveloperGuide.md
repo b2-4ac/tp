@@ -195,6 +195,8 @@ The sequence diagram below illustrates the interactions within the `Logic` compo
 
 The `ModelManager` wraps the `FilteredList` with a `SortedList`, allowing sorting and filtering to work together. When `SortCommand.execute()` is called, it retrieves the appropriate comparator from `PersonComparators` and updates the model's comparator. The UI's `ListView` automatically updates through JavaFX's observable pattern.
 
+Once set, the comparator remains active until replaced by another `sort` command. Commands such as `list` reset the filter predicate to show all clients, but do not reset the active comparator.
+
 #### Design considerations:
 
 **Aspect: Where to store comparator logic**
@@ -463,7 +465,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Use case: UC01 \- List all clients**  
 **Preconditions: Trainer launched PowerRoster.**  
-**Guarantees: The full client *roster* (if any) is displayed.**
+**Guarantees: The full client *roster* (if any) is displayed, preserving the current active sort order if one has been applied.**
 
 **MSS**
 

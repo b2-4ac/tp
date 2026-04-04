@@ -6,6 +6,7 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 
 /**
  * Represents a Person's date of birth in PowerRoster.
@@ -13,9 +14,11 @@ import java.time.format.DateTimeParseException;
  */
 public class DateOfBirth {
     public static final String MESSAGE_CONSTRAINTS =
-            "Date of Birth must be in the format DD/MM/YYYY and cannot be in the future.";
+            "Date of Birth must be a valid date in the format DD/MM/YYYY\n"
+            + "Date of Birth cannot be in the future or more than 100 years in the past.";
 
-    public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/uuuu")
+            .withResolverStyle(ResolverStyle.STRICT);
 
     public final LocalDate value;
     /**
@@ -37,6 +40,9 @@ public class DateOfBirth {
         try {
             LocalDate testDate = LocalDate.parse(test, DateOfBirth.FORMATTER);
             if (testDate.isAfter(LocalDate.now())) {
+                isValidDate = false;
+            }
+            if (testDate.isBefore(LocalDate.now().minusYears(100))) {
                 isValidDate = false;
             }
         } catch (DateTimeParseException e) {

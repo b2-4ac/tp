@@ -31,7 +31,7 @@ PowerRoster is a **desktop app built to help Freelance Personal Fitness Trainers
 
    * `list` : Lists all contacts.
 
-   * `add n/John Doe g/M dob/24/12/1999 p/98765432 e/johnd@example.com a/John street, block 123, #01-01 l/ActiveSG @ Fernvale Square` : Adds a contact named `John Doe` to the PowerRoster.
+   * `add n/John Tan g/M dob/24/12/1999 p/98765432 e/johnt@example.com a/123 Sengkang East, #01-01 l/ActiveSG @ Fernvale Square t/beginner` : Adds a contact named `John Tan` to the PowerRoster.
 
    * `delete 3` : Deletes the 3rd contact shown in the current list.
 
@@ -50,13 +50,13 @@ PowerRoster is a **desktop app built to help Freelance Personal Fitness Trainers
 **Notes about the command format:**<br>
 
 * Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
-  e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
+  e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Tan`.
 
 * Items in square brackets are optional.<br>
-  e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/friend` or as `n/John Doe`.
+  e.g `n/NAME [t/TAG]` can be used as `n/John Tan t/beginner` or as `n/John Tan`.
 
 * Items with `…`​ after them can be used multiple times including zero times.<br>
-  e.g. `[t/TAG]…​` can be used as ` ` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.
+  e.g. `[t/TAG]…​` can be used as ` ` (i.e. 0 times), `t/beginner`, `t/teen t/intermediate` etc.
 
 * Parameters can be in any order.<br>
   e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
@@ -91,8 +91,8 @@ Adds a client to PowerRoster.
 
 Format: `add n/NAME g/GENDER dob/DATE_OF_BIRTH p/PHONE_NUMBER e/EMAIL_ADDRESS a/ADDRESS [l/LOCATION] [t/TAG]…​​`
 
-* `NAME` must start with an alphanumeric character, and may contain alphanumeric characters, spaces, apostrophes (`'`), hyphens (`-`), and periods (`.`).
-* Leading/trailing spaces in `NAME` are ignored, and repeated internal spaces are normalized to a single space.
+* Names with forward slashes (e.g., "s/o" for "son of") are not supported due to the "/" being used as a command delimiter. You can replace the slashes with spaces (e.g., "Muthu s/o Rajan" can be entered as "Muthu s o Rajan".)
+* Other names with non-alphanumeric characters like José Muñoz or 小明 should be replaced with suitable alphanumeric characters.
 * `NAME` are case-sensitive for duplicate detection
 * `EMAIL_ADDRESS` must not contain consecutive special characters in the local-part (the part before `@`).
 * `GENDER` must be either `M` or `F` (case-insensitive)
@@ -106,14 +106,16 @@ Format: `add n/NAME g/GENDER dob/DATE_OF_BIRTH p/PHONE_NUMBER e/EMAIL_ADDRESS a/
 </box>
 
 Examples:
-* `add n/John Tan g/M dob/24/12/1999 p/98765432 e/johnt@example.com a/123 Sengkang East, #01-01 l/ActiveSG @ Fernvale Square`
-* `add n/Dave Lim g/F dob/13/06/2001 t/athlete e/davelim@example.com a/456 Jurong West, #02-02 l/GymBoxx @ JCube Mall`
+* `add n/John Tan g/M dob/24/12/1999 p/98765432 e/johnt@example.com a/123 Sengkang East, #01-01 l/ActiveSG @ Fernvale Square t/beginner`
+* `add n/Danielle Lim g/F dob/13/06/2001 t/athlete e/danielle@example.com a/456 Jurong West, #02-02 l/GymBoxx @ JCube Mall`
 
 ### Listing all clients : `list`
 
 Shows a list of all clients in PowerRoster.
 
 Format: `list`
+
+* `list` shows all clients by resetting any active filter, while preserving the current sor order (if any).
 
 ### Viewing a client's full profile : `view`
 
@@ -423,7 +425,7 @@ _Details coming soon ..._
 
 Action     | Format, Examples
 -----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-**Add**    | `add n/NAME g/GENDER dob/DATE_OF_BIRTH p/PHONE_NUMBER e/EMAIL_ADDRESS a/ADDRESS [l/LOCATION] [t/TAG]…​` <br> e.g., `add n/James Ho g/M dob/09/12/1977 p/92224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/beginner`
+**Add**    | `add n/NAME g/GENDER dob/DATE_OF_BIRTH p/PHONE_NUMBER e/EMAIL_ADDRESS a/ADDRESS [l/LOCATION] [t/TAG]…​` <br> e.g., `add n/John Tan g/M dob/24/12/1999 p/98765432 e/johnt@example.com a/123 Sengkang East, #01-01 l/ActiveSG @ Fernvale Square t/beginner`
 **Clear**  | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Log**    | `log INDEX [time/TIME] [l/LOCATION]` <br> e.g., `log 2 l/Sengkang ActiveSG Gym`
