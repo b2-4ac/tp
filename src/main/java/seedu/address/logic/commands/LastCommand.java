@@ -19,8 +19,8 @@ public class LastCommand extends Command {
     public static final String COMMAND_WORD = "last";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Displays the most recent training session of the client (if any)..."
-            + "used in the displayed person list.\n"
+            + ": Displays the most recent training session of the client "
+            + "identified by the index number used in the displayed client list.\n"
             + "Parameters: INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1";
 

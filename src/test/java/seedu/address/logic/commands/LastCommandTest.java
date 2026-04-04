@@ -7,6 +7,7 @@ import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.logic.commands.CommandTestUtil.showPersonAtIndex;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
+import static seedu.address.testutil.TypicalIndexes.INDEX_THIRD_PERSON;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 import static seedu.address.testutil.TypicalWorkoutLogs.ALICE_LOG_2;
 import static seedu.address.testutil.TypicalWorkoutLogs.BENSON_LOG_1;
@@ -33,6 +34,20 @@ public class LastCommandTest {
                 personToCheck.getName(),
                 ALICE_LOG_2.getTime(),
                 ALICE_LOG_2.getLocation());
+
+        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs(),
+                model.getWorkoutLogBook());
+
+        assertCommandSuccess(lastCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_validIndexNoLogs_noLogsMessage() {
+        Person personToCheck = model.getFilteredPersonList().get(INDEX_THIRD_PERSON.getZeroBased());
+        LastCommand lastCommand = new LastCommand(INDEX_THIRD_PERSON);
+
+        String expectedMessage = String.format(LastCommand.MESSAGE_NO_LOGS_FOUND_FAILURE,
+                personToCheck.getName());
 
         ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs(),
                 model.getWorkoutLogBook());
