@@ -14,18 +14,33 @@ UniquePersonList -right-> Person
 
 Person -up-> "*" Tag
 
-Person *--> Name
-Person *--> Gender
-Person *--> DateOfBirth
-Person *--> Phone
-Person *--> Email
-Person *--> Address
-Person *--> Location
-Person *--> Note
-Person *--> Plan
-Person *--> Rate
-Person *--> Status
-Person *--> Height
-Person *--> Weight
-Person *--> BodyFatPercentage
+class Person {
+  -- Identity --
+  clientId: ClientId
+  
+  -- Basic Information --
+  name: Name
+  gender: Gender
+  dateOfBirth: DateOfBirth
+  
+  -- Contact Details --
+  phone: Phone
+  email: Email
+  address: Address
+  location: Location
+  
+  -- Fitness Tracking --
+  height: Height
+  weight: Weight
+  bodyFatPercentage: BodyFatPercentage
+  
+  -- Session & Program --
+  plan: Plan
+  rate: Rate
+  status: Status
+  note: Note
+  
+  -- Tags --
+  tags: Tag[*]
+}
 @enduml

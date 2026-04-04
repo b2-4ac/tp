@@ -57,22 +57,7 @@ WorkoutLog --> "1" Location
 AddressBook *--> "1" UniquePersonList
 UniquePersonList --> "~* all" Person
 PersonComparators ..> Person : <<uses>>
-Person *--> ClientId
-Person *--> Name
-Person *--> Phone
-Person *--> Email
-Person *--> Address
-Person *--> "*" Tag
-Person *--> Gender
-Person *--> DateOfBirth
-Person *--> Location
-Person *--> Note
-Person *--> Plan
-Person *--> Rate
-Person *--> Status
-Person *--> Height
-Person *--> Weight
-Person *--> BodyFatPercentage
+Person --> "1" ClientId
 
 Person -[hidden]up--> I
 UniquePersonList -[hidden]right-> I
