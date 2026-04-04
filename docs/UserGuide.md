@@ -22,7 +22,7 @@ PowerRoster is a **desktop app built to help Freelance Personal Fitness Trainers
 
 1. Copy the file to the folder you want to use as the _home folder_ for your PowerRoster.
 
-1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar powerroster.jar` command to run the application.<br>
+1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar PowerRoster.jar` command to run the application.<br>
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
 
