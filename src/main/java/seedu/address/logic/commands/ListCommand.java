@@ -6,15 +6,15 @@ import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import seedu.address.model.Model;
 
 /**
- * Lists all persons in the address book to the user.
+ * Lists all clients in PowerRoster to the user.
  */
 public class ListCommand extends Command {
 
     public static final String COMMAND_WORD = "list";
 
-    public static final String MESSAGE_SUCCESS = "Listed all persons";
+    public static final String MESSAGE_SUCCESS = "Listed all clients";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Shows a list of all persons in the address book.\n"
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Shows a list of all clients in PowerRoster.\n"
             + "Example: " + COMMAND_WORD;
 
     @Override
