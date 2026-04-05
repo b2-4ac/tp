@@ -4,12 +4,12 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.AppUtil.checkArgument;
 
 /**
- * Represents a person's gender in the address book.
+ * Represents a Person's gender in Power Roster.
  * Guarantees: immutable; is valid as declared in {@link #isValidGender(String)}
  */
 public class Gender {
 
-    public static final String MESSAGE_CONSTRAINTS = "Gender can take either M or F, and it should not be blank";
+    public static final String MESSAGE_CONSTRAINTS = "Gender can take either M or F, and it should not be blank.";
 
     /*
      * The gender input must contain a single character,

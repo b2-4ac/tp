@@ -4,7 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.AppUtil.checkArgument;
 
 /**
- * Represents a client's preferred gym location in the address book.
+ * Represents a client's preferred gym location in PowerRoster.
  * Guarantees: immutable; is valid as declared in
  * {@link #isValidLocation(String)}
  */

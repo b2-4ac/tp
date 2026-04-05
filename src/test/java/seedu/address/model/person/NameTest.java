@@ -1,5 +1,6 @@
 package seedu.address.model.person;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
@@ -56,5 +57,14 @@ public class NameTest {
 
         // different values -> returns false
         assertFalse(name.equals(new Name("Other Valid Name")));
+
+        // same logical value with repeated spaces -> returns true after normalization
+        assertTrue(new Name("John  Doe").equals(new Name("John Doe")));
+    }
+
+    @Test
+    public void constructor_repeatedSpaces_normalized() {
+        Name name = new Name("  John   Doe  ");
+        assertEquals("John Doe", name.fullName);
     }
 }

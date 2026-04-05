@@ -57,6 +57,16 @@ public class AddCommandTest {
     }
 
     @Test
+    public void execute_duplicatePersonWithRepeatedSpacesInName_throwsCommandException() {
+        Person existingPerson = new PersonBuilder().withName("John Doe").build();
+        Person nearDuplicatePerson = new PersonBuilder().withName("John  Doe").build();
+        AddCommand addCommand = new AddCommand(nearDuplicatePerson);
+        ModelStub modelStub = new ModelStubWithPerson(existingPerson);
+
+        assertThrows(CommandException.class, AddCommand.MESSAGE_DUPLICATE_PERSON, () -> addCommand.execute(modelStub));
+    }
+
+    @Test
     public void equals() {
         Person alice = new PersonBuilder().withName("Alice").build();
         Person bob = new PersonBuilder().withName("Bob").build();

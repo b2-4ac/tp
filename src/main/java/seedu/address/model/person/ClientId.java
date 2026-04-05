@@ -4,7 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.AppUtil.checkArgument;
 
 /**
- * Represents a Client's ID in the address book.
+ * Represents a Person's ID in PowerRoster.
  * Guarantees: immutable; is valid as declared in {@link #isValidId(String)}
  */
 public class ClientId {

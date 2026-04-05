@@ -98,9 +98,24 @@ public class EditCommandParserTest {
         assertParseFailure(parser, "1" + TAG_DESC_FRIEND + TAG_EMPTY + TAG_DESC_HUSBAND, Tag.MESSAGE_CONSTRAINTS);
         assertParseFailure(parser, "1" + TAG_EMPTY + TAG_DESC_FRIEND + TAG_DESC_HUSBAND, Tag.MESSAGE_CONSTRAINTS);
 
-        // multiple invalid values, but only the first invalid value is captured
+        // multiple invalid values are reported together
         assertParseFailure(parser, "1" + INVALID_NAME_DESC + INVALID_EMAIL_DESC + VALID_ADDRESS_AMY + VALID_PHONE_AMY,
-                Name.MESSAGE_CONSTRAINTS);
+                String.join("\n", Name.MESSAGE_CONSTRAINTS, Email.MESSAGE_CONSTRAINTS));
+    }
+    @Test
+    public void parse_multipleInvalidFields_reportsAllErrorsTogether() {
+        String userInput = "1" + INVALID_NAME_DESC + INVALID_PHONE_DESC + INVALID_EMAIL_DESC;
+
+        assertParseFailure(parser, userInput,
+                String.join("\n", Name.MESSAGE_CONSTRAINTS, Phone.MESSAGE_CONSTRAINTS, Email.MESSAGE_CONSTRAINTS));
+    }
+
+    @Test
+    public void parse_invalidTagAndInvalidField_reportsAllErrorsTogether() {
+        String userInput = "1" + INVALID_EMAIL_DESC + INVALID_TAG_DESC;
+
+        assertParseFailure(parser, userInput,
+                String.join("\n", Email.MESSAGE_CONSTRAINTS, Tag.MESSAGE_CONSTRAINTS));
     }
 
     @Test

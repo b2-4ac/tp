@@ -4,7 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.AppUtil.checkArgument;
 
 /**
- * Represents a person's status in the address book.
+ * Represents a person's status in PowerRoster.
  * Guarantees: immutable; is valid as declared in {@link #isValidStatus(String)}
  */
 public class Status {

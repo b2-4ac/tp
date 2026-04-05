@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 /**
- * Represents a person's body fat percentage.
+ * Represents a Person's body fat percentage.
  * Guarantees: immutable; is valid as declared in {@link #isValidBodyFatPercentage(String)}
  */
 public class BodyFatPercentage {

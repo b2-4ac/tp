@@ -4,20 +4,21 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.AppUtil.checkArgument;
 
 /**
- * Represents a Person's name in the address book.
+ * Represents a Person's name in PowerRoster.
  * Guarantees: immutable; is valid as declared in {@link #isValidName(String)}
  */
 public class Name {
 
-    public static final String MESSAGE_CONSTRAINTS =
-            "Names should only contain alphanumeric characters and spaces, and it should not be blank";
-
     /*
-     * The first character of the address must not be a whitespace,
+     * The first character of the name must not be a whitespace,
      * otherwise " " (a blank string) becomes a valid input.
+     * A trailing period is allowed (e.g., "Dr.").
      */
-    public static final String VALIDATION_REGEX = "[\\p{Alnum}][\\p{Alnum} ]*";
-
+    public static final String VALIDATION_REGEX = "[\\p{Alnum}](?:[\\p{Alnum}' .-]*[\\p{Alnum}.])?";
+    private static final String SPECIAL_CHARACTERS = "'-.";
+    public static final String MESSAGE_CONSTRAINTS =
+            "Names should only contain alphanumeric characters, spaces and " + SPECIAL_CHARACTERS
+                    + " while not being blank.";
     public final String fullName;
 
     /**
@@ -27,8 +28,16 @@ public class Name {
      */
     public Name(String name) {
         requireNonNull(name);
-        checkArgument(isValidName(name), MESSAGE_CONSTRAINTS);
-        fullName = name;
+        String normalisedName = normaliseWhitespace(name);
+        checkArgument(isValidName(normalisedName), MESSAGE_CONSTRAINTS);
+        fullName = normalisedName;
+    }
+
+    /**
+     * Normalises runs of spaces to a single space and trims leading/trailing spaces.
+     */
+    private static String normaliseWhitespace(String value) {
+        return value.trim().replaceAll(" +", " ");
     }
 
     /**

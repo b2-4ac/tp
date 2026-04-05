@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 /**
- * Represents a Person's session rate in the address book. Guarantees: immutable; is valid as
+ * Represents a Person's session rate in PowerRoster. Guarantees: immutable; is valid as
  * declared in {@link #isValidRate(String)}
  */
 public class Rate {

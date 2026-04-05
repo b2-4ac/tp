@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
+import java.util.StringJoiner;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.EditCommand;
@@ -63,29 +64,67 @@ public class EditCommandParser implements Parser<EditCommand> {
                 PREFIX_LOCATION);
 
         EditPersonDescriptor editPersonDescriptor = new EditPersonDescriptor();
+        StringJoiner validationErrors = new StringJoiner("\n");
 
         if (argMultimap.getValue(PREFIX_NAME).isPresent()) {
-            editPersonDescriptor.setName(ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get()));
+            try {
+                editPersonDescriptor.setName(ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get()));
+            } catch (ParseException pe) {
+                validationErrors.add(pe.getMessage());
+            }
         }
         if (argMultimap.getValue(PREFIX_GENDER).isPresent()) {
-            editPersonDescriptor.setGender(ParserUtil.parseGender(argMultimap.getValue(PREFIX_GENDER).get()));
+            try {
+                editPersonDescriptor.setGender(ParserUtil.parseGender(argMultimap.getValue(PREFIX_GENDER).get()));
+            } catch (ParseException pe) {
+                validationErrors.add(pe.getMessage());
+            }
         }
         if (argMultimap.getValue(PREFIX_DOB).isPresent()) {
-            editPersonDescriptor.setDateOfBirth(ParserUtil.parseDateOfBirth(argMultimap.getValue(PREFIX_DOB).get()));
+            try {
+                editPersonDescriptor.setDateOfBirth(ParserUtil
+                        .parseDateOfBirth(argMultimap.getValue(PREFIX_DOB).get()));
+            } catch (ParseException pe) {
+                validationErrors.add(pe.getMessage());
+            }
         }
         if (argMultimap.getValue(PREFIX_PHONE).isPresent()) {
-            editPersonDescriptor.setPhone(ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get()));
+            try {
+                editPersonDescriptor.setPhone(ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get()));
+            } catch (ParseException pe) {
+                validationErrors.add(pe.getMessage());
+            }
         }
         if (argMultimap.getValue(PREFIX_EMAIL).isPresent()) {
-            editPersonDescriptor.setEmail(ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get()));
+            try {
+                editPersonDescriptor.setEmail(ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get()));
+            } catch (ParseException pe) {
+                validationErrors.add(pe.getMessage());
+            }
         }
         if (argMultimap.getValue(PREFIX_ADDRESS).isPresent()) {
-            editPersonDescriptor.setAddress(ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get()));
+            try {
+                editPersonDescriptor.setAddress(ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get()));
+            } catch (ParseException pe) {
+                validationErrors.add(pe.getMessage());
+            }
         }
         if (argMultimap.getValue(PREFIX_LOCATION).isPresent()) {
-            editPersonDescriptor.setLocation(ParserUtil.parseLocation(argMultimap.getValue(PREFIX_LOCATION).get()));
+            try {
+                editPersonDescriptor.setLocation(ParserUtil.parseLocation(argMultimap.getValue(PREFIX_LOCATION).get()));
+            } catch (ParseException pe) {
+                validationErrors.add(pe.getMessage());
+            }
         }
-        parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editPersonDescriptor::setTags);
+        try {
+            parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editPersonDescriptor::setTags);
+        } catch (ParseException pe) {
+            validationErrors.add(pe.getMessage());
+        }
+
+        if (validationErrors.length() > 0) {
+            throw new ParseException(validationErrors.toString());
+        }
 
         if (!editPersonDescriptor.isAnyFieldEdited()) {
             throw new ParseException(EditCommand.MESSAGE_NOT_EDITED);

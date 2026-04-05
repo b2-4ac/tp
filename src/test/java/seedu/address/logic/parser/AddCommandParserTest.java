@@ -254,51 +254,75 @@ public class AddCommandParserTest {
 
     @Test
     public void parse_compulsoryFieldMissing_failure() {
-        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE);
+        String expectedInvalidFormatMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE);
+        String expectedMissingName = String.format(AddCommandParser.MESSAGE_MISSING_REQUIRED_FIELDS_WITH_USAGE,
+                String.format(AddCommandParser.MESSAGE_MISSING_REQUIRED_FIELDS, PREFIX_NAME),
+                AddCommand.MESSAGE_USAGE);
+        String expectedMissingGender = String.format(AddCommandParser.MESSAGE_MISSING_REQUIRED_FIELDS_WITH_USAGE,
+                String.format(AddCommandParser.MESSAGE_MISSING_REQUIRED_FIELDS, PREFIX_GENDER),
+                AddCommand.MESSAGE_USAGE);
+        String expectedMissingDob = String.format(AddCommandParser.MESSAGE_MISSING_REQUIRED_FIELDS_WITH_USAGE,
+                String.format(AddCommandParser.MESSAGE_MISSING_REQUIRED_FIELDS, PREFIX_DOB),
+                AddCommand.MESSAGE_USAGE);
+        String expectedMissingPhone = String.format(AddCommandParser.MESSAGE_MISSING_REQUIRED_FIELDS_WITH_USAGE,
+                String.format(AddCommandParser.MESSAGE_MISSING_REQUIRED_FIELDS, PREFIX_PHONE),
+                AddCommand.MESSAGE_USAGE);
+        String expectedMissingEmail = String.format(AddCommandParser.MESSAGE_MISSING_REQUIRED_FIELDS_WITH_USAGE,
+                String.format(AddCommandParser.MESSAGE_MISSING_REQUIRED_FIELDS, PREFIX_EMAIL),
+                AddCommand.MESSAGE_USAGE);
+        String expectedMissingAddress = String.format(AddCommandParser.MESSAGE_MISSING_REQUIRED_FIELDS_WITH_USAGE,
+                String.format(AddCommandParser.MESSAGE_MISSING_REQUIRED_FIELDS, PREFIX_ADDRESS),
+                AddCommand.MESSAGE_USAGE);
+        String expectedMissingAll = String.format(AddCommandParser.MESSAGE_MISSING_REQUIRED_FIELDS_WITH_USAGE,
+                String.format(AddCommandParser.MESSAGE_MISSING_REQUIRED_FIELDS,
+                        String.join(", ",
+                                PREFIX_NAME.toString(),
+                                PREFIX_GENDER.toString(),
+                                PREFIX_DOB.toString(),
+                                PREFIX_PHONE.toString(),
+                                PREFIX_EMAIL.toString(),
+                                PREFIX_ADDRESS.toString())),
+                AddCommand.MESSAGE_USAGE);
 
         // missing name prefix
         assertParseFailure(parser,
-                VALID_NAME_BOB
-                + GENDER_DESC_BOB
+                GENDER_DESC_BOB
                 + DOB_DESC_BOB
                 + PHONE_DESC_BOB
                 + EMAIL_DESC_BOB
                 + ADDRESS_DESC_BOB
                 + LOCATION_DESC_BOB,
-                expectedMessage);
+                expectedMissingName);
 
         // missing gender prefix
         assertParseFailure(parser,
                 NAME_DESC_BOB
-                + VALID_GENDER_BOB
                 + DOB_DESC_BOB
                 + PHONE_DESC_BOB
                 + EMAIL_DESC_BOB
                 + ADDRESS_DESC_BOB
                 + LOCATION_DESC_BOB,
-                expectedMessage);
+                expectedMissingGender);
 
         // missing dob prefix
         assertParseFailure(parser,
                 NAME_DESC_BOB
                 + GENDER_DESC_BOB
-                + VALID_DOB_BOB
                 + PHONE_DESC_BOB
                 + EMAIL_DESC_BOB
                 + ADDRESS_DESC_BOB
                 + LOCATION_DESC_BOB,
-                expectedMessage);
+                expectedMissingDob);
 
         // missing phone prefix
         assertParseFailure(parser,
                 NAME_DESC_BOB
                 + GENDER_DESC_BOB
                 + DOB_DESC_BOB
-                + VALID_PHONE_BOB
                 + EMAIL_DESC_BOB
                 + ADDRESS_DESC_BOB
                 + LOCATION_DESC_BOB,
-                expectedMessage);
+                expectedMissingPhone);
 
         // missing email prefix
         assertParseFailure(parser,
@@ -306,10 +330,9 @@ public class AddCommandParserTest {
                 + GENDER_DESC_BOB
                 + DOB_DESC_BOB
                 + PHONE_DESC_BOB
-                + VALID_EMAIL_BOB
                 + ADDRESS_DESC_BOB
                 + LOCATION_DESC_BOB,
-                expectedMessage);
+                expectedMissingEmail);
 
         // missing address prefix
         assertParseFailure(parser,
@@ -318,11 +341,15 @@ public class AddCommandParserTest {
                 + DOB_DESC_BOB
                 + PHONE_DESC_BOB
                 + EMAIL_DESC_BOB
-                + VALID_ADDRESS_BOB
                 + LOCATION_DESC_BOB,
-                expectedMessage);
+                expectedMissingAddress);
 
-        // all prefixes missing
+        // all required prefixes missing
+        assertParseFailure(parser,
+                TAG_DESC_FRIEND,
+                expectedMissingAll);
+
+        // all required prefixes missing and provided as preamble values
         assertParseFailure(parser,
                 VALID_NAME_BOB
                 + VALID_GENDER_BOB
@@ -331,7 +358,7 @@ public class AddCommandParserTest {
                 + VALID_EMAIL_BOB
                 + VALID_ADDRESS_BOB
                 + VALID_LOCATION_BOB,
-                expectedMessage);
+                expectedInvalidFormatMessage);
     }
 
     @Test
@@ -440,7 +467,7 @@ public class AddCommandParserTest {
                 + VALID_TAG_FRIEND,
                 Tag.MESSAGE_CONSTRAINTS);
 
-        // two invalid values, only first invalid value reported
+        // two invalid values are reported together
         assertParseFailure(parser,
                 INVALID_NAME_DESC
                 + GENDER_DESC_BOB
@@ -449,7 +476,7 @@ public class AddCommandParserTest {
                 + EMAIL_DESC_BOB
                 + INVALID_ADDRESS_DESC
                 + LOCATION_DESC_BOB,
-                Name.MESSAGE_CONSTRAINTS);
+                String.join("\n", Name.MESSAGE_CONSTRAINTS, Address.MESSAGE_CONSTRAINTS));
 
         // non-empty preamble
         assertParseFailure(parser,

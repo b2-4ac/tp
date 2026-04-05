@@ -12,14 +12,14 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonComparators;
 
 /**
- * Sorts the person list by a specified attribute in ascending or descending order.
+ * Sorts the client list by a specified attribute in ascending or descending order.
  */
 public class SortCommand extends Command {
 
     public static final String COMMAND_WORD = "sort";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Sorts the person list by the specified attribute.\n"
+            + ": Sorts the list of clients by the specified attribute.\n"
             + "Parameters: ATTRIBUTE/ [o/ORDER]\n"
             + "Supported attributes: n/ (name), l/ (location), dob/ (date of birth), "
             + "p/ (phone), e/ (email), a/ (address), g/ (gender), "
@@ -27,7 +27,7 @@ public class SortCommand extends Command {
             + "Order: asc (ascending, default) or desc (descending)\n"
             + "Example: " + COMMAND_WORD + " n/ o/asc";
 
-    public static final String MESSAGE_SUCCESS = "Sorted persons by %s in %s order";
+    public static final String MESSAGE_SUCCESS = "Sorted clients by %s in %s order";
 
     private static final Logger logger = LogsCenter.getLogger(SortCommand.class);
 
@@ -35,7 +35,7 @@ public class SortCommand extends Command {
     private final String order;
 
     /**
-     * Creates a SortCommand to sort the person list.
+     * Creates a SortCommand to sort the client list.
      * The comparator is reconstructed during execution based on attribute and order,
      * ensuring that equals() properly reflects object equality.
      *
@@ -63,7 +63,7 @@ public class SortCommand extends Command {
         assert comparator != null : "Comparator should not be null for valid attribute";
 
         model.updatePersonListComparator(comparator);
-        logger.fine("Successfully sorted person list by " + attribute + " in " + order + " order");
+        logger.fine("Successfully sorted client list by " + attribute + " in " + order + " order");
         return new CommandResult(String.format(MESSAGE_SUCCESS, attribute, order));
     }
 
