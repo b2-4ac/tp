@@ -83,6 +83,8 @@ public class EditCommand extends Command {
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_PERSON =
             "This client already exists in PowerRoster.";
+    private static final String EMPTY_TAGS_DISPLAY = "[]";
+    private static final String LOCATION_NOT_AVAILABLE_DISPLAY = "N/A";
 
     private static final Logger logger = LogsCenter.getLogger(EditCommand.class);
 
@@ -191,12 +193,12 @@ public class EditCommand extends Command {
     }
 
     private static String displayLocation(Person person) {
-        return person.getLocation().value.isEmpty() ? "N/A" : person.getLocation().value;
+        return person.getLocation().value.isEmpty() ? LOCATION_NOT_AVAILABLE_DISPLAY : person.getLocation().value;
     }
 
     private static String formatTags(Set<Tag> tags) {
         if (tags.isEmpty()) {
-            return "[]";
+            return EMPTY_TAGS_DISPLAY;
         }
         return tags.stream()
                 .map(tag -> tag.tagName)
