@@ -3,6 +3,9 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_LOCATION;
 
+import java.util.logging.Logger;
+
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.model.Model;
@@ -27,18 +30,31 @@ public class FilterCommand extends Command {
             + "  " + COMMAND_WORD + " " + PREFIX_LOCATION + "Anytime Fitness " + PREFIX_LOCATION + "Clementi\n"
             + "  " + COMMAND_WORD + " " + PREFIX_LOCATION;
 
+    private static final Logger logger = LogsCenter.getLogger(FilterCommand.class);
+
     private final LocationContainsKeywordsPredicate predicate;
 
+    /**
+     * Creates a FilterCommand to filter the client list by location phrases.
+     *
+     * @param predicate Predicate that defines which clients match.
+     */
     public FilterCommand(LocationContainsKeywordsPredicate predicate) {
+        requireNonNull(predicate);
         this.predicate = predicate;
     }
 
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
+        logger.info("Executing filter command with predicate: " + predicate);
+
         model.updateFilteredPersonList(predicate);
+        assert model.getFilteredPersonList() != null : "Filtered person list should never be null";
+
+        int numberOfClientsFound = model.getFilteredPersonList().size();
         return new CommandResult(
-                String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()));
+                String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, numberOfClientsFound));
     }
 
     @Override
@@ -48,11 +64,10 @@ public class FilterCommand extends Command {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof FilterCommand)) {
+        if (!(other instanceof FilterCommand otherFilterCommand)) {
             return false;
         }
 
-        FilterCommand otherFilterCommand = (FilterCommand) other;
         return predicate.equals(otherFilterCommand.predicate);
     }
 

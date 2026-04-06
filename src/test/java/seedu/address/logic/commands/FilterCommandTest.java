@@ -1,8 +1,7 @@
 package seedu.address.logic.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static seedu.address.logic.Messages.MESSAGE_PERSONS_LISTED_OVERVIEW;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.TypicalPersons.BENSON;
@@ -32,8 +31,12 @@ import seedu.address.testutil.PersonBuilder;
  * Contains integration tests (interaction with the Model) for {@code FilterCommand}.
  */
 public class FilterCommandTest {
-    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs(), new WorkoutLogBook());
-    private Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs(), new WorkoutLogBook());
+    private static final String WHITESPACE_REGEX = "\\s+";
+    private static final String SINGLE_SPACE = " ";
+
+    private final Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs(), new WorkoutLogBook());
+    private final Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs(),
+            new WorkoutLogBook());
 
     @Test
     public void equals() {
@@ -45,50 +48,38 @@ public class FilterCommandTest {
         FilterCommand filterFirstCommand = new FilterCommand(firstPredicate);
         FilterCommand filterSecondCommand = new FilterCommand(secondPredicate);
 
-        // same object -> returns true
-        assertTrue(filterFirstCommand.equals(filterFirstCommand));
-
         // same values -> returns true
         FilterCommand filterFirstCommandCopy = new FilterCommand(firstPredicate);
-        assertTrue(filterFirstCommand.equals(filterFirstCommandCopy));
+        assertEquals(filterFirstCommand, filterFirstCommandCopy);
 
         // different types -> returns false
-        assertFalse(filterFirstCommand.equals(1));
+        assertNotEquals(1, filterFirstCommand);
 
         // null -> returns false
-        assertFalse(filterFirstCommand.equals(null));
+        assertNotEquals(null, filterFirstCommand);
 
         // different person -> returns false
-        assertFalse(filterFirstCommand.equals(filterSecondCommand));
+        assertNotEquals(filterFirstCommand, filterSecondCommand);
     }
 
     @Test
     public void execute_zeroKeywords_noPersonFound() {
-        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
         LocationContainsKeywordsPredicate predicate = new LocationContainsKeywordsPredicate(Collections.emptyList());
-        FilterCommand command = new FilterCommand(predicate);
-        expectedModel.updateFilteredPersonList(predicate);
-        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        assertFilterCommandSuccess(predicate, 0);
         assertEquals(Collections.emptyList(), model.getFilteredPersonList());
     }
 
     @Test
     public void execute_singleKeywords_multiplePersonsFound() {
-        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 5);
         LocationContainsKeywordsPredicate predicate = preparePredicate("Anytime");
-        FilterCommand command = new FilterCommand(predicate);
-        expectedModel.updateFilteredPersonList(predicate);
-        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        assertFilterCommandSuccess(predicate, 5);
         assertEquals(Arrays.asList(CARL, DANIEL, ELLE, FIONA, GEORGE), model.getFilteredPersonList());
     }
 
     @Test
     public void execute_multipleKeywords_multiplePersonsFound() {
-        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 3);
         LocationContainsKeywordsPredicate predicate = preparePredicate("Anytime Fitness Buona", "Clementi");
-        FilterCommand command = new FilterCommand(predicate);
-        expectedModel.updateFilteredPersonList(predicate);
-        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        assertFilterCommandSuccess(predicate, 3);
         assertEquals(Arrays.asList(BENSON, ELLE, FIONA), model.getFilteredPersonList());
     }
 
@@ -102,18 +93,15 @@ public class FilterCommandTest {
         model.addPerson(noLocationPerson);
         expectedModel.addPerson(noLocationPerson);
 
-        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
         LocationContainsKeywordsPredicate predicate = preparePredicate("");
-        FilterCommand command = new FilterCommand(predicate);
-        expectedModel.updateFilteredPersonList(predicate);
-
-        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        assertFilterCommandSuccess(predicate, 1);
         assertEquals(Collections.singletonList(noLocationPerson), model.getFilteredPersonList());
     }
 
     @Test
     public void toStringMethod() {
-        LocationContainsKeywordsPredicate predicate = new LocationContainsKeywordsPredicate(Arrays.asList("keyword"));
+        LocationContainsKeywordsPredicate predicate =
+                new LocationContainsKeywordsPredicate(Collections.singletonList("keyword"));
         FilterCommand filterCommand = new FilterCommand(predicate);
         String expected = FilterCommand.class.getCanonicalName() + "{predicate=" + predicate + "}";
         assertEquals(expected, filterCommand.toString());
@@ -125,8 +113,19 @@ public class FilterCommandTest {
     private LocationContainsKeywordsPredicate preparePredicate(String... phrases) {
         return new LocationContainsKeywordsPredicate(Arrays.stream(phrases)
                 .map(String::trim)
-                .map(s -> s.replaceAll("\\s+", " "))
+                .map(this::normalizeWhitespace)
                 .collect(Collectors.toList()));
+    }
+
+    private String normalizeWhitespace(String text) {
+        return text.replaceAll(WHITESPACE_REGEX, SINGLE_SPACE);
+    }
+
+    private void assertFilterCommandSuccess(LocationContainsKeywordsPredicate predicate, int expectedCount) {
+        FilterCommand command = new FilterCommand(predicate);
+        expectedModel.updateFilteredPersonList(predicate);
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, expectedCount);
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
     }
 
 
