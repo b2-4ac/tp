@@ -182,127 +182,64 @@ The `view` feature is implemented as a collaboration between `Logic` and `UI`:
 * Placeholder state shown when no client is currently being viewed.
 * Detailed state shown after a successful `view INDEX` command.
 
-To keep the panel consistent with model updates, `MainWindow` updates the panel after every command and also clears the panel after successful commands when the currently viewed client no longer exists (e.g., after a `delete` or `clear`).
+To keep the panel consistent with model updates, `MainWindow` updates the panel after every command and clears the panel after successful commands when the currently viewed client no longer exists (e.g., after `delete` or `clear`).
 
 ### Sort feature
 
-#### Implementation
-
-The sort feature allows users to sort the client list by various attributes in ascending or descending order. It uses JavaFX's `SortedList` wrapper to maintain reactivity with the UI.
+The sort feature allows users to sort the displayed client list by various attributes in ascending or descending order while preserving JavaFX reactivity.
 
 The sort mechanism is facilitated by three main components:
-* `SortCommand` - Stores attribute name and order, reconstructs the `Comparator<Person>` during execution
-* `SortCommandParser` - Parses user input using a map-based approach to validate attributes and order
-* `PersonComparators` - Utility class that centralizes all comparison logic for `Person` attributes
+* `SortCommand` stores attribute name and order, reconstructs the `Comparator<Person>` during execution.
+* `SortCommandParser` validates that exactly one attribute is specified and that order is valid (`asc`/`desc`).
+* `PersonComparators` centralizes comparison logic for supported `Person` attributes.
 
-The sequence diagram below illustrates the interactions within the `Logic` component when the user executes `sort n/ o/asc`:
+The sequence diagram below illustrates interactions when the user executes `sort n/ o/asc`:
 
-<puml src="diagrams/SortSequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `sort n/ o/asc` Command" />
+<puml src="diagrams/SortSequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `sort n/ o/asc` command" />
 
-The `ModelManager` wraps the `FilteredList` with a `SortedList`, allowing sorting and filtering to work together. When `SortCommand.execute()` is called, it retrieves the appropriate comparator from `PersonComparators` and updates the model's comparator. The UI's `ListView` automatically updates through JavaFX's observable pattern.
+`ModelManager` exposes a `SortedList<Person>` wrapped around the filtered list, so filtering and sorting compose cleanly. `list` command resets the filter predicate and does not reset the active comparator.
 
-Once set, the comparator remains active until replaced by another `sort` command. Commands such as `list` reset the filter predicate to show all clients, but do not reset the active comparator.
+### Profile field update pattern (note/plan/status/rate/measure)
 
-#### Design considerations:
+Several commands share a common implementation pattern:
 
-**Aspect: Where to store comparator logic**
+1. Parse and validate command-specific prefixes.
+1. Resolve target client from `Model#getFilteredPersonList()` using the provided index.
+1. Construct an updated `Person` with changed fields while preserving all unaffected fields.
+1. Persist the update through `Model#setPerson(...)`.
 
-* **Alternative 1 (current choice):** Centralize in `PersonComparators` utility class.
-  * Pros: Follows Single Responsibility Principle, easy to extend.
-  * Cons: One additional class to maintain.
+This design keeps command behavior predictable and avoids hidden side effects between fields.
 
-* **Alternative 2:** Keep comparators in `SortCommandParser`.
-  * Pros: Fewer classes.
-  * Cons: Mixes parsing and business logic, harder to test.
+The commands differ mainly in their field-level semantics:
 
-### Status Feature
+* `note`: supports replace (`n/`) and append (`a/`) modes. Exactly one mode must be provided.
+* `plan`: accepts only predefined programme categories and supports explicit clear using empty value.
+* `status`: supports only `active` or `inactive`. Duplicate status prefixes are rejected.
+* `rate`: supports non-negative monetary values (up to 2 decimal places) and explicit clear.
+* `measure`: supports partial updates across `h/`, `w/`, and `bf/`, each with range checks and clear semantics.
 
-The status feature allows trainers to mark clients as either active or inactive, enabling them to focus on current clients while retaining historical records.
+Storage and migration behavior for these fields is intentionally explicit:
 
-#### Implementation
+* `status` supports backward compatibility by defaulting missing legacy values to `active` during JSON loading.
+* `rate`, `plan`, and measurement fields are required in persisted JSON and validated on load.
 
-The status mechanism is implemented through the following components:
+### Workout log feature (`log` and `last`)
 
-* `Status` — A class that represents a client's status, containing a nested `StatusEnum` with two values: `ACTIVE` and `INACTIVE`.
-* `StatusCommand` — Executes the status change operation on a specified client.
-* `StatusCommandParser` — Parses user input to create a `StatusCommand`.
+Workout logging is the most domain-specific behavior in PowerRoster because it links client records to a separate `WorkoutLogBook` entity.
 
-The `Status` class enforces validation to ensure only valid status values ("active" or "inactive", case-insensitive) are accepted.
+#### Key behavior
 
-#### Key Design Decisions
+* `log INDEX [time/TIME] [l/LOCATION]` writes a new `WorkoutLog` entry keyed by client ID.
+* If `time/` is omitted, current system time is used.
+* If `l/` is omitted, client default location is reused; if that is empty, the stored log location remains empty and is displayed as `N/A` by retrieval flows.
+* Duplicate logs are rejected.
+* `last INDEX` reads the latest log for the client and reports a no-log message when none exists.
 
-**Storage and Migration:**
-* New clients are automatically assigned `active` status when created via `AddCommand`.
-* The `JsonAdaptedPerson` class handles backward compatibility by defaulting missing status fields to "active" when loading old data files.
-* Status is persisted alongside other client fields in the JSON storage.
+#### Activity flow
 
-**Immutability:**
-* Following the existing Person class design pattern, changing a client's status creates a new Person object with the updated status while preserving all other fields.
-* This maintains data consistency and simplifies undo/redo operations if implemented in the future.
+<puml src="diagrams/WorkoutLogActivityDiagram.puml" alt="Activity flow for logging and retrieving workout sessions" />
 
-**Validation:**
-* The `Status` class validates input using a regex pattern, rejecting invalid values like "pending" or "unknown".
-* Duplicate status prefixes (e.g., `status 1 s/active s/inactive`) are detected and rejected by the parser with a user-friendly message: "Only one status value (either active or inactive) can be specified."
-* If the client already has the specified status, the command does not modify the client record and instead returns an informational message.
-
-### Rate Feature
-
-The rate feature allows trainers to store a per-client session rate and update it via a dedicated command.
-
-#### Implementation
-
-The rate mechanism is implemented through the following components:
-
-* `Rate` — A value class that represents a client's session rate.
-* `RateCommand` — Replaces or clears the rate for a specified client.
-* `RateCommandParser` — Parses user input to create a `RateCommand`.
-
-The `Rate` class normalizes valid values to 2 decimal places (e.g., `120`, `120.`, and `.5` are stored as `120.00`, `120.00`, and `0.50` respectively).
-
-#### Key Design Decisions
-
-**Dedicated command for rate changes:**
-* Rate updates are performed only through `rate INDEX r/RATE`.
-* `EditCommand` intentionally preserves the existing rate to keep rate updates explicit and auditable.
-
-**Storage and Migration:**
-* `JsonAdaptedPerson` persists `rate` in the data file. For old data files without a `rate` field, the user/developer has to manually add it in the JSON file (e.g., `"rate": "120.00"`) to avoid errors when loading the data.
-
-**Immutability:**
-* Following the existing model pattern, updating a rate creates a new `Person` instance with only the `rate` field changed while preserving all other fields.
-
-### Body Measurement Feature
-
-The body measurement feature allows trainers to store and update a client's height, weight, and body fat percentage via a dedicated command.
-
-#### Implementation
-
-The measurement mechanism is implemented through the following components:
-
-* `Height`, `Weight`, `BodyFatPercentage` - Value classes representing each measurement field.
-* `MeasureCommand` - Replaces and/or clears measurements for a specified client.
-* `MeasureCommandParser` - Parses user input to create a `MeasureCommand`.
-
-The three value classes enforce numeric range and format constraints (up to 1 decimal place), while still allowing blank values for explicit clear operations. Inputs with trailing dots (e.g., `170.`) are accepted and normalized to 1 decimal place in storage.
-
-In the UI detail panel, measurement values are displayed to 1 decimal place to match measurement precision.
-
-#### Key Design Decisions
-
-**Dedicated command for measurement changes:**
-* Measurement updates are performed through `measure INDEX [h/...] [w/...] [bf/...]`.
-* Omitted measurement prefixes preserve existing values.
-
-**Clear semantics:**
-* Providing a prefix with no value (`h/`, `w/`, or `bf/`) triggers a clear attempt for that specific field.
-* Each targeted field reports either `cleared` or `already cleared` based on whether it previously had a value.
-* Mixed outcomes are supported in one command (e.g., one field cleared while another field is updated).
-
-**Immutability:**
-* Following the existing model pattern, updating measurements creates a new `Person` instance with only the measurement fields changed while preserving all other fields.
-
-**Storage and Migration:**
-* `JsonAdaptedPerson` persists `height`, `weight`, and `bodyFatPercentage` in the data file and validates these values when converting to model objects.
+This flow captures the key decision points (`index` validity, fallback defaults, duplicate detection, and retrieval behavior) while omitting low-level parser and collection details.
 
 ### Future enhancements
 
@@ -340,6 +277,8 @@ Potential future enhancements include undo/redo support, archival workflows for 
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
+#### Implemented in current version
+
 | Priority | As a …​       | I want to …​                                      | So that I can…​                                                                 |
 |----------|---------------|--------------------------------------------------|---------------------------------------------------------------------------------|
 | `* * *`  | trainer       | list all clients in my roster                    | get an overview of my entire client base                                       |
@@ -351,20 +290,25 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* *`    | new user      | read about the available commands and their usage | learn how to use the application and refer to the instructions when I forget a certain command |
 | `* *`    | trainer       | search for a client by name                      | retrieve their full profile instantly without scrolling through the entire list of clients |
 | `* *`    | trainer       | filter clients by gym location                   | plan and schedule my clients better to ensure that my travel route is efficient |
-| `* *`    | trainer       | record a client’s diet                           | identify which diet a client is currently adopting without clarifying each time |
-| `* *`    | trainer       | record a client's dietary restrictions           | account for nutritional needs when designing their fitness programme           |
 | `* *`    | trainer       | record injuries, medical conditions or physical limitations for each client | assign appropriate and safe exercises, and avoid aggravating existing conditions |
 | `* *`    | trainer       | assign a *workout programme* or routine to a client | track what programme they are currently supposed to follow, separate from individual session logs |
 | `* *`    | trainer       | update a client's contact details                | ensure their details remain accurate over time                                 |
-| `* *`    | trainer       | create *workout session logs* for each client    | track their training history and refer to them to tailor future sessions accordingly |
+| `* *`    | trainer       | create *workout session logs* for each client    | have a way to track their training history where necessary |
 | `* *`    | trainer       | see the last session date for each client        | identify clients I have not seen recently and decide whether to follow up      |
 | `* *`    | trainer       | mark a client as active or inactive              | focus on current clients while retaining records of past ones for future reference |
 | `* *`    | trainer       | add body measurements for each client (weight, body fat %, etc.) | track their physical progress quantitatively over time                         |
 | `* *`    | trainer       | store a *session rate* for each client           | recall their pricing quickly when preparing invoices                           |
 | `* *`    | trainer       | group clients together under a shared label      | track clients that are part of batch or group training sessions and contact them easily |
 | `* *`    | trainer       | sort my client list by different attributes (e.g. name, location, last session date) | organise my view depending on the task that I seek to do                       |
-| `* *`    | trainer       | set specific fitness goals for each client       | measure whether they are on track to meet their objectives                     |
 | `* *`    | trainer       | export or back up my client data                 | do not lose critical client information if something goes wrong                |
+
+#### Yet to be implemented (near-future and beyond)
+
+| Priority | As a …​       | I want to …​                                      | So that I can…​                                                                 |
+|----------|---------------|--------------------------------------------------|---------------------------------------------------------------------------------|
+| `* *`    | trainer       | record a client’s diet                           | identify which diet a client is currently adopting without clarifying each time |
+| `* *`    | trainer       | record a client's dietary restrictions           | account for nutritional needs when designing their fitness programme           |
+| `* *`    | trainer       | set specific fitness goals for each client       | measure whether they are on track to meet their objectives                     |
 | `*`      | trainer       | record emergency contact information for each client | act quickly to inform relevant contacts in the event of a *health emergency* during training |
 | `*`      | trainer       | see a summary of my total *active client* count and key details | monitor my *workload* and decide whether I have capacity to take on new clients |
 | `*`      | trainer       | record payment status for each payment cycle     | follow up on outstanding payments without losing track                         |
@@ -376,18 +320,9 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 (For all use cases below, the **System** is the `PowerRoster` and the **Actor** is the `trainer`, unless specified otherwise)
 
-**Use case: UC01 - List all clients**
-**Preconditions:** Trainer has launched PowerRoster.
-**Guarantees:** The full client *roster* is displayed.
+To keep this section focused on non-trivial interactions, only unique interaction patterns are documented in full detail. Simpler commands with identical interaction patterns (e.g., straightforward index lookup + field update) are covered by representative use cases and noted as variations.
 
-**MSS**
-
-1. Trainer requests to list all clients.
-2. PowerRoster retrieves and displays all clients.
-
-   Use case ends.
-
-**Use case: UC02 - Add a client**
+**Use case: UC01 - Add a client**
 **Preconditions:** Trainer has launched PowerRoster.
 **Guarantees:** A new client is added to the *roster* if all required fields are valid.
 
@@ -417,7 +352,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: UC03 - Edit a client**
+**Use case: UC02 - Edit a client**
 **Preconditions:** Trainer has launched PowerRoster. At least one client exists in the *roster*.
 **Guarantees:** The selected fields of the client profile are updated if inputs are valid.
 
@@ -442,7 +377,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: UC04 - Delete a client**
+**Use case: UC03 - Delete a client**
 **Preconditions:** Trainer has launched PowerRoster. At least one client exists in the *roster*.
 **Guarantees:** The client and all associated data are removed if deletion is successful.
 
@@ -462,7 +397,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: UC05 - View Help and Command Guide**
+**Use case: UC04 - View Help and Command Guide**
 **Actor:** New user
 **Preconditions:** User has launched PowerRoster.
 **Guarantees:** The requested command usage information is displayed.
@@ -486,21 +421,21 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: UC06 - Search for a client by name**
+**Use case: UC05 - Search and filter clients**
 **Preconditions:** Trainer has launched PowerRoster.
-**Guarantees:** Clients whose names match the query are displayed.
+**Guarantees:** Clients matching the query criteria are displayed.
 
 **MSS**
 
-1. Trainer requests to search for a client by name and provides one or more keywords.
+1. Trainer requests to search or filter clients and provides one or more query terms.
 2. PowerRoster retrieves and displays all matching clients.
 
    Use case ends.
 
 **Extensions**
 
-* 2a. No clients match the search query.
-    * 2a1. PowerRoster informs the Trainer that no matching clients were found.
+* 2a. No clients match the provided query criteria.
+   * 2a1. PowerRoster informs the Trainer that no matching clients were found.
 
       Use case ends.
 * 2b. The *roster* has no clients.
@@ -508,34 +443,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: UC07 - Filter clients by gym location**
-**Preconditions:** Trainer has launched PowerRoster.
-**Guarantees:** Clients whose gym locations match the given location phrase(s) are displayed.
-
-**MSS**
-
-1. Trainer requests to filter clients by gym location and provides one or more location phrases.
-2. PowerRoster retrieves and displays all clients whose gym location matches at least one provided location phrase.
-3. PowerRoster confirms the number of matching clients to the Trainer.
-
-   Use case ends.
-
-**Extensions**
-
-* 1a. Trainer provides an invalid filter request format.
-    * 1a1. PowerRoster informs the Trainer that the request format is invalid and shows the expected format.
-
-      Use case ends.
-* 1b. Trainer requests to filter clients with no specified location.
-    * 1b1. PowerRoster displays clients with no specified location.
-
-      Use case resumes from step 3.
-* 2a. No clients' location match the filter criteria.
-    * 2a1. PowerRoster informs the Trainer that no clients were found for the specified location criteria.
-
-      Use case ends.
-
-**Use case: UC08 - View a client's full profile**
+**Use case: UC06 - View a client's full profile**
 **Preconditions:** Trainer has launched PowerRoster. At least one client exists in the *roster*.
 **Guarantees:** Full details of the selected client are displayed.
 
@@ -554,153 +462,38 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: UC09 - Add or append a note to a client**
+**Use case: UC07 - Update specialised client fields (note/status/rate/measure/plan)**
 **Preconditions:** Trainer has launched PowerRoster. At least one client exists in the *roster*.
-**Guarantees:** The selected client's note is added, replaced, or appended according to the request.
+**Guarantees:** One or more specialized client fields are updated according to command-specific rules.
 
 **MSS**
 
-1. Trainer requests to add or append a note to a specific client and provides the note content.
-2. PowerRoster locates the client and applies the requested note update.
-3. PowerRoster confirms the successful update to the Trainer.
-
-   Use case ends.
-
-**Extensions**
-
-* 2a. The specified identifier does not match any existing client.
-    * 2a1. PowerRoster informs the Trainer that the identifier was invalid.
-
-      Use case ends.
-* 2b. Trainer requests to add and append in the same request.
-    * 2b1. PowerRoster informs the Trainer that both actions cannot be performed at the same time.
-
-      Use case ends.
-* 2c. Trainer requests to add a note but provides an empty note.
-    * 2c1. PowerRoster replaces the existing note with an empty note.
-
-      Use case ends.
-* 2d. Trainer requests to append a note but provides an empty note.
-    * 2d1. PowerRoster does not change the existing note.
-
-      Use case ends.
-
-**Use case: UC10 - Change a client's status**
-**Preconditions:** Trainer has launched PowerRoster. At least one client exists in the *roster*.
-**Guarantees:** The selected client's status is updated if the request is valid.
-
-**MSS**
-
-1. Trainer requests to change the status of a specific client.
+1. Trainer requests to update a specialised field for a specific client.
 2. PowerRoster locates the client.
-3. PowerRoster validates the requested status value.
-4. PowerRoster updates the client's status and confirms the change.
+3. PowerRoster validates field-specific inputs and update mode.
+4. PowerRoster applies the requested field update.
+5. PowerRoster confirms the successful update to the Trainer.
 
    Use case ends.
 
 **Extensions**
 
-* 2a. PowerRoster cannot find a client matching the given identifier.
-    * 2a1. PowerRoster informs the Trainer that the identifier was invalid.
-
-      Use case ends.
-* 3a. The given status is invalid.
-    * 3a1. PowerRoster shows an error message.
-
-      Use case ends.
-* 4a. The client already has the specified status.
-    * 4a1. PowerRoster indicates that no changes were made.
-
-      Use case ends.
-
-**Use case: UC11 - Set or clear a client's session rate**
-**Preconditions:** Trainer has launched PowerRoster. At least one client exists in the *roster*.
-**Guarantees:** The selected client's session rate is set or cleared.
-
-**MSS**
-
-1. Trainer requests to set the rate of a specific client and provides a rate value.
-2. PowerRoster locates the client and validates the rate.
-3. PowerRoster sets the client's rate.
-4. PowerRoster confirms the successful update to the Trainer.
-
-   Use case ends.
-
-**Extensions**
-
-* 1a. Trainer requests to clear a client's rate.
-    * 1a1. PowerRoster locates the client and clears the client's existing rate.
-    * 1a2. PowerRoster confirms the successful update to the Trainer.
-
-      Use case ends.
 * 2a. The specified identifier does not match any existing client.
     * 2a1. PowerRoster informs the Trainer that the identifier was invalid.
 
       Use case ends.
-* 2b. The rate value is invalid.
-    * 2b1. PowerRoster informs the Trainer of the validation error and the accepted values.
+
+* 3a. The command contains an invalid update mode or invalid value (e.g., unsupported plan category, invalid status, invalid measurement, invalid rate format).
+    * 3a1. PowerRoster informs the Trainer of the relevant validation error and accepted values.
 
       Use case ends.
 
-**Use case: UC12 - Set or clear a client's body measurements**
-**Preconditions:** Trainer has launched PowerRoster. At least one client exists in the *roster*.
-**Guarantees:** The selected body measurement fields are updated.
-
-**MSS**
-
-1. Trainer requests to set one or more measurements of a specific client and provides valid values.
-2. PowerRoster locates the client and validates the provided measurements.
-3. PowerRoster updates the specified measurement fields.
-4. PowerRoster confirms the successful update to the Trainer.
-
-   Use case ends.
-
-**Extensions**
-
-* 1a. Trainer requests to clear one or more measurement fields.
-    * 1a1. PowerRoster clears the corresponding measurement fields.
-    * 1a2. PowerRoster confirms the successful update to the Trainer.
-
-      Use case ends.
-* 2a. The specified identifier does not match any existing client.
-    * 2a1. PowerRoster informs the Trainer that the identifier was invalid.
-
-      Use case ends.
-* 2b. One or more measurement values are invalid.
-    * 2b1. PowerRoster informs the Trainer of the validation error and the accepted values.
+* 3b. An update is requested in which no changes are required (e.g., status already equals requested value, append with empty note).
+    * 3b1. PowerRoster informs the Trainer that no effective change was made.
 
       Use case ends.
 
-**Use case: UC13 - Assign or clear a client's workout programme**
-**Preconditions:** Trainer has launched PowerRoster. At least one client exists in the *roster*.
-**Guarantees:** The selected client's workout programme is assigned or cleared.
-
-**MSS**
-
-1. Trainer requests to assign a workout programme to a specific client and provides a valid programme category.
-2. PowerRoster locates the client and validates the provided programme category.
-3. PowerRoster updates the client's workout programme.
-4. PowerRoster confirms the successful update to the Trainer.
-
-   Use case ends.
-
-**Extensions**
-
-* 1a. Trainer requests to clear the client's workout programme.
-    * 1a1. PowerRoster clears the client's workout programme.
-    * 1a2. PowerRoster confirms the successful update to the Trainer.
-
-      Use case ends.
-* 2a. The specified identifier does not match any existing client.
-    * 2a1. PowerRoster informs the Trainer that the identifier was invalid.
-
-      Use case ends.
-* 2b. The programme category is invalid.
-    * 2b1. PowerRoster informs the Trainer of the validation error.
-
-      Use case ends.
-
-**Use case: UC14 - Log a workout session**
+**Use case: UC08 - Log a workout session**
 **Preconditions:** Trainer has launched PowerRoster. At least one client exists in the *roster*.
 **Guarantees:** A new workout session log is recorded for the selected client.
 
@@ -728,7 +521,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: UC15 - View most recent workout session**
+**Use case: UC09 - View most recent workout session**
 **Preconditions:** Trainer has launched PowerRoster. At least one client exists in the *roster*.
 **Guarantees:** The most recent workout session details for the selected client are displayed, when available.
 
@@ -751,7 +544,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: UC16 - Sort clients**
+**Use case: UC10 - Sort clients**
 **Preconditions:** Trainer has launched PowerRoster. At least one client exists in the *roster*.
 **Guarantees:** The client list is sorted according to the specified sorting criteria.
 
@@ -774,7 +567,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: UC17 - Clear all clients and workout logs**
+**Use case: UC11 - Clear all clients and workout logs**
 **Preconditions:** Trainer has launched PowerRoster.
 **Guarantees:** All clients and workout logs are removed from storage and in-memory state.
 

@@ -1,0 +1,50 @@
+@startuml WorkoutLogActivityDiagram
+!include style.puml
+skinparam ArrowFontStyle plain
+
+start
+:Trainer executes log INDEX [time/TIME] [l/LOCATION];
+
+if (INDEX valid in filtered list?) then (yes)
+  if (time provided?) then (yes)
+    if (time valid?) then (yes)
+      :Use provided time;
+    else (no)
+      :Return time-validation error;
+      stop
+    endif
+  else (no)
+    :Use current system time;
+  endif
+
+  if (location provided?) then (yes)
+    :Use provided location;
+  else (no)
+    :Use client's saved location;
+  endif
+
+  :Build WorkoutLog(clientId, time, location);
+
+  if (Duplicate log exists?) then (yes)
+    :Return duplicate-log error;
+  else (no)
+    :Add log to WorkoutLogBook;
+    :Return success message;
+  endif
+else (no)
+  :Return invalid-index error\nor format error;
+endif
+
+:Trainer may execute last INDEX;
+if (INDEX valid?) then (yes)
+  if (Client has prior logs?) then (yes)
+    :Show most recent session details;
+  else (no)
+    :Show no-previous-session message;
+  endif
+else (no)
+  :Return invalid-index error\nor format error;
+endif
+
+stop
+@enduml
