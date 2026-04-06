@@ -211,9 +211,9 @@ Once set, the comparator remains active until replaced by another `sort` command
   * Pros: Follows Single Responsibility Principle, easy to extend.
   * Cons: One additional class to maintain.
 
-* **Alternative 2:** Keep comparators in `SortCommandParser`.
+* **Alternative 2:** Keep comparators in `SortCommand`.
   * Pros: Fewer classes.
-  * Cons: Mixes parsing and business logic, harder to test.
+  * Cons: Mixes execution and comparison logic, harder to test.
 
 ### Status Feature
 
@@ -244,6 +244,27 @@ The `Status` class enforces validation to ensure only valid status values ("acti
 * The `Status` class validates input using a regex pattern, rejecting invalid values like "pending" or "unknown".
 * Duplicate status prefixes (e.g., `status 1 s/active s/inactive`) are detected and rejected by the parser with a user-friendly message: "Only one status value (either active or inactive) can be specified."
 * If the client already has the specified status, the command does not modify the client record and instead returns an informational message.
+
+### Help Feature
+
+#### Implementation
+
+The help feature allows users to view usage instructions for all commands or a specific command.
+
+The help mechanism is implemented through the following components:
+
+* `HelpCommand` — Executes the help operation, returning either full or command-specific usage instructions.
+* `HelpCommandParser` — Parses the optional command word argument to create a `HelpCommand`.
+
+When `help` is executed without arguments, `HelpCommand` returns a combined usage string for all available commands and triggers the help window to open (via the `showHelp` flag in `CommandResult`, which `MainWindow` acts on). When a specific command word is provided (e.g., `help add`), `HelpCommand` uses a switch-case to look up and return only that command's `MESSAGE_USAGE` string inline — no window is opened. The command word matching is case-insensitive.
+
+If an unknown command word is provided, `HelpCommand` returns an informational message indicating the command is unrecognised and suggests running `help` without arguments to see all available commands.
+
+#### Key Design Decisions
+
+**No sequence diagram:** The help flow is intentionally simple — `HelpCommandParser` extracts an optional string argument and `HelpCommand` performs a switch-case lookup with no model interaction. The bare `help` command signals the UI to open the help window via the `showHelp` flag in `CommandResult`, but this requires no sequence diagram as it follows the same pattern as the exit command. A sequence diagram would add little value here.
+
+**Extensibility:** Adding help support for a new command requires only adding a new `case` in `HelpCommand`'s switch statement alongside the new command's `MESSAGE_USAGE` constant.
 
 ### Rate Feature
 
@@ -362,7 +383,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* *`    | trainer       | add body measurements for each client (weight, body fat %, etc.) | track their physical progress quantitatively over time                         |
 | `* *`    | trainer       | store a *session rate* for each client           | recall their pricing quickly when preparing invoices                           |
 | `* *`    | trainer       | group clients together under a shared label      | track clients that are part of batch or group training sessions and contact them easily |
-| `* *`    | trainer       | sort my client list by different attributes (e.g. name, location, last session date) | organise my view depending on the task that I seek to do                       |
+| `* *`    | trainer       | sort my client list by different attributes (e.g. name, location, date of birth) | organise my view depending on the task that I seek to do                       |
 | `* *`    | trainer       | set specific fitness goals for each client       | measure whether they are on track to meet their objectives                     |
 | `* *`    | trainer       | export or back up my client data                 | do not lose critical client information if something goes wrong                |
 | `*`      | trainer       | record emergency contact information for each client | act quickly to inform relevant contacts in the event of a *health emergency* during training |
@@ -773,6 +794,10 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 2b1. PowerRoster informs the Trainer that the sorting criterion is invalid and no sorting is performed.
 
       Use case ends.
+* 2c. The sorting request contains duplicate prefixes (e.g., `sort n/ n/`).
+    * 2c1. PowerRoster informs the Trainer that duplicate prefixes are not allowed.
+
+      Use case ends.
 
 **Use case: UC17 - Clear all clients and workout logs**
 **Preconditions:** Trainer has launched PowerRoster.
@@ -851,7 +876,7 @@ testers are expected to do more *exploratory* testing.
 1. Showing help for all commands
 
    1. Test case: `help`<br>
-      Expected: Full help content is shown.
+      Expected: Full help content is shown in the result display and the help window opens.
 
 1. Showing help for a specific command
 
@@ -966,6 +991,12 @@ testers are expected to do more *exploratory* testing.
    1. Test case: `sort x/`<br>
       Expected: Invalid sorting-criterion error is shown.
 
+   1. Test case: `sort`<br>
+      Expected: Invalid format error is shown with the expected command format.
+
+   1. Test case: `sort n/ n/`<br>
+      Expected: Duplicate-prefix error is shown.
+
 ### Notes, plans, status, rate, and measurements
 
 1. Notes
@@ -1001,7 +1032,7 @@ testers are expected to do more *exploratory* testing.
    1. Test case: `status 1 s/inactive`<br>
       Expected: Status is updated to inactive.
 
-   1. Test case: `status 1 s/inactive`<br>
+   1. After the previous test case, test case: `status 1 s/inactive`<br>
       Expected: Message indicates no change because status is already inactive.
 
 1. Rate
