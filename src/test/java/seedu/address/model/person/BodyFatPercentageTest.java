@@ -16,30 +16,34 @@ public class BodyFatPercentageTest {
 
     @Test
     public void constructor_invalidBodyFatPercentage_throwsIllegalArgumentException() {
+        // EP: invalid numeric value below accepted range.
+        // BVA: just below lower bound (1.0).
         String invalidBodyFat = "0.9";
         assertThrows(IllegalArgumentException.class, () -> new BodyFatPercentage(invalidBodyFat));
     }
 
     @Test
     public void isValidBodyFatPercentage() {
-        // null body fat percentage
+        // EP: null input.
         assertThrows(NullPointerException.class, () -> BodyFatPercentage.isValidBodyFatPercentage(null));
 
-        // invalid body fat percentage
-        assertFalse(BodyFatPercentage.isValidBodyFatPercentage(" ")); // spaces only
-        assertFalse(BodyFatPercentage.isValidBodyFatPercentage("0.9")); // below lower bound
-        assertFalse(BodyFatPercentage.isValidBodyFatPercentage("75.1")); // above upper bound
-        assertFalse(BodyFatPercentage.isValidBodyFatPercentage("18.55")); // more than 1 decimal place
-        assertFalse(BodyFatPercentage.isValidBodyFatPercentage("abc")); // non-numeric
-        assertFalse(BodyFatPercentage.isValidBodyFatPercentage("20%")); // contains symbol
+        // EP: invalid textual/format inputs.
+        assertFalse(BodyFatPercentage.isValidBodyFatPercentage(" ")); // BVA: blank/whitespace-only input
+        assertFalse(BodyFatPercentage.isValidBodyFatPercentage("18.55")); // EP: precision > 1 decimal place
+        assertFalse(BodyFatPercentage.isValidBodyFatPercentage("abc")); // EP: non-numeric input
+        assertFalse(BodyFatPercentage.isValidBodyFatPercentage("20%")); // EP: numeric value with symbol suffix
 
-        // valid body fat percentage
-        assertTrue(BodyFatPercentage.isValidBodyFatPercentage("")); // default placeholder
-        assertTrue(BodyFatPercentage.isValidBodyFatPercentage("1.0")); // lower bound
-        assertTrue(BodyFatPercentage.isValidBodyFatPercentage("18")); // whole number
-        assertTrue(BodyFatPercentage.isValidBodyFatPercentage("18.")); // trailing dot
-        assertTrue(BodyFatPercentage.isValidBodyFatPercentage("18.5")); // one decimal place
-        assertTrue(BodyFatPercentage.isValidBodyFatPercentage("75.0")); // upper bound
+        // EP: out-of-range numeric inputs.
+        assertFalse(BodyFatPercentage.isValidBodyFatPercentage("0.9")); // BVA: just below lower bound
+        assertFalse(BodyFatPercentage.isValidBodyFatPercentage("75.1")); // BVA: just above upper bound
+
+        // EP: valid inputs, including canonical and normalized forms.
+        assertTrue(BodyFatPercentage.isValidBodyFatPercentage("")); // EP: explicit clear/empty value
+        assertTrue(BodyFatPercentage.isValidBodyFatPercentage("1.0")); // BVA: lower bound
+        assertTrue(BodyFatPercentage.isValidBodyFatPercentage("18")); // EP: whole number within range
+        assertTrue(BodyFatPercentage.isValidBodyFatPercentage("18.")); // EP: trailing dot normalization
+        assertTrue(BodyFatPercentage.isValidBodyFatPercentage("18.5")); // EP: one decimal place within range
+        assertTrue(BodyFatPercentage.isValidBodyFatPercentage("75.0")); // BVA: upper bound
     }
 
     @Test

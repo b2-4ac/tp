@@ -64,6 +64,8 @@ public class FilterCommandTest {
 
     @Test
     public void execute_zeroKeywords_noPersonFound() {
+        // EP: empty keyword list predicate.
+        // BVA: zero-keyword boundary.
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
         LocationContainsKeywordsPredicate predicate = new LocationContainsKeywordsPredicate(Collections.emptyList());
         FilterCommand command = new FilterCommand(predicate);
@@ -74,6 +76,7 @@ public class FilterCommandTest {
 
     @Test
     public void execute_singleKeywords_multiplePersonsFound() {
+        // EP: single phrase keyword input.
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 5);
         LocationContainsKeywordsPredicate predicate = preparePredicate("Anytime");
         FilterCommand command = new FilterCommand(predicate);
@@ -84,6 +87,7 @@ public class FilterCommandTest {
 
     @Test
     public void execute_multipleKeywords_multiplePersonsFound() {
+        // EP: multiple phrase keywords input.
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 3);
         LocationContainsKeywordsPredicate predicate = preparePredicate("Anytime Fitness Buona", "Clementi");
         FilterCommand command = new FilterCommand(predicate);
@@ -94,6 +98,8 @@ public class FilterCommandTest {
 
     @Test
     public void execute_blankPhrase_filtersPersonsWithEmptyLocation() {
+        // EP: blank phrase matches clients whose location is explicitly empty.
+        // BVA: empty-string phrase boundary.
         Person noLocationPerson = new PersonBuilder()
                 .withId(UUID.randomUUID().toString())
                 .withName("No Location Client")

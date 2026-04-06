@@ -48,6 +48,7 @@ public class MeasureCommandTest {
      */
     @Test
     public void execute_updateMeasurementsUnfilteredList_success() {
+        // EP: unfiltered list + all measurement fields set.
         Person firstPerson = getFirstFilteredPerson(model);
         Person editedPerson = new PersonBuilder(firstPerson)
                 .withHeight(VALID_HEIGHT_AMY)
@@ -77,6 +78,7 @@ public class MeasureCommandTest {
      */
     @Test
     public void execute_updateMeasurementsFilteredList_success() {
+        // EP: filtered list + partial field update.
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
 
         Person firstPerson = getFirstFilteredPerson(model);
@@ -102,6 +104,8 @@ public class MeasureCommandTest {
      */
     @Test
     public void execute_clearMeasurements_success() {
+        // EP: clear semantics for all provided fields.
+        // BVA: empty-string measurement values.
         Person firstPerson = getFirstFilteredPerson(model);
         Person editedPerson = new PersonBuilder(firstPerson)
                 .withHeight("")
@@ -127,6 +131,7 @@ public class MeasureCommandTest {
      */
     @Test
     public void execute_clearMeasurementsAlreadyCleared_success() {
+        // EP: idempotent clear on already-empty fields.
         Person firstPerson = getFirstFilteredPerson(model);
         Person personWithClearedMeasurements = new PersonBuilder(firstPerson)
                 .withHeight("")
@@ -157,6 +162,7 @@ public class MeasureCommandTest {
      */
     @Test
     public void execute_updateAndClearMeasurements_success() {
+        // EP: mixed set/clear behavior in one execution.
         Person firstPerson = getFirstFilteredPerson(model);
         Person editedPerson = new PersonBuilder(firstPerson)
                 .withHeight("180.0")
@@ -181,6 +187,7 @@ public class MeasureCommandTest {
      */
     @Test
     public void execute_updateAndAlreadyClearedMeasurements_success() {
+        // EP: mixed set + already-cleared feedback path.
         Person firstPerson = getFirstFilteredPerson(model);
         Person personWithClearedHeight = new PersonBuilder(firstPerson)
                 .withHeight("")
@@ -212,6 +219,7 @@ public class MeasureCommandTest {
      */
     @Test
     public void execute_updateBodyFatOnly_success() {
+        // EP: single-field update (body fat only).
         Person firstPerson = getFirstFilteredPerson(model);
         Person editedPerson = new PersonBuilder(firstPerson)
                 .withBodyFatPercentage(VALID_BODY_FAT_AMY)
@@ -234,6 +242,7 @@ public class MeasureCommandTest {
      */
     @Test
     public void execute_clearBodyFatAlreadyCleared_success() {
+        // EP: single-field clear when field already empty.
         Person firstPerson = getFirstFilteredPerson(model);
         Person personWithClearedBodyFat = new PersonBuilder(firstPerson)
                 .withBodyFatPercentage("")
@@ -258,6 +267,7 @@ public class MeasureCommandTest {
      */
     @Test
     public void execute_clearWeightOnly_success() {
+        // EP: single-field clear while others remain unchanged.
         Person firstPerson = getFirstFilteredPerson(model);
         Person editedPerson = new PersonBuilder(firstPerson)
                 .withWeight("")
@@ -280,6 +290,8 @@ public class MeasureCommandTest {
      */
     @Test
     public void execute_invalidPersonIndexUnfilteredList_failure() {
+        // EP: invalid index on unfiltered list.
+        // BVA: first out-of-bounds index = size + 1.
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
         MeasureCommand measureCommand = new MeasureCommand(outOfBoundIndex,
                 new Height(VALID_HEIGHT_AMY), null, null);
@@ -292,6 +304,8 @@ public class MeasureCommandTest {
      */
     @Test
     public void execute_invalidPersonIndexFilteredList_failure() {
+        // EP: index valid in backing list but invalid in filtered view.
+        // BVA: filtered-list upper boundary breach.
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
         Index outOfBoundIndex = INDEX_SECOND_PERSON;
 
@@ -343,6 +357,7 @@ public class MeasureCommandTest {
      */
     @Test
     public void constructor_noMeasurementsProvided_throwsIllegalArgumentException() {
+        // EP: no measurement payload provided at all.
         assertThrows(IllegalArgumentException.class, () -> new MeasureCommand(INDEX_FIRST_PERSON, null, null, null));
     }
 

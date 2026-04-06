@@ -60,6 +60,7 @@ public class EditCommandParserTest {
 
     @Test
     public void parse_missingParts_failure() {
+        // EP: missing required command components (index and/or editable fields).
         // no index specified
         assertParseFailure(parser, VALID_NAME_AMY, MESSAGE_INVALID_FORMAT);
 
@@ -72,6 +73,8 @@ public class EditCommandParserTest {
 
     @Test
     public void parse_invalidPreamble_failure() {
+        // EP: invalid preamble/index token variants.
+        // BVA: non-positive index boundaries (0 and negative).
         // negative index
         assertParseFailure(parser, "-5" + NAME_DESC_AMY, MESSAGE_INVALID_FORMAT);
 
@@ -87,6 +90,7 @@ public class EditCommandParserTest {
 
     @Test
     public void parse_invalidValue_failure() {
+        // EP: invalid values for each editable field partition.
         assertParseFailure(parser, "1" + INVALID_NAME_DESC, Name.MESSAGE_CONSTRAINTS); // invalid name
         assertParseFailure(parser, "1" + INVALID_PHONE_DESC, Phone.MESSAGE_CONSTRAINTS); // invalid phone
         assertParseFailure(parser, "1" + INVALID_EMAIL_DESC, Email.MESSAGE_CONSTRAINTS); // invalid email
@@ -108,6 +112,7 @@ public class EditCommandParserTest {
     }
     @Test
     public void parse_multipleInvalidFields_reportsAllErrorsTogether() {
+        // EP: multiple invalid non-tag fields should aggregate errors.
         String userInput = "1" + INVALID_NAME_DESC + INVALID_PHONE_DESC + INVALID_EMAIL_DESC;
 
         assertParseFailure(parser, userInput,
@@ -116,6 +121,7 @@ public class EditCommandParserTest {
 
     @Test
     public void parse_invalidTagAndInvalidField_reportsAllErrorsTogether() {
+        // EP: mixed invalid tag + invalid non-tag field should aggregate errors.
         String userInput = "1" + INVALID_EMAIL_DESC + INVALID_TAG_DESC;
 
         assertParseFailure(parser, userInput,
@@ -124,6 +130,7 @@ public class EditCommandParserTest {
 
     @Test
     public void parse_allFieldsSpecified_success() {
+        // EP: all supported editable fields provided with valid values.
         Index targetIndex = INDEX_SECOND_PERSON;
         String userInput = targetIndex.getOneBased() + PHONE_DESC_BOB + TAG_DESC_HUSBAND
                 + EMAIL_DESC_AMY + ADDRESS_DESC_AMY + NAME_DESC_AMY + TAG_DESC_FRIEND;
@@ -138,6 +145,7 @@ public class EditCommandParserTest {
 
     @Test
     public void parse_someFieldsSpecified_success() {
+        // EP: subset of editable fields provided.
         Index targetIndex = INDEX_FIRST_PERSON;
         String userInput = targetIndex.getOneBased() + PHONE_DESC_BOB + EMAIL_DESC_AMY;
 
@@ -150,6 +158,7 @@ public class EditCommandParserTest {
 
     @Test
     public void parse_oneFieldSpecified_success() {
+        // EP: exactly one valid field specified at a time.
         // name
         Index targetIndex = INDEX_THIRD_PERSON;
         String userInput = targetIndex.getOneBased() + NAME_DESC_AMY;
@@ -191,6 +200,7 @@ public class EditCommandParserTest {
 
     @Test
     public void parse_multipleRepeatedFields_failure() {
+        // EP: repeated non-tag prefixes are rejected regardless of value validity.
         // More extensive testing of duplicate parameter detections is done in
         // AddCommandParserTest#parse_repeatedNonTagValue_failure()
 
@@ -223,6 +233,8 @@ public class EditCommandParserTest {
 
     @Test
     public void parse_resetTags_success() {
+        // EP: explicit tag reset via empty t/ value.
+        // BVA: empty-string-equivalent value after tag prefix.
         Index targetIndex = INDEX_THIRD_PERSON;
         String userInput = targetIndex.getOneBased() + TAG_EMPTY;
 

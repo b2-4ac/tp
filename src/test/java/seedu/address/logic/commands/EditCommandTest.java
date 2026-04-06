@@ -42,6 +42,7 @@ public class EditCommandTest {
 
     @Test
     public void execute_allFieldsSpecifiedUnfilteredList_success() {
+        // EP: unfiltered list with all editable fields specified.
 
         Person editedPerson = new PersonBuilder()
                 .withNote(model.getFilteredPersonList().get(0).getNote().value)
@@ -70,6 +71,7 @@ public class EditCommandTest {
 
     @Test
     public void execute_someFieldsSpecifiedUnfilteredList_success() {
+        // EP: unfiltered list with subset of fields specified.
         Index indexLastPerson = Index.fromOneBased(model.getFilteredPersonList().size());
         Person lastPerson = model.getFilteredPersonList().get(indexLastPerson.getZeroBased());
 
@@ -92,6 +94,7 @@ public class EditCommandTest {
 
     @Test
     public void execute_noFieldSpecifiedUnfilteredList_success() {
+        // EP: no-op edit descriptor (no fields specified).
         EditCommand editCommand = new EditCommand(INDEX_FIRST_PERSON, new EditPersonDescriptor());
         Person editedPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
 
@@ -105,6 +108,7 @@ public class EditCommandTest {
 
     @Test
     public void execute_filteredList_success() {
+        // EP: valid edit on filtered list.
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
 
         Person personInFilteredList = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
@@ -125,6 +129,7 @@ public class EditCommandTest {
 
     @Test
     public void execute_duplicatePersonUnfilteredList_failure() {
+        // EP: duplicate person detection in unfiltered list.
         Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(firstPerson).build();
         EditCommand editCommand = new EditCommand(INDEX_SECOND_PERSON, descriptor);
@@ -134,6 +139,7 @@ public class EditCommandTest {
 
     @Test
     public void execute_duplicatePersonFilteredList_failure() {
+        // EP: duplicate person detection in filtered list.
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
 
         // edit client in filtered list into a duplicate in PowerRoster
@@ -146,6 +152,8 @@ public class EditCommandTest {
 
     @Test
     public void execute_invalidPersonIndexUnfilteredList_failure() {
+        // EP: index out of range for unfiltered list.
+        // BVA: first out-of-bounds index = size + 1.
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withName(VALID_NAME_BOB).build();
         EditCommand editCommand = new EditCommand(outOfBoundIndex, descriptor);
@@ -159,6 +167,8 @@ public class EditCommandTest {
      */
     @Test
     public void execute_invalidPersonIndexFilteredList_failure() {
+        // EP: index valid in full list but invalid in current filtered view.
+        // BVA: breach at filtered-list boundary.
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
         Index outOfBoundIndex = INDEX_SECOND_PERSON;
         // ensures that outOfBoundIndex is still in bounds of PowerRoster list

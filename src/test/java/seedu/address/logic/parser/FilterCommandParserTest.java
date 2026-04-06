@@ -17,18 +17,23 @@ public class FilterCommandParserTest {
 
     @Test
     public void parse_emptyArg_throwsParseException() {
+        // EP: no usable argument content.
+        // BVA: whitespace-only input.
         assertParseFailure(parser, "     ", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                 FilterCommand.MESSAGE_USAGE));
     }
 
     @Test
     public void parse_missingPrefix_throwsParseException() {
+        // EP: location phrase provided without required l/ prefix.
         assertParseFailure(parser, "Anytime Fitness Jurong",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, FilterCommand.MESSAGE_USAGE));
     }
 
     @Test
     public void parse_multiplePrefixesWithBlankValue_throwsParseException() {
+        // EP: multiple prefixed phrases where at least one phrase is blank.
+        // BVA: blank value at end and at start of repeated-prefix sequence.
         assertParseFailure(parser, " l/Anytime Fitness Jurong l/   ",
                 FilterCommandParser.MESSAGE_MULTIPLE_PREFIXES_CANNOT_BE_BLANK);
 
@@ -38,30 +43,31 @@ public class FilterCommandParserTest {
 
     @Test
     public void parse_validArgs_returnsFilterCommand() {
-        // no leading and trailing whitespaces
+        // EP: single valid phrase.
         String[] testSingleLocationArray = {"Anytime Fitness Jurong"};
         FilterCommand expectedSingleFilterCommand =
                 new FilterCommand(new LocationContainsKeywordsPredicate(Arrays.asList(testSingleLocationArray)));
         assertParseSuccess(parser, " l/Anytime Fitness Jurong", expectedSingleFilterCommand);
 
-        // multiple whitespaces between words in l/ command reduced to single spaces
+        // EP: valid phrase requiring whitespace normalization.
         FilterCommand expectedNormalizedSingleFilterCommand =
                 new FilterCommand(new LocationContainsKeywordsPredicate(Arrays.asList(testSingleLocationArray)));
         assertParseSuccess(parser, " l/Anytime   Fitness    Jurong", expectedNormalizedSingleFilterCommand);
 
-        // blank value filters clients with no specified location
+        // EP: explicit empty phrase (clear/missing-location filter semantics).
+        // BVA: empty string value right after prefix.
         FilterCommand expectedBlankFilterCommand =
                 new FilterCommand(new LocationContainsKeywordsPredicate(Arrays.asList("")));
         assertParseSuccess(parser, " l/", expectedBlankFilterCommand);
 
-        // multiple l/ phrases are supported
+        // EP: multiple valid l/ phrases.
         FilterCommand expectedMultiplePhrasesFilterCommand =
                 new FilterCommand(new LocationContainsKeywordsPredicate(
                         Arrays.asList("Anytime Fitness Jurong", "Clementi")));
         assertParseSuccess(parser, " l/Anytime Fitness Jurong l/Clementi",
                 expectedMultiplePhrasesFilterCommand);
 
-        // mixed-case phrases should be accepted as-is by parser
+        // EP: case-variant phrases should still parse successfully.
         FilterCommand expectedMixedCaseFilterCommand =
                 new FilterCommand(new LocationContainsKeywordsPredicate(
                         Arrays.asList("aNyTiMe FiTnEsS jUrOnG", "cLeMeNtI")));
