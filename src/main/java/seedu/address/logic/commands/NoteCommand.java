@@ -3,7 +3,9 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
+import java.util.logging.Logger;
 
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
@@ -37,6 +39,8 @@ public class NoteCommand extends Command {
     public static final String MESSAGE_NOTE_ALREADY_CLEARED = "Note is already cleared for client: %1$s";
     public static final String MESSAGE_ARGUMENTS = "Index: %1$d, Note: %2$s";
 
+    private static final Logger logger = LogsCenter.getLogger(ViewCommand.class);
+
     private final Index index;
     private final Note note;
     private final boolean isAppend;
@@ -61,6 +65,7 @@ public class NoteCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+        logger.info("Executing note command for index: " + index.getOneBased());
         List<Person> lastShownList = model.getFilteredPersonList();
         if (index.getZeroBased() >= lastShownList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
