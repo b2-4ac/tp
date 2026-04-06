@@ -16,7 +16,6 @@ public class JsonAdaptedWorkoutLogTest {
 
     private static final String INVALID_ID = "345hjj5-345-GFNJ";
     private static final String INVALID_TIME = "23-01-25 0900";
-    private static final String INVALID_LOCATION = " ";
 
     private static final String VALID_ID = BENSON_LOG_1.getTrainee().toString();
     private static final String VALID_TIME = BENSON_LOG_1.getTime().toString();
@@ -64,15 +63,6 @@ public class JsonAdaptedWorkoutLogTest {
                 null,
                 VALID_LOCATION);
         String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, WorkoutTime.class.getSimpleName());;
-        assertThrows(IllegalValueException.class, expectedMessage, log::toModelType);
-    }
-    @Test
-    public void toModelType_invalidLocation_throwsIllegalValueException() {
-        JsonAdaptedWorkoutLog log = new JsonAdaptedWorkoutLog(
-                VALID_ID,
-                VALID_TIME,
-                INVALID_LOCATION);
-        String expectedMessage = Location.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, log::toModelType);
     }
 

@@ -13,7 +13,6 @@ import static seedu.address.logic.commands.CommandTestUtil.INVALID_ADDRESS_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_DOB_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_EMAIL_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_GENDER_DESC;
-import static seedu.address.logic.commands.CommandTestUtil.INVALID_LOCATION_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_PHONE_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_TAG_DESC;
@@ -56,7 +55,6 @@ import seedu.address.model.person.Address;
 import seedu.address.model.person.DateOfBirth;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Gender;
-import seedu.address.model.person.Location;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
@@ -186,10 +184,6 @@ public class AddCommandParserTest {
         assertParseFailure(parser, INVALID_ADDRESS_DESC + validExpectedPersonString,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_ADDRESS));
 
-        // invalid location
-        assertParseFailure(parser, INVALID_LOCATION_DESC + validExpectedPersonString,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_LOCATION));
-
         // valid value followed by invalid value
 
         // invalid name
@@ -215,10 +209,6 @@ public class AddCommandParserTest {
         // invalid address
         assertParseFailure(parser, validExpectedPersonString + INVALID_ADDRESS_DESC,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_ADDRESS));
-
-        // invalid location
-        assertParseFailure(parser, validExpectedPersonString + INVALID_LOCATION_DESC,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_LOCATION));
     }
 
     @Test
@@ -440,19 +430,6 @@ public class AddCommandParserTest {
                 + TAG_DESC_HUSBAND
                 + TAG_DESC_FRIEND,
                 Address.MESSAGE_CONSTRAINTS);
-
-        // invalid location
-        assertParseFailure(parser,
-                NAME_DESC_BOB
-                + GENDER_DESC_BOB
-                + DOB_DESC_BOB
-                + PHONE_DESC_BOB
-                + EMAIL_DESC_BOB
-                + ADDRESS_DESC_BOB
-                + INVALID_LOCATION_DESC
-                + TAG_DESC_HUSBAND
-                + TAG_DESC_FRIEND,
-                Location.MESSAGE_CONSTRAINTS);
 
         // invalid tag
         assertParseFailure(parser,

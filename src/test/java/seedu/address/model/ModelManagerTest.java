@@ -8,6 +8,8 @@ import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.BENSON;
 import static seedu.address.testutil.TypicalPersons.CARL;
+import static seedu.address.testutil.TypicalWorkoutLogs.ALICE_LOG_1;
+import static seedu.address.testutil.TypicalWorkoutLogs.BENSON_LOG_1;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -132,6 +134,17 @@ public class ModelManagerTest {
         // Should have only BENSON (has "Meier" in name)
         assertEquals(1, modelManager.getFilteredPersonList().size());
         assertEquals(BENSON, modelManager.getFilteredPersonList().get(0));
+    }
+
+    @Test
+    public void resetLogs_logsInLogBook_emptyLogBook() {
+        modelManager.addLog(ALICE_LOG_1);
+        modelManager.addLog(BENSON_LOG_1);
+
+        modelManager.resetLogs();
+
+        assertFalse(modelManager.hasLog(ALICE_LOG_1));
+        assertFalse(modelManager.hasLog(BENSON_LOG_1));
     }
 
     @Test

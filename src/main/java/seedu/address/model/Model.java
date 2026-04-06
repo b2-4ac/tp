@@ -97,6 +97,11 @@ public interface Model {
     WorkoutLogBook getWorkoutLogBook();
 
     /**
+     * Deletes all current logs in the {@code WorkoutLogBook}
+     */
+    void resetLogs();
+
+    /**
      * Returns true if a workout log with the same identity as {@code log} exists in
      * the workout log book.
      */

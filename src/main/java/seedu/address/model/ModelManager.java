@@ -167,6 +167,11 @@ public class ModelManager implements Model {
     }
 
     @Override
+    public void resetLogs() {
+        workoutLogBook.resetLogs();
+    }
+
+    @Override
     public boolean hasLog(WorkoutLog log) {
         requireNonNull(log);
         return workoutLogBook.hasLog(log);
