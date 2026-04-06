@@ -6,7 +6,7 @@
 
 # PowerRoster User Guide
 
-PowerRoster is a **desktop app built to help Freelance Personal Fitness Trainers manage client contacts.** It is a centralised client management system for trainers to keep track and access client information such as personal details, gym locations, and individual notes. It is optimized for use via a Command Line Interface (CLI) while still having the benefits of a Graphical User Interface (GUI).
+PowerRoster is a **desktop app built to help Freelance Personal Fitness Trainers manage clients.** It is a centralised client management system for trainers to keep track and access client information such as personal details, gym locations, and individual notes. It is optimized for use via a Command Line Interface (CLI) while still having the benefits of a Graphical User Interface (GUI).
 
 <!-- * Table of Contents -->
 <page-nav-print />
@@ -23,19 +23,19 @@ PowerRoster is a **desktop app built to help Freelance Personal Fitness Trainers
 1. Copy the file to the folder you want to use as the _home folder_ for your PowerRoster.
 
 1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar PowerRoster.jar` command to run the application.<br>
-   A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
+   A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data. You can use `clear` if you want to remove all sample clients.<br>
    ![Ui](images/Ui.png)
 
 1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
    Some example commands you can try:
 
-   * `list` : Lists all contacts.
+   * `list` : Lists all clients.
 
-   * `add n/John Tan g/M dob/24/12/1999 p/98765432 e/johnt@example.com a/123 Sengkang East, #01-01 l/ActiveSG @ Fernvale Square t/beginner` : Adds a contact named `John Tan` to the PowerRoster.
+   * `add n/John Tan g/M dob/24/12/1999 p/98765432 e/johnt@example.com a/123 Sengkang East, #01-01 l/ActiveSG @ Fernvale Square t/beginner` : Adds a client named `John Tan` to PowerRoster.
 
-   * `delete 3` : Deletes the 3rd contact shown in the current list.
+   * `delete 3` : Deletes the 3rd client shown in the current list.
 
-   * `clear` : Deletes all contacts.
+   * `clear` : Deletes all clients.
 
    * `exit` : Exits the app.
 
@@ -95,13 +95,17 @@ Format: `add n/NAME g/GENDER dob/DATE_OF_BIRTH p/PHONE_NUMBER e/EMAIL_ADDRESS a/
 
 * Names with forward slashes (e.g., "s/o" for "son of") are not supported due to the "/" being used as a command delimiter. You can replace the slashes with spaces (e.g., "Muthu s/o Rajan" can be entered as "Muthu s o Rajan".)
 * Other names with non-alphanumeric characters like José Muñoz or 小明 should be replaced with suitable alphanumeric characters.
-* `NAME` are case-sensitive for duplicate detection
-* `EMAIL_ADDRESS` must not contain consecutive special characters in the local-part (the part before `@`).
+* `NAME` is case-sensitive for duplicate detection
+* `EMAIL_ADDRESS` must be in `local-part@domain` format (e.g., `alex@example.com`):
+  * Local-part supports letters/digits and `+_.-` (not at the start/end, and not consecutively)
+  * Each domain label starts and ends with an alphanumeric character and may contain single hyphens in between (no consecutive hyphens)
+  * The part after the final dot (e.g., `com` in `example.com`) must be at least 2 characters
 * `GENDER` must be either `M` or `F` (case-insensitive)
 * `DATE_OF_BIRTH` must follow the format 'DD/MM/YYYY'
 * `DATE_OF_BIRTH` must be a valid date, not in the future, and not more than 100 years in the past.
 * `LOCATION` can contain any value.
 * If `LOCATION` is omitted, the client is treated as having no specified location and the UI displays `N/A`.
+* Repeated use of the same non-tag prefix is not allowed (e.g., `n/Alex n/Jordan`). Repeating `t/` is allowed for multiple tags.
 
 <box type="tip" seamless>
 
@@ -110,7 +114,7 @@ Format: `add n/NAME g/GENDER dob/DATE_OF_BIRTH p/PHONE_NUMBER e/EMAIL_ADDRESS a/
 
 Examples:
 * `add n/John Tan g/M dob/24/12/1999 p/98765432 e/johnt@example.com a/123 Sengkang East, #01-01 l/ActiveSG @ Fernvale Square t/beginner`
-* `add n/Danielle Lim g/F dob/13/06/2001 t/athlete e/danielle@example.com a/456 Jurong West, #02-02 l/GymBoxx @ JCube Mall`
+* `add n/Danielle Lim g/F dob/13/06/2001 p/91234567 t/athlete e/danielle@example.com a/456 Jurong West, #02-02 l/GymBoxx @ JCube Mall`
 
 ### Listing all clients: `list`
 
@@ -118,7 +122,7 @@ Shows a list of all clients in PowerRoster.
 
 Format: `list`
 
-* `list` shows all clients by resetting any active filter, while preserving the current sort order (if any).
+* `list` shows all clients by resetting any active filter, while preserving the current sor order (if any).
 
 ### Viewing a client's full profile: `view`
 
@@ -128,6 +132,8 @@ Format: `view INDEX`
 
 * Views the client at the specified `INDEX`. The index refers to the index number shown in the displayed client list. The index **must be a positive integer** 1, 2, 3, …​
 * The detailed profile appears in the right-side Client Details panel.
+
+![View command showing full profile in the Client Details panel](images/viewClientProfileResult.png)
 
 Examples:
 * `view 1` shows the full profile of the 1st client in the current list.
@@ -144,6 +150,7 @@ Format: `edit INDEX [n/NAME] [g/GENDER] [dob/DATE_OF_BIRTH] [p/PHONE] [e/EMAIL] 
 * Existing values will be updated to the input values.
 * Feedback (e.g. `added/updated` or `unchanged`) is shown per specified field.
 * If multiple provided field values are invalid in one command, all related validation errors are shown together.
+* Repeated use of the same non-tag prefix is not allowed (e.g., `p/91234567 p/98765432`). Repeating `t/` is allowed for multiple tags.
 * When editing tags, the existing tags of the client will be removed i.e adding of tags is not cumulative.
 * You can remove all the client’s tags by typing `t/` without specifying any tags after it.
 
@@ -153,7 +160,7 @@ Examples:
 
 ### Adding notes to a client: `note`
 
-Adds / appends a note to an existing client in PowerRoster.
+Adds/appends a note to an existing client in PowerRoster.
 
 Format: `note INDEX n/NOTE` or `note INDEX a/NOTE`
 
@@ -167,11 +174,11 @@ Format: `note INDEX n/NOTE` or `note INDEX a/NOTE`
 
 Examples:
 * `note 1 n/Prefers morning sessions.` adds the note `Prefers morning sessions.` to the 1st client, replacing any existing notes.
-* `note 2 a/Just recovered from a knee injury.` appends the note `Just recovered from a knee injury.` to the 2nd client's existing notes. If the 2nd client has no existing notes, this behaves the same as `n/Just recovered from a knee injury.`.
+* If the 2nd client currently has note `Prefers morning sessions.`, `note 2 a/Just recovered from a knee injury.` updates it to `Prefers morning sessions. Just recovered from a knee injury.` (a space is inserted before the appended note).
 
 ### Assigning a client's workout programme: `plan`
 
-Assigns / unassigns the workout programme of an existing client in PowerRoster.
+Assigns/unassigns the workout programme of an existing client in PowerRoster.
 
 Format: `plan INDEX wp/PLAN_CATEGORY`
 
@@ -190,7 +197,7 @@ Examples:
 
 ### Setting a client's session rate: `rate`
 
-Sets / clears the session rate of an existing client in PowerRoster.
+Sets/clears the session rate of an existing client in PowerRoster.
 
 Format: `rate INDEX r/RATE`
 
@@ -199,7 +206,7 @@ Format: `rate INDEX r/RATE`
 * Valid examples include `120`, `120.5`, `120.50`, `.50`, and `120.`.
 * Invalid examples include `-10`, `1,000`, `100.000`, `$100`.
 * Entering `r/` with no value clears the client's existing rate.
-* Rate values are normalized to 2 decimal places when stored and displayed.
+* Repeated use of the same prefix (e.g., `r/120 r/130`) is not allowed.
 * Client rates can only be changed using `rate` (not `edit`).
 
 Examples:
@@ -209,7 +216,7 @@ Examples:
 
 ### Updating a client's body measurements: `measure`
 
-Sets / clears body measurements of an existing client in PowerRoster.
+Sets/clears body measurements of an existing client in PowerRoster.
 
 Format: `measure INDEX [h/HEIGHT_CM] [w/WEIGHT_KG] [bf/BODY_FAT_PERCENTAGE]`
 
@@ -219,8 +226,9 @@ Format: `measure INDEX [h/HEIGHT_CM] [w/WEIGHT_KG] [bf/BODY_FAT_PERCENTAGE]`
 * `HEIGHT_CM` must be either blank or a number in cm between `50.0` and `300.0`, with up to 1 decimal place.
 * `WEIGHT_KG` must be either blank or a number in kg between `20.0` and `500.0`, with up to 1 decimal place.
 * `BODY_FAT_PERCENTAGE` must be either blank or a number between `1.0` and `75.0`, with up to 1 decimal place.
-* Trailing-dot values such as `170.` are accepted and normalized to 1 decimal place when stored and displayed in the UI.
+* Values like `170.` are accepted.
 * Entering `h/`, `w/`, or `bf/` with no value clears that specific measurement.
+* Repeated use of the same prefix (e.g., `h/175.0 h/180.0`) is not allowed.
 * Measurements can only be changed using `measure` (not `edit`).
 
 Examples:
@@ -235,9 +243,7 @@ Changes the status of an existing client in PowerRoster between active and inact
 
 Format: `status INDEX s/STATUS`
 
-* Changes the status of the client at the specified `INDEX`.
-* The index refers to the index number shown in the displayed client list.
-* The index **must be a positive integer** 1, 2, 3, …​
+* Changes the status of the client at the specified `INDEX`, where `INDEX` is the index shown in the displayed client list and **must be a positive integer** 1, 2, 3, …​
 * `STATUS` must be either `active` or `inactive` (case-insensitive).
 * Repeated use of the same prefix is not allowed (e.g., `status 1 s/active s/inactive`) and will result in an error.
 * If the client's status is already set to the specified value, a message will be shown and no change will be made.
@@ -261,15 +267,18 @@ Format: `find KEYWORD [MORE_KEYWORDS]`
 * Only full words will be matched e.g. `Han` will not match `Hans`
 * Clients matching at least one keyword will be returned (i.e. `OR` search).
   e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
+* You can run `sort` after `find` to sort only the matching results.
+* If a sort order is currently active, it is preserved in the find results.
 
 Examples:
 * `find John` returns `john` and `John Doe`
-* `find alex david` returns `Alex Yeoh`, `David Li`<br>
-  ![result for 'find alex david'](images/findAlexDavidResult.png)
+* `find alex david` returns `Alex Yeoh`, `David Li`
+
+![Find command result showing matched clients](images/findResult.png)
 
 ### Filtering clients by location: `filter`
 
-Filters clients whose gym location contain any of the given location phrase(s).
+Filters clients whose gym location contains any of the given location phrase(s).
 
 Format: `filter l/LOCATION_PHRASE [l/MORE_LOCATION_PHRASES]...`
 
@@ -277,9 +286,10 @@ Format: `filter l/LOCATION_PHRASE [l/MORE_LOCATION_PHRASES]...`
 * The search is case-insensitive. e.g. specifying `l/Clementi` will match `Clementi ActiveSG Gym`.
 * Each `l/` prefix is treated as one location phrase. e.g. `filter l/Anytime Fitness Jurong` will use `Anytime Fitness Jurong` as a phrase to match.
 * Multiple `l/` prefixes are supported and clients matching at least one phrase are returned (i.e. `OR` search).
-* Extra spaces within a phrase are normalised. e.g. `filter l/Anytime   Fitness` will be treated as `filter l/Anytime Fitness`.
+* Extra spaces within a phrase are normalised. e.g. `filter l/Anytime   Fitness` behaves the same as `filter l/Anytime Fitness`.
 * Entering `l/` with no value filters clients with no specified location.
 * If multiple `l/` prefixes are provided, each must have a non-blank value. e.g. `filter l/Clementi l/` is invalid.
+* If a sort order is currently active, it is preserved in the filter results.
 
 Examples:
 * `filter l/Clementi` returns all clients whose locations contain the phrase `Clementi` such as `Clementi ActiveSG Gym` and `Anytime Fitness Clementi`.
@@ -294,8 +304,7 @@ Sorts the client list by a specified attribute in ascending or descending order.
 Format: `sort ATTRIBUTE/ [o/ORDER]`
 
 * Sorts the **currently displayed** client list by the specified attribute. If a filter is active, only the filtered results are sorted; if no filter is active, the entire client list is sorted.
-* Only one attribute can be specified at a time. Specifying more than one will result in an error.
-* The attribute prefix and the order prefix must be separated by a space. For example, `sort n/ o/desc` is valid, but `sort n/o/desc` is not and will result in an error.
+* Only one attribute can be specified at a time.
 * The order parameter is optional and defaults to ascending (`asc`) if not specified.
 * Repeated use of the same prefix is not allowed (e.g., `sort n/ n/` or `sort n/ o/asc o/desc`) and will result in an error.
 * Once set, the sort order persists after `list`, `find`, and `filter` commands until replaced by another `sort` command.
@@ -313,6 +322,7 @@ Format: `sort ATTRIBUTE/ [o/ORDER]`
 * Order options:
   * `o/asc` - Ascending order (A to Z, earliest to latest, 0 to 9)
   * `o/desc` - Descending order (Z to A, latest to earliest, 9 to 0)
+* The attribute prefix and the order prefix must be separated by a space. For example, `sort n/ o/desc` is valid, but `sort n/o/desc` is not and will result in an error.
 * Clients with no location set are always sorted to the **end** of the list in ascending order, and to the **top** of the list in descending order, so they do not interleave with real location names.
 
 Examples:
@@ -323,7 +333,9 @@ Examples:
 * `sort s/` sorts the displayed client list by status, active clients first.
 * `sort r/ o/desc` sorts the displayed client list by session rate, highest rate first.
 * `sort wp/` sorts the displayed client list by workout plan alphabetically.
-* `filter l/Clementi` followed by `sort n/` filters clients at Clementi locations, then sorts only those filtered results by name.
+* `filter l/ActiveSG` followed by `sort n/` filters clients at ActiveSG locations, then sorts only those filtered results by name.
+
+![Sort command result showing reordered client list](images/sortResult.png)
 
 
 ### Deleting a client: `delete`
@@ -335,6 +347,7 @@ Format: `delete INDEX`
 * Deletes the client at the specified `INDEX`.
 * The index refers to the index number shown in the displayed client list.
 * The index **must be a positive integer** 1, 2, 3, …​
+* Deleting a client also deletes all workout logs linked to that client.
 
 Examples:
 * `list` followed by `delete 2` deletes the 2nd client in PowerRoster.
@@ -353,7 +366,8 @@ Format: `log INDEX [time/TIME] [l/LOCATION]`
 * If `TIME` is not declared, the current time will be used.
 * `LOCATION` can take on any value.
 * If `LOCATION` is not specified, the client's preset location will be used.
-* If `LOCATION` is not specified and the client does not have a preset location, `N/A` will be used.
+* A duplicate workout log for the same client at the same date and time is not allowed.
+* Repeated use of the same prefix (e.g., `time/01/01/2026 10:00 time/02/01/2026 10:00` or `l/Gym A l/Gym B`) is not allowed.
 
 Examples:
 * `log 1` Logs a workout for the first client in the displayed list using the current time and their specified location.
@@ -368,13 +382,14 @@ Format: `last INDEX`
 * Retrieves details of the most recent workout for the client at the specified `INDEX`
 * The index refers to the index number shown in the displayed client list.
 * The index **must be a positive integer** 1, 2, 3, ...
+* If the client has no logged workouts, a message is shown.
 
 Examples:
 * `last 5` Retrieves the Date and Location of the last workout for the fifth client in the displayed list.
 
 ### Clearing all entries: `clear`
 
-Clears all entries from PowerRoster.
+Clears all clients and workout logs from PowerRoster.
 
 Format: `clear`
 
@@ -399,7 +414,7 @@ If your changes to the data file makes its format invalid, PowerRoster will disc
 Furthermore, certain edits can cause the PowerRoster to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </box>
 
-### Archiving data files `[coming in v2.0]`
+### Archiving data files `[coming soon]`
 
 _Details coming soon ..._
 
@@ -454,4 +469,5 @@ Action     | Format, Examples
 **Sort**   | `sort ATTRIBUTE/ [o/ORDER]`<br> e.g., `sort n/`, `sort dob/ o/desc`, `sort r/ o/desc`, `sort s/`, `sort wp/`
 **List**   | `list`
 **View**   | `view INDEX`<br> e.g., `view 1`
+**Exit**   | `exit`
 **Help**   | `help [COMMAND_WORD]`<br> e.g., `help`, `help add`
