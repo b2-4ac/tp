@@ -33,6 +33,10 @@ public class WorkoutLogBook {
         return new ArrayList<>(logs);
     }
 
+    public void resetLogs() {
+        this.logs = new ArrayList<>();
+    }
+
     /**
      * Returns true if the current Log is already present in memory.
      *

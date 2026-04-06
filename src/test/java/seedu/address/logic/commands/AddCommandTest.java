@@ -182,6 +182,11 @@ public class AddCommandTest {
         }
 
         @Override
+        public void resetLogs() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public boolean hasLog(WorkoutLog log) {
             throw new AssertionError("This method should not be called.");
         }

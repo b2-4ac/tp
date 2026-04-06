@@ -73,9 +73,6 @@ public class JsonAdaptedWorkoutLog {
                     MISSING_FIELD_MESSAGE_FORMAT,
                     Location.class.getSimpleName()));
         }
-        if (!Location.isValidLocation(location)) {
-            throw new IllegalValueException(Location.MESSAGE_CONSTRAINTS);
-        }
         final Location modelLocation = new Location(location);
 
         return new WorkoutLog(modelTraineeId, modelTime, modelLocation);

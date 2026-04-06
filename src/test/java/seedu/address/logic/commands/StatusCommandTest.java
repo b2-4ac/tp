@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
+import static seedu.address.logic.commands.CommandTestUtil.showPersonAtIndex;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
@@ -42,6 +43,19 @@ public class StatusCommandTest {
         expectedModel.setPerson(personToEdit, editedPerson);
 
         assertCommandSuccess(statusCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_filteredList_filterPreserved() throws Exception {
+        // Simulate "find <name>" — filter to show only the first person
+        showPersonAtIndex(model, INDEX_FIRST_PERSON);
+
+        // Run status on that person
+        StatusCommand statusCommand = new StatusCommand(INDEX_FIRST_PERSON, new Status("inactive"));
+        statusCommand.execute(model);
+
+        // Filter should still show only 1 person, not reset to all persons
+        assertEquals(1, model.getFilteredPersonList().size());
     }
 
     @Test

@@ -1,27 +1,17 @@
 package seedu.address.model.person;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.address.commons.util.AppUtil.checkArgument;
 
 /**
  * Represents a client's preferred gym location in PowerRoster.
- * Guarantees: immutable; is valid as declared in
- * {@link #isValidLocation(String)}
+ * Guarantees: immutable;
  */
 public class Location {
     public static final String MESSAGE_CONSTRAINTS =
-        "Locations can take any alphanumeric input and the @ symbol. "
+        "Locations can take any value. "
         + "Leave it blank to indicate no specified location.";
 
     public static final String EMPTY_LOCATION = "";
-
-    /*
-     * The first character of the location must not be a whitespace,
-     * otherwise " " (a blank string) becomes a valid input.
-     * A valid location includes alphanumeric characters and the
-     * @ symbol only.
-     */
-    public static final String VALIDATION_REGEX = "^[a-zA-Z0-9@][a-zA-Z0-9@\\s]*$";
 
     public final String value;
 
@@ -32,16 +22,7 @@ public class Location {
      */
     public Location(String location) {
         requireNonNull(location);
-        checkArgument(isValidLocation(location), MESSAGE_CONSTRAINTS);
         value = location;
-    }
-
-    /**
-     * Returns true if a given string is a valid location.
-     */
-    public static boolean isValidLocation(String test) {
-        requireNonNull(test);
-        return EMPTY_LOCATION.equals(test) || test.matches(VALIDATION_REGEX);
     }
 
     @Override

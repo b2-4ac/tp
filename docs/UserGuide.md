@@ -101,7 +101,8 @@ Format: `add n/NAME g/GENDER dob/DATE_OF_BIRTH p/PHONE_NUMBER e/EMAIL_ADDRESS a/
 * `GENDER` must be either `M` or `F` (case-insensitive)
 * `DATE_OF_BIRTH` must follow the format 'DD/MM/YYYY'
 * `DATE_OF_BIRTH` must be a valid date, not in the future, and not more than 100 years in the past.
-* If `l/LOCATION` is omitted, the client is treated as having no specified location and the UI displays `N/A`.
+* `LOCATION` can contain any value.
+* If `LOCATION` is omitted, the client is treated as having no specified location and the UI displays `N/A`.
 * Repeated use of the same non-tag prefix is not allowed (e.g., `n/Alex n/Jordan`). Repeating `t/` is allowed for multiple tags.
 
 <box type="tip" seamless>
@@ -365,6 +366,7 @@ Format: `log INDEX [time/TIME] [l/LOCATION]`
 * `TIME` must be a valid date and time not in the future, nor more than 50 years in the past.
 * `TIME` must be in the format: "DD/MM/YYYY HH:mm"
 * If `TIME` is not declared, the current time will be used.
+* `LOCATION` can take on any value.
 * If `LOCATION` is not specified, the client's preset location will be used.
 * If `LOCATION` is not specified and the client does not have a preset location, `N/A` will be used.
 * Repeated use of the same prefix (e.g., `time/01/01/2026 10:00 time/02/01/2026 10:00` or `l/Gym A l/Gym B`) is not allowed.
@@ -422,6 +424,11 @@ _Details coming soon ..._
 
 ### Editing and Deleting workout logs `[coming soon]`
 * Users will be able to edit and delete workout logs.
+
+_Details coming soon ..._
+
+### More information to be recorded in workout logs `[coming soon]`
+* Workout Logs will hold more information regarding the specific workout. (E.g. Exercises, Sets, Reps etc...)
 
 _Details coming soon ..._
 
