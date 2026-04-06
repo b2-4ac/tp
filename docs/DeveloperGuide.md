@@ -949,3 +949,17 @@ Compared with baseline AB3, the project required additional effort in three main
 
 ### Conclusion
 Overall, our team has worked together well to achieve the current release of PowerRoster v1.5, everyone has put in a sufficiently large amount of effort to ensure that the product has minimal bugs and suits the target user and value proposition we set out at the start of this project.
+
+--------------------------------------------------------------------------------------------------------------------
+
+## **Appendix: Planned Enhancements**
+
+Team size: 5
+
+1. **Make client-name validation more inclusive for legal name patterns:** The current name validation rejects some commonly used legal-name fragments (e.g., `s/o`, `d/o`) because of slash handling in command parsing. Although we have stated this in the user guide and provided the workaround for users, we plan to look into adjusting name parsing/validation so these patterns can be entered safely while preserving command-prefix parsing reliability.
+
+2. **Extend workout log viewing from only latest-session to session-history view:** Currently, trainers can only retrieve the most recent session for a client. We plan to add a history-view flow that shows multiple past workout entries in reverse chronological order so trainers can review progression across sessions, not just retrieve the most recent session.
+
+3. **Expand workout log and workout plan detail granularity:** Current workout logs and assigned plans are intentionally compact. We plan to support richer structured details (e.g., exercise type, set count, repetition count) to improve training traceability and give the trainer access to more information for planning, tracking, etc. while keeping input constraints clear.
+
+4. **Add explicit currency support for client session rates:** The current rate field stores numeric values without an explicit currency label and it is up to the user to be aware of the currency type of the values they are storing. We plan to allow trainers to specify a currency code for rate values and display it consistently in command feedback and UI.
