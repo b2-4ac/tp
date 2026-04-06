@@ -914,3 +914,38 @@ testers are expected to do more *exploratory* testing.
       1. Edit `data/addressbook.json` and introduce invalid JSON (e.g., remove a closing bracket).
       1. Re-launch the app.
       Expected: App handles read failure gracefully and initializes fallback data; an error is logged.
+
+--------------------------------------------------------------------------------------------------------------------
+
+## **Appendix: Effort**
+
+This project started from AddressBook-Level3 and evolved into a personal fitness trainer-centric roster management application.
+
+### Scope and difficulty
+
+Compared with baseline AB3, the project required additional effort in three main areas:
+
+* **Domain adaptation**: Adapting AB3's generic contact model to support a trainer workflow while preserving the architecture quality that was already present in AB3, along with command clarity and consistency. The AB3 mainly dealt with one entity (Person) but to support our target user, we had to add in another entity (WorkoutLog) which increased the difficulty of this project.
+* **Feature expansion**: Adding and integrating useful commands and fields (e.g., session rate, body measurements, workout plan, workout logs) across logic, model, storage, and UI. Our team also put in much effort in designing and enhancing the UI to better suit our target user.
+* **Validation and UX consistency**: Ensuring robust validation rules, clear error handling, and predictable behavior especially when combining operations such as find, sort then view.
+
+### Key implementation challenges
+
+* **Cross-component changes**: Many features required synchronized updates across parser, command, model entities, JSON adapters, and UI rendering.
+* **Backward compatibility of stored data**: New fields required careful handling during loading to avoid breaking existing data files.
+* **Keeping documentation aligned with implementation**: As command semantics evolved, use cases, requirements, and manual testing steps needed updates to remain accurate.
+
+### Effort distribution (high-level)
+
+* **Core feature implementation and integration**: Largest share of effort for all members, with features split evenly amongst everyone.
+* **Testing and bug fixing**: Significant effort due to validation edge cases and the inclusion of clear error messages depending on each scenario.
+* **Documentation and diagrams**: Average effort to maintain implementation-accurate descriptions and clarity.
+
+### Reuse and its impact
+
+* The project reuses the **AB3 architecture and project scaffold** as its foundation. This was particularly helpful when the team was implementing new fields and commands which followed a similar workflow as existing commands such as add and edit.
+* Reuse reduced setup and boilerplate effort, allowing the team to focus effort on domain-specific behavior which included adding additional fields, commands and other features.
+* Third-party libraries (e.g., JavaFX, Jackson, JUnit) were used as standard infrastructure (brought over from AB3). The main effort remained in integrating them into product-specific logic and constraints.
+
+### Conclusion
+Overall, our team has worked together well to achieve the current release of PowerRoster v1.5, everyone has put in a sufficiently large amount of effort to ensure that the product has minimal bugs and suits the target user and value proposition we set out at the start of this project.
