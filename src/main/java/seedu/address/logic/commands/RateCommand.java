@@ -29,6 +29,7 @@ public class RateCommand extends Command {
             + COMMAND_WORD + " 3 r/";
 
     public static final String MESSAGE_SET_SUCCESS = "Rate added/updated to %2$s for client: %1$s";
+    public static final String MESSAGE_NO_CHANGE_SUCCESS = "Rate unchanged for client: %1$s";
     public static final String MESSAGE_CLEAR_SUCCESS = "Rate cleared for client: %1$s";
     public static final String MESSAGE_RATE_ALREADY_CLEARED =
             "Rate is already cleared for client: %1$s";
@@ -86,6 +87,9 @@ public class RateCommand extends Command {
         }
         if (isRateCleared) {
             return MESSAGE_CLEAR_SUCCESS;
+        }
+        if (personToEdit.getRate().equals(rate)) {
+            return MESSAGE_NO_CHANGE_SUCCESS;
         }
         return MESSAGE_SET_SUCCESS;
     }

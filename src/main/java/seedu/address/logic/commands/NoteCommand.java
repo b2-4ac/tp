@@ -34,6 +34,7 @@ public class NoteCommand extends Command {
     public static final String MESSAGE_NOCHANGE_SUCCESS =
             "No changes made to note for client: %1$s";
     public static final String MESSAGE_DELETE_SUCCESS = "Note deleted from client: %1$s";
+    public static final String MESSAGE_NOTE_ALREADY_CLEARED = "Note is already cleared for client: %1$s";
     public static final String MESSAGE_ARGUMENTS = "Index: %1$d, Note: %2$s";
 
     private final Index index;
@@ -125,6 +126,10 @@ public class NoteCommand extends Command {
 
         if (isAppend && !finalNote.value.isEmpty()) {
             return String.format(MESSAGE_APPEND_SUCCESS, Messages.format(editedPerson));
+        }
+
+        if (finalNote.value.isEmpty() && personToEdit.getNote().value.isEmpty()) {
+            return String.format(MESSAGE_NOTE_ALREADY_CLEARED, Messages.format(editedPerson));
         }
 
         String message = finalNote.value.isEmpty() ? MESSAGE_DELETE_SUCCESS : MESSAGE_ADD_SUCCESS;
