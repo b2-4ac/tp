@@ -83,8 +83,6 @@ Examples:
 * `help` shows all available commands and their usage
 * `help add` shows only the usage instructions for the add command
 * `help filter` shows only the usage instructions for the filter command
-* `help sort` shows only the usage instructions for the sort command
-* `help log` shows only the usage instructions for the log command
 
 
 ### Adding a client: `add`
@@ -122,7 +120,9 @@ Shows a list of all clients in PowerRoster.
 
 Format: `list`
 
-* `list` shows all clients by resetting any active filter, while preserving the current sor order (if any).
+* `list` shows all clients by resetting any active filter, while preserving the current sort order (if any).
+
+![List command showing all clients in the client list panel](images/listClientsResult.png)
 
 ### Viewing a client's full profile: `view`
 
@@ -214,7 +214,7 @@ Examples:
 * `rate 2 r/80.5` sets the 2nd client's rate to `80.50`.
 * `rate 3 r/` clears the 3rd client's rate.
 
-### Updating a client's body measurements: `measure`
+### Setting a client's body measurements: `measure`
 
 Sets/clears body measurements of an existing client in PowerRoster.
 
@@ -297,6 +297,8 @@ Examples:
 * `filter l/Anytime Fitness l/Clementi` returns clients whose locations contain `Anytime Fitness` or `Clementi`.
 * `filter l/` returns clients with no specified location.
 
+![Filter command result showing location-filtered clients](images/filterResult.png)
+
 ### Sorting clients: `sort`
 
 Sorts the client list by a specified attribute in ascending or descending order.
@@ -304,7 +306,8 @@ Sorts the client list by a specified attribute in ascending or descending order.
 Format: `sort ATTRIBUTE/ [o/ORDER]`
 
 * Sorts the **currently displayed** client list by the specified attribute. If a filter is active, only the filtered results are sorted; if no filter is active, the entire client list is sorted.
-* Only one attribute can be specified at a time.
+* Only one sorting attribute (`n/`, `l/`, `dob/`, `p/`, `e/`, `a/`, `g/`, `s/`, `wp/`, or `r/`) can be specified at a time.
+* The sorting attribute prefix must be provided without a value (e.g., `sort n/` is valid, `sort n/Alex` is invalid).
 * The order parameter is optional and defaults to ascending (`asc`) if not specified.
 * Repeated use of the same prefix is not allowed (e.g., `sort n/ n/` or `sort n/ o/asc o/desc`) and will result in an error.
 * Once set, the sort order persists after `list`, `find`, and `filter` commands until replaced by another `sort` command.
@@ -318,7 +321,7 @@ Format: `sort ATTRIBUTE/ [o/ORDER]`
   * `g/` - Sort by gender
   * `s/` - Sort by status (active before inactive)
   * `wp/` - Sort by workout plan (alphabetical)
-  * `r/` - Sort by session rate (clients with no rate set sort to the end in ascending order)
+  * `r/` - Sort by session rate (clients with no rate set sort first)
 * Order options:
   * `o/asc` - Ascending order (A to Z, earliest to latest, 0 to 9)
   * `o/desc` - Descending order (Z to A, latest to earliest, 9 to 0)
@@ -387,7 +390,7 @@ Format: `last INDEX`
 Examples:
 * `last 5` Retrieves the Date and Location of the last workout for the fifth client in the displayed list.
 
-### Clearing all entries: `clear`
+### Clearing all clients: `clear`
 
 Clears all clients and workout logs from PowerRoster.
 
