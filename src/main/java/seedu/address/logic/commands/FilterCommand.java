@@ -47,7 +47,7 @@ public class FilterCommand extends Command {
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
-        logger.info("Executing filter command");
+        logger.info("Executing filter command with predicate: " + predicate);
 
         model.updateFilteredPersonList(predicate);
         assert model.getFilteredPersonList() != null : "Filtered person list should never be null";
