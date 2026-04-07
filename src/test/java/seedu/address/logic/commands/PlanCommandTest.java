@@ -45,6 +45,7 @@ public class PlanCommandTest {
      */
     @Test
     public void execute_addPlanUnfilteredList_success() {
+        // EP: unfiltered list update with a non-default valid plan.
         Person firstPerson = getFirstFilteredPerson(model);
         Person editedPerson = new PersonBuilder(firstPerson).withPlan(VALID_PLAN_AMY).build();
 
@@ -64,6 +65,7 @@ public class PlanCommandTest {
      */
     @Test
     public void execute_addPlanFilteredList_success() {
+        // EP: filtered list update with a non-default valid plan.
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
 
         Person firstPerson = getFirstFilteredPerson(model);
@@ -86,6 +88,7 @@ public class PlanCommandTest {
      */
     @Test
     public void execute_addFullBodyPlanUnfilteredList_success() {
+        // EP: valid multi-word category partition ("FULL BODY").
         Person firstPerson = getFirstFilteredPerson(model);
         Plan fullBodyPlan = new Plan("FULL BODY");
         Person editedPerson = new PersonBuilder(firstPerson).withPlan("FULL BODY").build();
@@ -106,6 +109,8 @@ public class PlanCommandTest {
      */
     @Test
     public void execute_clearPlan_success() {
+        // EP: clear semantics from assigned plan to default plan.
+        // BVA: transition to default/empty-equivalent plan state.
         Person firstPerson = getFirstFilteredPerson(model);
         Person personWithAssignedPlan = new PersonBuilder(firstPerson).withPlan(VALID_PLAN_AMY).build();
         model.setPerson(firstPerson, personWithAssignedPlan);
@@ -128,6 +133,7 @@ public class PlanCommandTest {
      */
     @Test
     public void execute_clearPlanAlreadyCleared_success() {
+        // EP: idempotent clear when plan is already default.
         Person firstPerson = getFirstFilteredPerson(model);
         Person personWithClearedPlan = new PersonBuilder(firstPerson).withPlan(Plan.DEFAULT_PLAN_TEXT).build();
         model.setPerson(firstPerson, personWithClearedPlan);
@@ -149,6 +155,8 @@ public class PlanCommandTest {
      */
     @Test
     public void execute_invalidPersonIndexUnfilteredList_failure() {
+        // EP: invalid index on unfiltered list.
+        // BVA: first out-of-bounds index = size + 1.
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
         PlanCommand planCommand = new PlanCommand(outOfBoundIndex, new Plan(VALID_PLAN_BOB));
 
@@ -160,6 +168,8 @@ public class PlanCommandTest {
      */
     @Test
     public void execute_invalidPersonIndexFilteredList_failure() {
+        // EP: index valid in backing list but invalid in filtered view.
+        // BVA: filtered-list boundary breach.
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
         Index outOfBoundIndex = INDEX_SECOND_PERSON;
 

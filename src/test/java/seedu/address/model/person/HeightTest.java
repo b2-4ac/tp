@@ -16,30 +16,34 @@ public class HeightTest {
 
     @Test
     public void constructor_invalidHeight_throwsIllegalArgumentException() {
+        // EP: invalid numeric value below accepted range.
+        // BVA: just below lower bound (50.0).
         String invalidHeight = "49.9";
         assertThrows(IllegalArgumentException.class, () -> new Height(invalidHeight));
     }
 
     @Test
     public void isValidHeight() {
-        // null height
+        // EP: null input.
         assertThrows(NullPointerException.class, () -> Height.isValidHeight(null));
 
-        // invalid height
-        assertFalse(Height.isValidHeight(" ")); // spaces only
-        assertFalse(Height.isValidHeight("49.9")); // below lower bound
-        assertFalse(Height.isValidHeight("300.1")); // above upper bound
-        assertFalse(Height.isValidHeight("170.55")); // more than 1 decimal place
-        assertFalse(Height.isValidHeight("abc")); // non-numeric
-        assertFalse(Height.isValidHeight("170cm")); // contains unit suffix
+        // EP: invalid textual/format inputs.
+        assertFalse(Height.isValidHeight(" ")); // BVA: blank/whitespace-only input
+        assertFalse(Height.isValidHeight("170.55")); // EP: precision > 1 decimal place
+        assertFalse(Height.isValidHeight("abc")); // EP: non-numeric input
+        assertFalse(Height.isValidHeight("170cm")); // EP: numeric value with unit suffix
 
-        // valid height
-        assertTrue(Height.isValidHeight("")); // default placeholder
-        assertTrue(Height.isValidHeight("50.0")); // lower bound
-        assertTrue(Height.isValidHeight("170")); // whole number
-        assertTrue(Height.isValidHeight("170.")); // trailing dot
-        assertTrue(Height.isValidHeight("170.5")); // one decimal place
-        assertTrue(Height.isValidHeight("300.0")); // upper bound
+        // EP: out-of-range numeric inputs.
+        assertFalse(Height.isValidHeight("49.9")); // BVA: just below lower bound
+        assertFalse(Height.isValidHeight("300.1")); // BVA: just above upper bound
+
+        // EP: valid inputs, including canonical and normalized forms.
+        assertTrue(Height.isValidHeight("")); // EP: explicit clear/empty value
+        assertTrue(Height.isValidHeight("50.0")); // BVA: lower bound
+        assertTrue(Height.isValidHeight("170")); // EP: whole number within range
+        assertTrue(Height.isValidHeight("170.")); // EP: trailing dot normalization
+        assertTrue(Height.isValidHeight("170.5")); // EP: one decimal place within range
+        assertTrue(Height.isValidHeight("300.0")); // BVA: upper bound
     }
 
     @Test
