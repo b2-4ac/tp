@@ -21,8 +21,6 @@ public class HelpCommand extends Command {
             + "Example: " + COMMAND_WORD + " (shows all commands) or " + COMMAND_WORD
             + " add (shows add command only)";
 
-    public static final String SHOWING_HELP_MESSAGE = "Opened help window.";
-
     private final String targetCommand;
 
     public HelpCommand(String targetCommand) {
