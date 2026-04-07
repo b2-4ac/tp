@@ -167,12 +167,18 @@ public class Person {
     }
 
     /**
+     * Returns a {@link Builder} pre-populated with this person's fields.
+     */
+    public Builder toBuilder() {
+        return new Builder(this);
+    }
+
+    /**
      * Returns a copy of this person with the given status.
      */
     public Person withStatus(Status newStatus) {
         requireAllNonNull(newStatus);
-        return new Person(id, name, gender, dob, phone, email, address, location,
-                note, plan, rate, newStatus, height, weight, bodyFatPercentage, getTags());
+        return toBuilder().setStatus(newStatus).build();
     }
 
     /**
@@ -180,8 +186,7 @@ public class Person {
      */
     public Person withNote(Note newNote) {
         requireAllNonNull(newNote);
-        return new Person(id, name, gender, dob, phone, email, address, location,
-                newNote, plan, rate, status, height, weight, bodyFatPercentage, getTags());
+        return toBuilder().setNote(newNote).build();
     }
 
     /**
@@ -189,8 +194,7 @@ public class Person {
      */
     public Person withRate(Rate newRate) {
         requireAllNonNull(newRate);
-        return new Person(id, name, gender, dob, phone, email, address, location,
-                note, plan, newRate, status, height, weight, bodyFatPercentage, getTags());
+        return toBuilder().setRate(newRate).build();
     }
 
     /**
@@ -198,8 +202,7 @@ public class Person {
      */
     public Person withPlan(Plan newPlan) {
         requireAllNonNull(newPlan);
-        return new Person(id, name, gender, dob, phone, email, address, location,
-                note, newPlan, rate, status, height, weight, bodyFatPercentage, getTags());
+        return toBuilder().setPlan(newPlan).build();
     }
 
     /**
@@ -207,8 +210,91 @@ public class Person {
      */
     public Person withMeasurements(Height newHeight, Weight newWeight, BodyFatPercentage newBodyFatPercentage) {
         requireAllNonNull(newHeight, newWeight, newBodyFatPercentage);
-        return new Person(id, name, gender, dob, phone, email, address, location,
-                note, plan, rate, status, newHeight, newWeight, newBodyFatPercentage, getTags());
+        return toBuilder().setHeight(newHeight).setWeight(newWeight).setBodyFatPercentage(newBodyFatPercentage).build();
+    }
+
+    /**
+     * Builder for creating modified copies of a {@link Person}.
+     * Use {@link Person#toBuilder()} to obtain a pre-populated instance.
+     */
+    public static class Builder {
+        private ClientId id;
+        private Name name;
+        private Gender gender;
+        private DateOfBirth dob;
+        private Phone phone;
+        private Email email;
+        private Address address;
+        private Location location;
+        private Note note;
+        private Plan plan;
+        private Rate rate;
+        private Status status;
+        private Height height;
+        private Weight weight;
+        private BodyFatPercentage bodyFatPercentage;
+        private Set<Tag> tags;
+
+        /** Copy constructor — copies all fields from {@code person}. */
+        public Builder(Person person) {
+            this.id = person.id;
+            this.name = person.name;
+            this.gender = person.gender;
+            this.dob = person.dob;
+            this.phone = person.phone;
+            this.email = person.email;
+            this.address = person.address;
+            this.location = person.location;
+            this.note = person.note;
+            this.plan = person.plan;
+            this.rate = person.rate;
+            this.status = person.status;
+            this.height = person.height;
+            this.weight = person.weight;
+            this.bodyFatPercentage = person.bodyFatPercentage;
+            this.tags = new HashSet<>(person.tags);
+        }
+
+        public Builder setStatus(Status status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder setNote(Note note) {
+            this.note = note;
+            return this;
+        }
+
+        public Builder setRate(Rate rate) {
+            this.rate = rate;
+            return this;
+        }
+
+        public Builder setPlan(Plan plan) {
+            this.plan = plan;
+            return this;
+        }
+
+        public Builder setHeight(Height height) {
+            this.height = height;
+            return this;
+        }
+
+        public Builder setWeight(Weight weight) {
+            this.weight = weight;
+            return this;
+        }
+
+        public Builder setBodyFatPercentage(BodyFatPercentage bodyFatPercentage) {
+            this.bodyFatPercentage = bodyFatPercentage;
+            return this;
+        }
+
+        /** Builds and returns the new {@link Person}. */
+        public Person build() {
+            return new Person(id, name, gender, dob, phone, email, address, location,
+                    note, plan, rate, status, height, weight, bodyFatPercentage, tags);
+        }
     }
 
     /**
