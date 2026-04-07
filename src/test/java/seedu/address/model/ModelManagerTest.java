@@ -154,7 +154,7 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void hasLog_logNotInLogBook_returnsTrue() {
+    public void hasLog_logNotInLogBook_returnsFalse() {
         assertFalse(modelManager.hasLog(ALICE_LOG_1));
     }
 
