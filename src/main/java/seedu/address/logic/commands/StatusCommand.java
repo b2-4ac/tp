@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_STATUS;
 
 import java.util.List;
+import java.util.Objects;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.ToStringBuilder;
@@ -63,23 +64,7 @@ public class StatusCommand extends Command {
                     String.format(MESSAGE_NOT_CHANGED, status, Messages.format(personToEdit)));
         }
 
-        Person editedPerson = new Person(
-                personToEdit.getId(),
-                personToEdit.getName(),
-                personToEdit.getGender(),
-                personToEdit.getDateOfBirth(),
-                personToEdit.getPhone(),
-                personToEdit.getEmail(),
-                personToEdit.getAddress(),
-                personToEdit.getLocation(),
-                personToEdit.getNote(),
-                personToEdit.getPlan(),
-                personToEdit.getRate(),
-                status, // NEW STATUS
-                personToEdit.getHeight(),
-                personToEdit.getWeight(),
-                personToEdit.getBodyFatPercentage(),
-                personToEdit.getTags());
+        Person editedPerson = personToEdit.withStatus(status);
 
         model.setPerson(personToEdit, editedPerson);
         return new CommandResult(String.format(MESSAGE_STATUS_PERSON_SUCCESS, Messages.format(editedPerson)));
@@ -98,6 +83,11 @@ public class StatusCommand extends Command {
         StatusCommand otherStatusCommand = (StatusCommand) other;
         return index.equals(otherStatusCommand.index)
                 && status.equals(otherStatusCommand.status);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(index, status);
     }
 
     @Override

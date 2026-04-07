@@ -95,24 +95,8 @@ public class NoteCommand extends Command {
         return new Note(existingNote + " " + appendedNote);
     }
 
-    private Person createPersonWithUpdatedNote(Person personToEdit, Note finalNote) {
-        return new Person(
-                personToEdit.getId(),
-                personToEdit.getName(),
-                personToEdit.getGender(),
-                personToEdit.getDateOfBirth(),
-                personToEdit.getPhone(),
-                personToEdit.getEmail(),
-                personToEdit.getAddress(),
-                personToEdit.getLocation(),
-                finalNote,
-                personToEdit.getPlan(),
-                personToEdit.getRate(),
-                personToEdit.getStatus(),
-                personToEdit.getHeight(),
-                personToEdit.getWeight(),
-                personToEdit.getBodyFatPercentage(),
-                personToEdit.getTags());
+    private static Person createPersonWithUpdatedNote(Person personToEdit, Note finalNote) {
+        return personToEdit.withNote(finalNote);
     }
 
     /**
