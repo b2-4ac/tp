@@ -14,6 +14,23 @@ import seedu.address.testutil.WorkoutLogBuilder;
 public class WorkoutLogTest {
     @Test
     public void isSameLog() {
+        // EP: Same object
+        assertTrue(ALICE_LOG_1.isSameLog(ALICE_LOG_1));
+
+        // EP: null Input
+        assertFalse(ALICE_LOG_1.isSameLog(null));
+
+        // EP: Same values
+        ClientId aliceId = ALICE_LOG_1.getTrainee();
+        WorkoutTime aliceTime = ALICE_LOG_1.getTime();
+        Location aliceLocation = ALICE_LOG_1.getLocation();
+        WorkoutLog sameValuesLog = new WorkoutLogBuilder()
+                .withId(aliceId.toString())
+                .withTime(aliceTime.toString())
+                .withLocation(aliceLocation.toString())
+                .build();
+        assertTrue(ALICE_LOG_1.isSameLog(sameValuesLog));
+
         // EP: Different ClientID only
         ClientId bensonId = BENSON_LOG_1.getTrainee();
         WorkoutLog differentIdLog = new WorkoutLogBuilder(ALICE_LOG_1)

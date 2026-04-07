@@ -81,10 +81,13 @@ public class WorkoutTimeTest {
 
     @Test
     public void equals() {
-        WorkoutTime workoutTime = new WorkoutTime("01/04/2026 13:00");
+        // Record current time
+        LocalDateTime timeNow = LocalDateTime.now();
+        String timeNowString = timeNow.format(WorkoutTime.FORMATTER);
+        WorkoutTime workoutTime = new WorkoutTime(timeNowString);
 
         // EP: Same date and time
-        assertTrue(workoutTime.equals(new WorkoutTime("01/04/2026 13:00")));
+        assertTrue(workoutTime.equals(new WorkoutTime(timeNowString)));
 
         // EP: Same object
         assertTrue(workoutTime.equals(workoutTime));
@@ -96,9 +99,19 @@ public class WorkoutTimeTest {
         assertFalse(workoutTime.equals(5.0f));
 
         // EP: Different date
-        assertFalse(workoutTime.equals(new WorkoutTime("02/04/2026 13:00")));
+        assertFalse(workoutTime.equals(new WorkoutTime(timeNow
+                .minusDays(1)
+                .format(WorkoutTime.FORMATTER))));
+        assertFalse(workoutTime.equals(new WorkoutTime(timeNow
+                .minusMonths(1)
+                .format(WorkoutTime.FORMATTER))));
 
         // EP: Different time
-        assertFalse(workoutTime.equals(new WorkoutTime("01/04/2026 14:00")));
+        assertFalse(workoutTime.equals(new WorkoutTime(timeNow
+                .minusHours(1)
+                .format(WorkoutTime.FORMATTER))));
+        assertFalse(workoutTime.equals(new WorkoutTime(timeNow
+                .minusMinutes(1)
+                .format(WorkoutTime.FORMATTER))));
     }
 }

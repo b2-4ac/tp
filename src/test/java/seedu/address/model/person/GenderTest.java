@@ -50,7 +50,7 @@ public class GenderTest {
     public void equals() {
         Gender gender = new Gender("F");
 
-        // EP: Same gender
+        // EP: Same gender (case-insensitive)
         assertTrue(gender.equals(new Gender("F")));
         assertTrue(gender.equals(new Gender("f")));
 
