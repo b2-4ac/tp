@@ -1,5 +1,7 @@
 package seedu.address.logic.commands;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -14,6 +16,7 @@ public class CommandRegistryTest {
     @Test
     public void getUsageMap_containsAllExpectedCommands() {
         Set<String> keys = CommandRegistry.getUsageMap().keySet();
+        assertEquals(18, keys.size());
         assertTrue(keys.contains(AddCommand.COMMAND_WORD));
         assertTrue(keys.contains(DeleteCommand.COMMAND_WORD));
         assertTrue(keys.contains(EditCommand.COMMAND_WORD));
@@ -39,6 +42,7 @@ public class CommandRegistryTest {
         for (Map.Entry<String, String> entry : CommandRegistry.getUsageMap().entrySet()) {
             assertNotNull(entry.getKey());
             assertNotNull(entry.getValue());
+            assertFalse(entry.getValue().isBlank());
         }
     }
 
