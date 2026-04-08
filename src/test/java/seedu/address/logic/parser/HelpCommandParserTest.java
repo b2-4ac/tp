@@ -36,10 +36,10 @@ public class HelpCommandParserTest {
 
     @Test
     public void parse_caseInsensitiveArg_returnsHelpCommand() {
-        // uppercase normalises to lowercase
+        // EP: uppercase input normalises to lowercase
         assertParseSuccess(parser, "ADD", new HelpCommand("add"));
 
-        // mixed case normalises to lowercase
+        // EP: mixed case input normalises to lowercase
         assertParseSuccess(parser, "Delete", new HelpCommand("delete"));
     }
 }

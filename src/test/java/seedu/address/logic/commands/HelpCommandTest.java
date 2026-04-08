@@ -42,22 +42,22 @@ public class HelpCommandTest {
         HelpCommand helpAllCommand = new HelpCommand("");
         HelpCommand helpAddCommand = new HelpCommand("add");
 
-        // same object -> returns true
+        // EP: same object -> returns true
         assertTrue(helpAllCommand.equals(helpAllCommand));
 
-        // same values -> returns true
+        // EP: same values -> returns true
         assertTrue(helpAllCommand.equals(new HelpCommand("")));
 
-        // different types -> returns false
+        // EP: different types -> returns false
         assertFalse(helpAllCommand.equals(1));
 
-        // null -> returns false
+        // EP: null -> returns false
         assertFalse(helpAllCommand.equals(null));
 
-        // different targetCommand -> returns false
+        // EP: different targetCommand -> returns false
         assertFalse(helpAllCommand.equals(helpAddCommand));
 
-        // case-insensitive normalization: "ADD" and "add" should be equal
+        // EP: case-insensitive normalization — "ADD" and "add" are the same command
         assertTrue(new HelpCommand("ADD").equals(new HelpCommand("add")));
     }
 
