@@ -29,6 +29,10 @@ public class FilterCommandParserTest {
         // EP: location phrase provided without required l/ prefix.
         assertParseFailure(parser, "Anytime Fitness Jurong",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, FilterCommand.MESSAGE_USAGE));
+
+        // EP: unexpected preamble before required l/ prefix.
+        assertParseFailure(parser, "junk l/Clementi",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FilterCommand.MESSAGE_USAGE));
     }
 
     @Test

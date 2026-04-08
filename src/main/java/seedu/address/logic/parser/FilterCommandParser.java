@@ -30,6 +30,11 @@ public class FilterCommandParser implements Parser<FilterCommand> {
     public FilterCommand parse(String args) throws ParseException {
         requireNonNull(args);
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_LOCATION);
+
+        if (!argMultimap.getPreamble().isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FilterCommand.MESSAGE_USAGE));
+        }
+
         List<String> locationKeywords = parseLocationKeywords(argMultimap);
 
         validateLocationKeywords(locationKeywords);

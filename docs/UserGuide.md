@@ -160,12 +160,14 @@ Format: `edit INDEX [n/NAME] [g/GENDER] [dob/DATE_OF_BIRTH] [p/PHONE] [e/EMAIL] 
 * Feedback (e.g. `added/updated` or `unchanged`) is shown per specified field.
 * If multiple provided field values are invalid in one command, all related validation errors are shown together.
 * Repeated use of the same non-tag prefix is not allowed (e.g., `p/91234567 p/98765432`). Repeating `t/` is allowed for multiple tags.
+* You can clear a client's location by typing `l/` without specifying a value after it.
 * When editing tags, the existing tags of the client will be removed i.e adding of tags is not cumulative.
 * You can remove all the client’s tags by typing `t/` without specifying any tags after it.
 
 Examples:
 * `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st client to be `91234567` and `johndoe@example.com` respectively.
 * `edit 2 n/Dylan Lim t/` Edits the name of the 2nd client to be `Dylan Lim` and clears all existing tags.
+* `edit 3 l/` Clears the location of the 3rd client.
 
 ### Adding notes to a client: `note`
 
@@ -196,6 +198,7 @@ Format: `plan INDEX wp/PLAN_CATEGORY`
 * `PLAN_CATEGORY` must be one of: `PUSH`, `PULL`, `LEGS`, `CORE`, `CARDIO`, `MOBILITY`, `FULL BODY`, `CONDITIONING` (case-insensitive).
 * For multi-word categories, spaces, hyphens, and underscores are all accepted as separators.
 * Entering `wp/` with no value unassigns the client's assigned workout programme.
+* Entering `wp/unassigned` (case-insensitive) also unassigns the client's assigned workout programme.
 * Duplicate `wp/` prefixes are not allowed.
 * Workout programmes can only be changed using `plan` (not `edit`).
 
@@ -203,6 +206,7 @@ Examples:
 * `plan 1 wp/PUSH` assigns the 1st client to the `PUSH` programme.
 * `plan 2 wp/full body` assigns the 2nd client to the `FULL BODY` programme.
 * `plan 3 wp/` unassigns the 3rd client's workout programme.
+* `plan 4 wp/unassigned` unassigns the 4th client's workout programme.
 
 ### Setting a client's session rate: `rate`
 
@@ -464,9 +468,9 @@ Action     | Format, Examples
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Log**    | `log INDEX [time/TIME] [l/LOCATION]` <br> e.g., `log 2 l/Sengkang ActiveSG Gym`
 **Last**   | `last INDEX` <br> e.g., `last 5`
-**Edit**   | `edit INDEX [n/NAME] [g/GENDER] [dob/DATE_OF_BIRTH] [p/PHONE] [e/EMAIL] [a/ADDRESS] [l/LOCATION] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
+**Edit**   | `edit INDEX [n/NAME] [g/GENDER] [dob/DATE_OF_BIRTH] [p/PHONE] [e/EMAIL] [a/ADDRESS] [l/LOCATION] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`, `edit 3 l/`
 **Note**   | `note INDEX n/NOTE` or `note INDEX a/NOTE`<br> e.g., `note 1 n/Prefers morning sessions.`
-**Plan**   | `plan INDEX wp/PLAN_CATEGORY`<br> e.g., `plan 1 wp/PUSH`, `plan 2 wp/FULL BODY`, `plan 3 wp/`
+**Plan**   | `plan INDEX wp/PLAN_CATEGORY`<br> e.g., `plan 1 wp/PUSH`, `plan 2 wp/FULL BODY`, `plan 3 wp/`, `plan 4 wp/unassigned`
 **Rate**   | `rate INDEX r/RATE`<br> e.g., `rate 1 r/120.50`, `rate 2 r/`
 **Measure**| `measure INDEX [h/HEIGHT_CM] [w/WEIGHT_KG] [bf/BODY_FAT_PERCENTAGE]`<br> e.g., `measure 1 h/175.5 w/72.0 bf/14.8`, `measure 2 h/`
 **Status** | `status INDEX s/STATUS`<br> e.g., `status 1 s/inactive`
