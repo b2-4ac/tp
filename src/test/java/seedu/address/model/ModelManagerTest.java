@@ -9,6 +9,7 @@ import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.BENSON;
 import static seedu.address.testutil.TypicalPersons.CARL;
 import static seedu.address.testutil.TypicalWorkoutLogs.ALICE_LOG_1;
+import static seedu.address.testutil.TypicalWorkoutLogs.ALICE_LOG_2;
 import static seedu.address.testutil.TypicalWorkoutLogs.BENSON_LOG_1;
 
 import java.nio.file.Path;
@@ -145,6 +146,42 @@ public class ModelManagerTest {
 
         assertFalse(modelManager.hasLog(ALICE_LOG_1));
         assertFalse(modelManager.hasLog(BENSON_LOG_1));
+    }
+
+    @Test
+    public void hasLog_nullLog_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> modelManager.hasLog(null));
+    }
+
+    @Test
+    public void hasLog_logNotInLogBook_returnsFalse() {
+        assertFalse(modelManager.hasLog(ALICE_LOG_1));
+    }
+
+    @Test
+    public void hasLog_logInLogBook_returnsTrue() {
+        modelManager.addLog(ALICE_LOG_1);
+        assertTrue(modelManager.hasLog(ALICE_LOG_1));
+    }
+
+    @Test
+    public void lastLog_multipleLogs_retrievesMostRecentLog() {
+        modelManager.addLog(ALICE_LOG_1);
+        modelManager.addLog(ALICE_LOG_2);
+        assertEquals(ALICE_LOG_2, modelManager.lastLog(ALICE));
+    }
+
+    @Test
+    public void clearLogs_multipleLogs_deletesCorrectLogsOnly() {
+        modelManager.addLog(ALICE_LOG_1);
+        modelManager.addLog(ALICE_LOG_2);
+        modelManager.addLog(BENSON_LOG_1);
+
+        modelManager.clearLogs(ALICE);
+
+        assertFalse(modelManager.hasLog(ALICE_LOG_1));
+        assertFalse(modelManager.hasLog(ALICE_LOG_2));
+        assertTrue(modelManager.hasLog(BENSON_LOG_1));
     }
 
     @Test

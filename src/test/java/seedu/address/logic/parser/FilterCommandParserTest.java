@@ -18,18 +18,23 @@ public class FilterCommandParserTest {
 
     @Test
     public void parse_emptyArg_throwsParseException() {
+        // EP: no usable argument content.
+        // BVA: whitespace-only input.
         assertParseFailure(parser, "     ", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                 FilterCommand.MESSAGE_USAGE));
     }
 
     @Test
     public void parse_missingPrefix_throwsParseException() {
+        // EP: location phrase provided without required l/ prefix.
         assertParseFailure(parser, "Anytime Fitness Jurong",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, FilterCommand.MESSAGE_USAGE));
     }
 
     @Test
     public void parse_multiplePrefixesWithBlankValue_throwsParseException() {
+        // EP: multiple prefixed phrases where at least one phrase is blank.
+        // BVA: blank value at end and at start of repeated-prefix sequence.
         assertParseFailure(parser, " l/Anytime Fitness Jurong l/   ",
                 FilterCommandParser.MESSAGE_MULTIPLE_PREFIXES_CANNOT_BE_BLANK);
 
@@ -39,19 +44,20 @@ public class FilterCommandParserTest {
 
     @Test
     public void parse_validArgs_returnsFilterCommand() {
-        // no leading or trailing whitespace in phrase
+        // EP: single valid phrase.
         assertParsesToCommand(" l/Anytime Fitness Jurong", "Anytime Fitness Jurong");
 
-        // multiple internal spaces are normalized to single spaces
+        // EP: valid phrase requiring whitespace normalization.
         assertParsesToCommand(" l/Anytime   Fitness    Jurong", "Anytime Fitness Jurong");
 
-        // blank phrase is supported to filter clients with empty location
+        // EP: explicit empty phrase (clear/missing-location filter semantics).
+        // BVA: empty string value right after prefix.
         assertParsesToCommand(" l/", "");
 
-        // multiple location phrases are supported
+        // EP: multiple valid l/ phrases.
         assertParsesToCommand(" l/Anytime Fitness Jurong l/Clementi", "Anytime Fitness Jurong", "Clementi");
 
-        // mixed-case phrases are accepted as-is by parser
+        // EP: case-variant phrases should still parse successfully.
         assertParsesToCommand(" l/aNyTiMe FiTnEsS jUrOnG l/cLeMeNtI", "aNyTiMe FiTnEsS jUrOnG", "cLeMeNtI");
     }
 

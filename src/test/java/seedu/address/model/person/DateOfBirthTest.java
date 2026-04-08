@@ -31,39 +31,41 @@ public class DateOfBirthTest {
         // null Date of Birth
         assertThrows(NullPointerException.class, () -> DateOfBirth.isValidDob(null));
 
-        // invalid Date of Birth
-        assertFalse(DateOfBirth.isValidDob("")); // empty string
-        assertFalse(DateOfBirth.isValidDob("abc")); // alphabets
-        assertFalse(DateOfBirth.isValidDob("24-12-2002")); // wrong format
+        // EP: Invalid Formats
+        assertFalse(DateOfBirth.isValidDob(""));
+        assertFalse(DateOfBirth.isValidDob("abc"));
+        assertFalse(DateOfBirth.isValidDob("24-12-2002"));
 
-        // Invalid Month
+        // EP: Invalid Month
         assertFalse(DateOfBirth.isValidDob("24/00/2002"));
         assertFalse(DateOfBirth.isValidDob("24/13/2002"));
 
-        // Invalid Day
+        // EP: Invalid Day
         assertFalse(DateOfBirth.isValidDob("00/12/2002"));
         assertFalse(DateOfBirth.isValidDob("32/12/2002"));
 
-        // Non-existent Dates
+        // EP: Non-existent Dates
         assertFalse(DateOfBirth.isValidDob("29/02/2002")); // not a leap year
         assertFalse(DateOfBirth.isValidDob("31/04/2002"));
 
-        // Future Dates (Invalid)
+        // EP: Future Dates
         assertFalse(DateOfBirth.isValidDob(LocalDate
                 .now()
                 .plusYears(1)
                 .format(DateOfBirth.FORMATTER)));
 
-        // Dates more than 100 years in the past (Invalid)
+        // EP: Dates more than 100 years in the past
         assertFalse(DateOfBirth.isValidDob(LocalDate.now()
                 .minusYears(100)
                 .minusDays(1)
                 .format(DateOfBirth.FORMATTER)));
         assertFalse(DateOfBirth.isValidDob("01/01/1000"));
 
-        // valid Date of Birth
+        // EP: Valid Date of Birth
         assertTrue(DateOfBirth.isValidDob(LocalDate.now()
                 .minusYears(100)
+                .format(DateOfBirth.FORMATTER)));
+        assertTrue(DateOfBirth.isValidDob(LocalDate.now()
                 .format(DateOfBirth.FORMATTER)));
         assertTrue(DateOfBirth.isValidDob("24/04/1987"));
     }
@@ -72,19 +74,19 @@ public class DateOfBirthTest {
     public void equals() {
         DateOfBirth dateOfBirth = new DateOfBirth("16/07/1999");
 
-        // same values -> returns true
+        // EP: Same value
         assertTrue(dateOfBirth.equals(new DateOfBirth("16/07/1999")));
 
-        // same object -> returns true
+        // EP: Same object
         assertTrue(dateOfBirth.equals(dateOfBirth));
 
-        // null -> returns false
+        // EP: null Input
         assertFalse(dateOfBirth.equals(null));
 
-        // different types -> returns false
+        // EP: Different types
         assertFalse(dateOfBirth.equals(5.0f));
 
-        // different values -> returns false
+        // EP: Different values
         assertFalse(dateOfBirth.equals(new DateOfBirth("24/04/1987")));
     }
 }

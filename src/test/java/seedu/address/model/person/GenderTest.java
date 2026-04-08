@@ -22,15 +22,24 @@ public class GenderTest {
 
     @Test
     public void isValidGender() {
-        // null gender
+        // EP: null Input
         assertThrows(NullPointerException.class, () -> Gender.isValidGender(null));
 
-        // invalid genders
-        assertFalse(Gender.isValidGender("")); // empty string
-        assertFalse(Gender.isValidGender(" ")); // spaces only
-        assertFalse(Gender.isValidGender("b")); // input other than m or f
+        // EP: Empty Input
+        assertFalse(Gender.isValidGender(""));
+        assertFalse(Gender.isValidGender(" "));
 
-        // valid genders
+        // EP: Alphabet other than M or F
+        assertFalse(Gender.isValidGender("b"));
+        assertFalse(Gender.isValidGender("c"));
+
+        //EP: Male/Female spelt out
+        assertFalse(Gender.isValidGender("male"));
+        assertFalse(Gender.isValidGender("Male"));
+        assertFalse(Gender.isValidGender("female"));
+        assertFalse(Gender.isValidGender("Female"));
+
+        // EP: Valid genders
         assertTrue(Gender.isValidGender("m"));
         assertTrue(Gender.isValidGender("M"));
         assertTrue(Gender.isValidGender("f"));
@@ -41,23 +50,22 @@ public class GenderTest {
     public void equals() {
         Gender gender = new Gender("F");
 
-        // same values -> returns true
+        // EP: Same gender (case-insensitive)
         assertTrue(gender.equals(new Gender("F")));
-
-        // same values different case -> returns true
         assertTrue(gender.equals(new Gender("f")));
 
-        // same object -> returns true
+        // EP: Same object
         assertTrue(gender.equals(gender));
 
-        // null -> returns false
+        // EP: Null
         assertFalse(gender.equals(null));
 
-        // different types -> returns false
+        // EP: Different types
         assertFalse(gender.equals(5.0f));
 
-        // different values -> returns false
+        // EP: Different gender
         assertFalse(gender.equals(new Gender("M")));
+        assertFalse(gender.equals(new Gender("m")));
     }
 
 }

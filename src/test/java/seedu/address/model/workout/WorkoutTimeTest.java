@@ -27,72 +27,91 @@ public class WorkoutTimeTest {
 
     @Test
     public void isValidTime() {
-        // null Workout Time
+        // EP: null Input
         assertThrows(NullPointerException.class, () -> WorkoutTime.isValidTime(null));
 
-        // invalid Workout Time
+        // EP: Invalid Formats
         assertFalse(WorkoutTime.isValidTime("")); // empty string
         assertFalse(WorkoutTime.isValidTime("abc")); // alphabets
         assertFalse(WorkoutTime.isValidTime("24-12-2002 1400")); // wrong format
 
-        // Invalid Month
+        // EP: Invalid Month
         assertFalse(WorkoutTime.isValidTime("24/00/2002 14:00"));
         assertFalse(WorkoutTime.isValidTime("24/13/2002 14:00"));
 
-        // Invalid Day
+        // EP: Invalid Day
         assertFalse(WorkoutTime.isValidTime("00/12/2002 14:00"));
+        assertFalse(WorkoutTime.isValidTime("32/12/2002 14:00"));
 
-        // Non-existent Date
+        // EP: Non-existent Dates
         assertFalse(WorkoutTime.isValidTime("29/02/2025 14:00")); //not a leap year
         assertFalse(WorkoutTime.isValidTime("31/04/2025 14:00"));
 
-        // Invalid Hour
+        // EP: Invalid Hour
         assertFalse(WorkoutTime.isValidTime("25/04/2025 25:00"));
 
-        // Invalid Minute
+        // EP: Invalid Minute
         assertFalse(WorkoutTime.isValidTime("25/04/2025 14:60"));
 
-        // Future Dates (Invalid)
+        // EP: Future Dates
         assertFalse(WorkoutTime.isValidTime(LocalDateTime.now()
                 .plusYears(1)
                 .format(WorkoutTime.FORMATTER)));
 
-        // Dates more than 50 years older (Invalid)
+        // EP: Dates more than 50 years in the past
         assertFalse(WorkoutTime.isValidTime(LocalDateTime.now()
                 .minusYears(50)
                 .minusSeconds(1)
                 .format(WorkoutTime.FORMATTER)));
 
-        // Date less than 50 years old (Valid)
+        // EP: Dates less than 50 years old
         assertTrue(WorkoutTime.isValidTime(LocalDateTime.now()
                 .minusYears(50)
                 .plusMinutes(1)
                 .format(WorkoutTime.FORMATTER)));
 
-        // Valid Leap Year
+        // EP: Valid Leap Year
         assertTrue(WorkoutTime.isValidTime("29/02/2024 14:00"));
 
-        // valid Workout Time
+        // EP: Valid Workout Time
         assertTrue(WorkoutTime.isValidTime("24/04/1987 14:00"));
+        assertTrue(WorkoutTime.isValidTime(LocalDateTime.now()
+                .format(WorkoutTime.FORMATTER)));
     }
 
     @Test
     public void equals() {
-        WorkoutTime workoutTime = new WorkoutTime("01/04/2026 13:00");
+        // Record current time
+        LocalDateTime timeNow = LocalDateTime.now();
+        String timeNowString = timeNow.format(WorkoutTime.FORMATTER);
+        WorkoutTime workoutTime = new WorkoutTime(timeNowString);
 
-        // same values -> returns true
-        assertTrue(workoutTime.equals(new WorkoutTime("01/04/2026 13:00")));
+        // EP: Same date and time
+        assertTrue(workoutTime.equals(new WorkoutTime(timeNowString)));
 
-        // same object -> returns true
+        // EP: Same object
         assertTrue(workoutTime.equals(workoutTime));
 
-        // null -> returns false
+        // EP: null Input
         assertFalse(workoutTime.equals(null));
 
-        // different types -> returns false
+        // EP: Different types
         assertFalse(workoutTime.equals(5.0f));
 
-        // different values -> returns false
-        assertFalse(workoutTime.equals(new WorkoutTime("02/04/2026 13:00")));
+        // EP: Different date
+        assertFalse(workoutTime.equals(new WorkoutTime(timeNow
+                .minusDays(1)
+                .format(WorkoutTime.FORMATTER))));
+        assertFalse(workoutTime.equals(new WorkoutTime(timeNow
+                .minusMonths(1)
+                .format(WorkoutTime.FORMATTER))));
+
+        // EP: Different time
+        assertFalse(workoutTime.equals(new WorkoutTime(timeNow
+                .minusHours(1)
+                .format(WorkoutTime.FORMATTER))));
+        assertFalse(workoutTime.equals(new WorkoutTime(timeNow
+                .minusMinutes(1)
+                .format(WorkoutTime.FORMATTER))));
     }
 }

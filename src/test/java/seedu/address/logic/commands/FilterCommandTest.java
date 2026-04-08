@@ -64,6 +64,8 @@ public class FilterCommandTest {
 
     @Test
     public void execute_zeroKeywords_noPersonFound() {
+        // EP: empty keyword list predicate.
+        // BVA: zero-keyword boundary.
         LocationContainsKeywordsPredicate predicate = new LocationContainsKeywordsPredicate(Collections.emptyList());
         assertFilterCommandSuccess(predicate, 0);
         assertEquals(Collections.emptyList(), model.getFilteredPersonList());
@@ -71,6 +73,7 @@ public class FilterCommandTest {
 
     @Test
     public void execute_singleKeywords_multiplePersonsFound() {
+        // EP: single phrase keyword input.
         LocationContainsKeywordsPredicate predicate = preparePredicate("Anytime");
         assertFilterCommandSuccess(predicate, 5);
         assertEquals(Arrays.asList(CARL, DANIEL, ELLE, FIONA, GEORGE), model.getFilteredPersonList());
@@ -78,6 +81,7 @@ public class FilterCommandTest {
 
     @Test
     public void execute_multipleKeywords_multiplePersonsFound() {
+        // EP: multiple phrase keywords input.
         LocationContainsKeywordsPredicate predicate = preparePredicate("Anytime Fitness Buona", "Clementi");
         assertFilterCommandSuccess(predicate, 3);
         assertEquals(Arrays.asList(BENSON, ELLE, FIONA), model.getFilteredPersonList());
@@ -85,6 +89,8 @@ public class FilterCommandTest {
 
     @Test
     public void execute_blankPhrase_filtersPersonsWithEmptyLocation() {
+        // EP: blank phrase matches clients whose location is explicitly empty.
+        // BVA: empty-string phrase boundary.
         Person noLocationPerson = new PersonBuilder()
                 .withId(UUID.randomUUID().toString())
                 .withName("No Location Client")

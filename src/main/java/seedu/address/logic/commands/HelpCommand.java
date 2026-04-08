@@ -2,8 +2,10 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
 
+import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.Model;
 
 /**
@@ -19,11 +21,15 @@ public class HelpCommand extends Command {
             + "Example: " + COMMAND_WORD + " (shows all commands) or " + COMMAND_WORD
             + " add (shows add command only)";
 
-    public static final String SHOWING_HELP_MESSAGE = "Opened help window.";
-
     private final String targetCommand;
 
+    /**
+     * Creates a HelpCommand.
+     *
+     * @param targetCommand the command word to look up, or empty string to show all commands
+     */
     public HelpCommand(String targetCommand) {
+        requireNonNull(targetCommand);
         this.targetCommand = targetCommand;
     }
 
@@ -60,5 +66,17 @@ public class HelpCommand extends Command {
 
         HelpCommand otherHelpCommand = (HelpCommand) other;
         return targetCommand.equals(otherHelpCommand.targetCommand);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(targetCommand);
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .add("targetCommand", targetCommand)
+                .toString();
     }
 }

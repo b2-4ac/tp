@@ -48,6 +48,19 @@ public class LastCommand extends Command {
 
         logger.info("Executing last command for client at index " + targetIndex.getOneBased());
 
+        Person personToSearch = getTargetPerson(model);
+
+        WorkoutLog latest = model.lastLog(personToSearch);
+        if (latest == null) {
+            return handleNoLogFound(personToSearch);
+        }
+
+        logger.fine("Last command executed successfully for client at index: " + targetIndex.getOneBased());
+
+        return new CommandResult(formatSuccessMessage(personToSearch, latest));
+    }
+
+    private Person getTargetPerson(Model model) throws CommandException {
         List<Person> lastShownList = model.getFilteredPersonList();
 
         // Check for valid index
@@ -56,24 +69,25 @@ public class LastCommand extends Command {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
-        // Retrieve recent log
         Person personToSearch = lastShownList.get(targetIndex.getZeroBased());
-        WorkoutLog latest = model.lastLog(personToSearch);
-        if (latest == null) {
-            logger.info("No logs found for specified client");
-            return new CommandResult(String.format(MESSAGE_NO_LOGS_FOUND_FAILURE, personToSearch.getName()));
-        }
+        return personToSearch;
+    }
 
-        String locationToDisplay = latest.getLocation().value.isEmpty()
-                ? UNSET_LOCATION_DISPLAY
-                : latest.getLocation().toString();
+    private CommandResult handleNoLogFound(Person person) {
+        logger.info("No logs found for specified client");
+        return new CommandResult(String.format(MESSAGE_NO_LOGS_FOUND_FAILURE, person.getName()));
+    }
 
-        logger.fine("Last command executed successfully for client at index: " + targetIndex.getOneBased());
+    private String formatSuccessMessage(Person person, WorkoutLog log) {
+        return String.format(MESSAGE_RETRIEVE_LOG_SUCCESS,
+                person.getName(),
+                log.getTime(),
+                resolveLocation(log));
+    }
 
-        return new CommandResult(String.format(MESSAGE_RETRIEVE_LOG_SUCCESS,
-                personToSearch.getName(),
-                latest.getTime(),
-                locationToDisplay));
+    private String resolveLocation(WorkoutLog log) {
+        String locationString = log.getLocation().toString();
+        return locationString.isEmpty() ? UNSET_LOCATION_DISPLAY : locationString;
     }
 
     @Override

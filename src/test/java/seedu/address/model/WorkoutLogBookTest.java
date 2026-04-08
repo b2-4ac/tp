@@ -11,6 +11,8 @@ import java.util.Collections;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.model.workout.exceptions.DuplicateLogException;
+
 public class WorkoutLogBookTest {
 
     private final WorkoutLogBook workoutLogBook = new WorkoutLogBook();
@@ -34,6 +36,12 @@ public class WorkoutLogBookTest {
     public void hasLog_logInLogBook_returnsTrue() {
         workoutLogBook.addLog(ALICE_LOG_1);
         assertTrue(workoutLogBook.hasLog(ALICE_LOG_1));
+    }
+
+    @Test
+    public void addLog_duplicateLog_throwsDuplicateLogException() {
+        workoutLogBook.addLog(ALICE_LOG_1);
+        assertThrows(DuplicateLogException.class, () -> workoutLogBook.addLog(ALICE_LOG_1));
     }
 
     @Test

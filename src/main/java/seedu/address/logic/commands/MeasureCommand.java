@@ -105,24 +105,7 @@ public class MeasureCommand extends Command {
         Weight updatedWeight = weight != null ? weight : personToEdit.getWeight();
         BodyFatPercentage updatedBodyFatPercentage = bodyFatPercentage != null
                 ? bodyFatPercentage : personToEdit.getBodyFatPercentage();
-
-        return new Person(
-                personToEdit.getId(),
-                personToEdit.getName(),
-                personToEdit.getGender(),
-                personToEdit.getDateOfBirth(),
-                personToEdit.getPhone(),
-                personToEdit.getEmail(),
-                personToEdit.getAddress(),
-                personToEdit.getLocation(),
-                personToEdit.getNote(),
-                personToEdit.getPlan(),
-                personToEdit.getRate(),
-                personToEdit.getStatus(),
-                updatedHeight,
-                updatedWeight,
-                updatedBodyFatPercentage,
-                personToEdit.getTags());
+        return personToEdit.withMeasurements(updatedHeight, updatedWeight, updatedBodyFatPercentage);
     }
 
     private boolean isTargetIndexInvalid(List<Person> lastShownList) {

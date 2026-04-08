@@ -82,23 +82,7 @@ public class PlanCommand extends Command {
     }
 
     private Person createEditedPerson(Person personToEdit) {
-        return new Person(
-                personToEdit.getId(),
-                personToEdit.getName(),
-                personToEdit.getGender(),
-                personToEdit.getDateOfBirth(),
-                personToEdit.getPhone(),
-                personToEdit.getEmail(),
-                personToEdit.getAddress(),
-                personToEdit.getLocation(),
-                personToEdit.getNote(),
-                plan,
-                personToEdit.getRate(),
-                personToEdit.getStatus(),
-                personToEdit.getHeight(),
-                personToEdit.getWeight(),
-                personToEdit.getBodyFatPercentage(),
-                personToEdit.getTags());
+        return personToEdit.withPlan(plan);
     }
 
     private String buildResultMessage(Person personToEdit, Person editedPerson) {

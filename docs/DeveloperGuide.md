@@ -107,6 +107,10 @@ The sequence diagram below illustrates the interactions within the `Logic` compo
 **Note:** The lifeline for `DeleteCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
 </box>
 
+The sequence diagram below shows an example of a profile field update command — `execute("status 1 s/inactive")`. Commands such as `note`, `rate`, `plan`, and `measure` follow the same flow.
+
+<puml src="diagrams/StatusSequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `status 1 s/inactive` Command" />
+
 How the `Logic` component works:
 
 1. When `Logic` is called upon to execute a command, it is passed to an `AddressBookParser` object which in turn creates a parser that matches the command (e.g., `DeleteCommandParser`) and uses it to parse the command.
@@ -199,13 +203,15 @@ The sequence diagram below illustrates interactions when the user executes `sort
 
 `ModelManager` exposes a `SortedList<Person>` wrapped around the filtered list, so filtering and sorting compose cleanly. `list` command resets the filter predicate and does not reset the active comparator.
 
+Two attributes have special handling for absent values: clients with no location set always sort to the end of the list in ascending order (and to the top in descending), and clients with no rate set are treated as having the lowest rate and sort first in ascending order (and last in descending).
+
 ### Profile field update pattern (note/plan/status/rate/measure)
 
 Several commands share a common implementation pattern:
 
 1. Parse and validate command-specific prefixes.
 1. Resolve target client from `Model#getFilteredPersonList()` using the provided index.
-1. Construct an updated `Person` with changed fields while preserving all unaffected fields.
+1. Construct an updated `Person` using the `with*()` methods (e.g., `withStatus()`, `withRate()`), which are backed by `Person.Builder` and copy all unaffected fields automatically.
 1. Persist the update through `Model#setPerson(...)`.
 
 This design keeps command behavior predictable and avoids hidden side effects between fields.
@@ -222,6 +228,20 @@ Storage and migration behavior for these fields is intentionally explicit:
 
 * `status` supports backward compatibility by defaulting missing legacy values to `active` during JSON loading.
 * `rate`, `plan`, and measurement fields are required in persisted JSON and validated on load.
+
+### Help feature
+
+`HelpCommand` delegates all command-word-to-usage lookups to `CommandRegistry` — a single utility class that maintains an ordered `LinkedHashMap` of every command word to its `MESSAGE_USAGE` string.
+
+When `help` is executed without arguments, `HelpCommand` iterates `CommandRegistry` to produce a combined usage string and returns a `CommandResult` with `showHelp=true`, which causes `MainWindow` to open the help window. When a specific command word is provided, only that command's usage string is returned inline — no window is opened. The command word matching is case-insensitive.
+
+If an unknown command word is provided, `HelpCommand` returns an informational message indicating the command is unrecognised and suggests running `help` without arguments.
+
+**Extensibility:** Adding help support for a new command requires only one change — registering the new command in `CommandRegistry`. No other class needs updating.
+
+The sequence diagram below illustrates interactions when the user executes `help` (bare, no arguments). When a specific command word is provided (e.g. `help add`), the flow is identical except `CommandResult` is created with `showHelp=false` and no window is opened.
+
+<puml src="diagrams/HelpSequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `help` Command" />
 
 ### Workout log feature (`log` and `last`)
 
@@ -299,7 +319,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* *`    | trainer       | add body measurements for each client (weight, body fat %, etc.) | track their physical progress quantitatively over time                         |
 | `* *`    | trainer       | store a *session rate* for each client           | recall their pricing quickly when preparing invoices                           |
 | `* *`    | trainer       | group clients together under a shared label      | track clients that are part of batch or group training sessions and contact them easily |
-| `* *`    | trainer       | sort my client list by different attributes (e.g. name, location, last session date) | organise my view depending on the task that I seek to do                       |
+| `* *`    | trainer       | sort my client list by different attributes (e.g. name, location, date of birth) | organise my view depending on the task that I seek to do                       |
 | `* *`    | trainer       | export or back up my client data                 | do not lose critical client information if something goes wrong                |
 
 #### Yet to be implemented (near-future and beyond)
@@ -405,7 +425,7 @@ To keep this section focused on non-trivial interactions, only unique interactio
 **MSS**
 
 1. User requests to view the help guide.
-2. PowerRoster displays the list of available commands with their syntax and descriptions.
+2. PowerRoster opens the help window and displays the list of available commands with their syntax and descriptions.
 
    Use case ends.
 
@@ -564,6 +584,10 @@ To keep this section focused on non-trivial interactions, only unique interactio
       Use case ends.
 * 2b. The sorting request contains an unsupported sorting criterion.
     * 2b1. PowerRoster informs the Trainer that the sorting criterion is invalid and no sorting is performed.
+
+      Use case ends.
+* 2c. The sorting request contains duplicate prefixes (e.g., `sort n/ n/`).
+    * 2c1. PowerRoster informs the Trainer that duplicate prefixes are not allowed.
 
       Use case ends.
 
@@ -794,7 +818,7 @@ testers are expected to do more *exploratory* testing.
    1. Test case: `status 1 s/inactive`<br>
       Expected: Status is updated to inactive.
 
-   1. Test case: `status 1 s/inactive`<br>
+   1. After the previous test case, test case: `status 1 s/inactive`<br>
       Expected: Message indicates no change because status is already inactive.
 
 1. Rate

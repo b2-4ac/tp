@@ -71,40 +71,55 @@ public class LogCommand extends Command {
         assert time != null : "Time should always be initialised";
         assert location != null : "Location should always be initialised, use empty string for unspecified location";
 
-        List<Person> lastShownList = model.getFilteredPersonList();
+        Person personToLog = getTargetPerson(model);
+        WorkoutLog newLog = createWorkoutLog(personToLog);
 
+        ensureNoDuplicateLog(model, newLog);
+
+        model.addLog(newLog);
+        logger.fine("Successfully logged workout for client at index " + targetIndex.getOneBased());
+
+        return new CommandResult(formatSuccessMessage(personToLog, newLog));
+    }
+
+    private Person getTargetPerson(Model model) throws CommandException {
+        List<Person> lastShownList = model.getFilteredPersonList();
         // Check for valid index
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
             logger.warning("Log command failed due to invalid index: " + targetIndex.getOneBased());
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
+        return lastShownList.get(targetIndex.getZeroBased());
+    }
 
-        // Create Workout Log
-        Person personToLog = lastShownList.get(targetIndex.getZeroBased());
-        ClientId traineeId = new ClientId(personToLog.getId().toString());
-        Location workoutLocation;
+    private WorkoutLog createWorkoutLog(Person person) {
+        ClientId traineeId = person.getId();
+        Location workoutLocation = resolveLocation(person);
+        WorkoutLog newLog = new WorkoutLog(traineeId, time, workoutLocation);
+        return newLog;
+    }
+
+    private Location resolveLocation(Person person) {
         if (location.toString().isEmpty()) {
             logger.info("Empty location detected, client's preset location will be used");
-            workoutLocation = new Location(personToLog.getLocation().toString());
+            return new Location(person.getLocation().toString());
         } else {
-            workoutLocation = location;
+            return location;
         }
-        WorkoutLog newLog = new WorkoutLog(traineeId, time, workoutLocation);
+    }
 
-        // Check for duplicate log
-        if (model.hasLog(newLog)) {
+    private void ensureNoDuplicateLog(Model model, WorkoutLog log) throws CommandException {
+        if (model.hasLog(log)) {
             logger.warning("Log command failed due to duplicate logs present");
             throw new CommandException(MESSAGE_DUPLICATE_LOG);
         }
+    }
 
-        model.addLog(newLog);
-        logger.fine("Successfully logged workout for client at index " + targetIndex.getOneBased());
-
-        return new CommandResult(String.format(MESSAGE_LOG_WORKOUT_SUCCESS,
-                personToLog.getName(),
-                time.toString(),
-                workoutLocation.toString()
-        ));
+    private String formatSuccessMessage(Person person, WorkoutLog log) {
+        return String.format(MESSAGE_LOG_WORKOUT_SUCCESS,
+                person.getName(),
+                log.getTime(),
+                log.getLocation());
     }
 
     @Override

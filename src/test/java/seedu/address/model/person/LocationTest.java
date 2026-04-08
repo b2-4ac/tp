@@ -22,19 +22,19 @@ public class LocationTest {
     public void equals() {
         Location location = new Location("Valid Location");
 
-        // same values -> returns true
+        // EP: Same location
         assertTrue(location.equals(new Location("Valid Location")));
 
-        // same object -> returns true
+        // EP: Same object
         assertTrue(location.equals(location));
 
-        // null -> returns false
+        // EP: null Input
         assertFalse(location.equals(null));
 
-        // different types -> returns false
+        // EP: Different types
         assertFalse(location.equals(5.0f));
 
-        // different values -> returns false
+        // EP: Different Location
         assertFalse(location.equals(new Location("Other Valid Location")));
     }
 }

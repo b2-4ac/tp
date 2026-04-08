@@ -16,30 +16,34 @@ public class WeightTest {
 
     @Test
     public void constructor_invalidWeight_throwsIllegalArgumentException() {
+        // EP: invalid numeric value below accepted range.
+        // BVA: just below lower bound (20.0).
         String invalidWeight = "19.9";
         assertThrows(IllegalArgumentException.class, () -> new Weight(invalidWeight));
     }
 
     @Test
     public void isValidWeight() {
-        // null weight
+        // EP: null input.
         assertThrows(NullPointerException.class, () -> Weight.isValidWeight(null));
 
-        // invalid weight
-        assertFalse(Weight.isValidWeight(" ")); // spaces only
-        assertFalse(Weight.isValidWeight("19.9")); // below lower bound
-        assertFalse(Weight.isValidWeight("500.1")); // above upper bound
-        assertFalse(Weight.isValidWeight("75.55")); // more than 1 decimal place
-        assertFalse(Weight.isValidWeight("abc")); // non-numeric
-        assertFalse(Weight.isValidWeight("70kg")); // contains unit suffix
+        // EP: invalid textual/format inputs.
+        assertFalse(Weight.isValidWeight(" ")); // BVA: blank/whitespace-only input
+        assertFalse(Weight.isValidWeight("75.55")); // EP: precision > 1 decimal place
+        assertFalse(Weight.isValidWeight("abc")); // EP: non-numeric input
+        assertFalse(Weight.isValidWeight("70kg")); // EP: numeric value with unit suffix
 
-        // valid weight
-        assertTrue(Weight.isValidWeight("")); // default placeholder
-        assertTrue(Weight.isValidWeight("20.0")); // lower bound
-        assertTrue(Weight.isValidWeight("72")); // whole number
-        assertTrue(Weight.isValidWeight("72.")); // trailing dot
-        assertTrue(Weight.isValidWeight("72.5")); // one decimal place
-        assertTrue(Weight.isValidWeight("500.0")); // upper bound
+        // EP: out-of-range numeric inputs.
+        assertFalse(Weight.isValidWeight("19.9")); // BVA: just below lower bound
+        assertFalse(Weight.isValidWeight("500.1")); // BVA: just above upper bound
+
+        // EP: valid inputs, including canonical and normalized forms.
+        assertTrue(Weight.isValidWeight("")); // EP: explicit clear/empty value
+        assertTrue(Weight.isValidWeight("20.0")); // BVA: lower bound
+        assertTrue(Weight.isValidWeight("72")); // EP: whole number within range
+        assertTrue(Weight.isValidWeight("72.")); // EP: trailing dot normalization
+        assertTrue(Weight.isValidWeight("72.5")); // EP: one decimal place within range
+        assertTrue(Weight.isValidWeight("500.0")); // BVA: upper bound
     }
 
     @Test
