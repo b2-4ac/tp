@@ -28,14 +28,21 @@ import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Address;
+import seedu.address.model.person.BodyFatPercentage;
 import seedu.address.model.person.ClientId;
 import seedu.address.model.person.DateOfBirth;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Gender;
+import seedu.address.model.person.Height;
 import seedu.address.model.person.Location;
 import seedu.address.model.person.Name;
+import seedu.address.model.person.Note;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Plan;
+import seedu.address.model.person.Rate;
+import seedu.address.model.person.Status;
+import seedu.address.model.person.Weight;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -212,13 +219,20 @@ public class EditCommand extends Command {
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
         Location updatedLocation = editPersonDescriptor.getLocation().orElse(personToEdit.getLocation());
+        Note oldNote = personToEdit.getNote();
+        Plan oldPlan = personToEdit.getPlan();
+        Rate oldRate = personToEdit.getRate();
+        Status oldStatus = personToEdit.getStatus();
+        Height oldHeight = personToEdit.getHeight();
+        Weight oldWeight = personToEdit.getWeight();
+        BodyFatPercentage oldBodyFatPercentage = personToEdit.getBodyFatPercentage();
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
         // Fields not supported by EditCommand remain unchanged from the existing person.
         return new Person(fixedId, updatedName, updatedGender, updatedDob, updatedPhone, updatedEmail,
                 updatedAddress, updatedLocation,
-                personToEdit.getNote(), personToEdit.getPlan(), personToEdit.getRate(), personToEdit.getStatus(),
-                personToEdit.getHeight(), personToEdit.getWeight(), personToEdit.getBodyFatPercentage(),
+                oldNote, oldPlan, oldRate, oldStatus,
+                oldHeight, oldWeight, oldBodyFatPercentage,
                 updatedTags);
     }
 
