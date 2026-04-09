@@ -29,8 +29,6 @@ PowerRoster is a **desktop app built to help Freelance Personal Fitness Trainers
 1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
    Some example commands you can try:
    * `list` : Lists all clients.
-   * `add n/John Tan g/M dob/24/12/1999 p/98765432 e/johnt@example.com a/123 Sengkang East, #01-01 l/ActiveSG @ Fernvale Square t/beginner` : Adds a client named `John Tan` to PowerRoster.
-   * `plan 1 wp/PUSH` : Assigns the 1st client a workout programme.
 
    * `add n/John Tan g/M dob/24/12/1999 p/98765432 e/johnt@example.com a/123 Sengkang East, #01-01 l/ActiveSG @ Fernvale Square t/beginner` : Adds a client named `John Tan` to PowerRoster.
 
