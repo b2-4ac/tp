@@ -3,6 +3,7 @@ package seedu.address.logic.parser;
 import static java.util.Objects.requireNonNull;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.Collection;
 import java.util.HashSet;
@@ -269,8 +270,13 @@ public class ParserUtil {
     public static WorkoutTime parseTime(String time) throws ParseException {
         requireNonNull(time);
         String trimmedTime = time.trim();
-        if (!WorkoutTime.isValidTime(trimmedTime)) {
-            throw new ParseException(WorkoutTime.MESSAGE_CONSTRAINTS);
+        try {
+            LocalDateTime testDateTime = LocalDateTime.parse(trimmedTime, WorkoutTime.FORMATTER);
+            if (!WorkoutTime.isValidTimeframe(testDateTime)) {
+                throw new ParseException(WorkoutTime.MESSAGE_INVALID_TIMEFRAME);
+            }
+        } catch (DateTimeParseException e) {
+            throw new ParseException(WorkoutTime.MESSAGE_INVALID_DATETIME);
         }
         return new WorkoutTime(trimmedTime);
     }

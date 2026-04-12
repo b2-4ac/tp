@@ -17,6 +17,12 @@ public class WorkoutTime {
             "Workout Time must be a valid date in the format: dd/MM/yyyy HH:mm\n"
             + "Workout Time cannot be in the future or more than 50 years in the past.";
 
+    public static final String MESSAGE_INVALID_DATETIME =
+            "Workout Time must be a valid date in the format: dd/MM/yyyy HH:mm";
+
+    public static final String MESSAGE_INVALID_TIMEFRAME =
+            "Workout Time cannot be in the future or more than 50 years in the past.";
+
     public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/uuuu HH:mm")
             .withResolverStyle(ResolverStyle.STRICT);
 
@@ -42,17 +48,18 @@ public class WorkoutTime {
     public static boolean isValidTime(String test) {
         try {
             LocalDateTime parsed = LocalDateTime.parse(test, FORMATTER);
-            if (parsed.isAfter(LocalDateTime.now())) {
-                return false;
-            }
-            LocalDateTime threshold = LocalDateTime.now().minusYears(50);
-            if (parsed.isBefore(threshold)) {
-                return false;
-            }
-            return true;
+            return isValidTimeframe(parsed);
         } catch (DateTimeParseException e) {
             return false;
         }
+    }
+
+    /**
+     * Returns true if the given {@code LocalDateTime} object is
+     * not in the future and not more than 50 years in the past.
+     */
+    public static boolean isValidTimeframe(LocalDateTime testDateTime) {
+        return !testDateTime.isAfter(LocalDateTime.now()) && !testDateTime.isBefore(LocalDateTime.now().minusYears(50));
     }
 
     public LocalDateTime getTime() {
