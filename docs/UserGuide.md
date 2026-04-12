@@ -98,6 +98,7 @@ Format: `add n/NAME g/GENDER dob/DATE_OF_BIRTH p/PHONE_NUMBER e/EMAIL_ADDRESS a/
 
 * Names with forward slashes (e.g., "s/o" for "son of") are not supported due to the "/" being used as a command delimiter. You can replace the slashes with spaces (e.g., "Muthu s/o Rajan" can be entered as "Muthu s o Rajan".)
 * Other names with non-alphanumeric characters like José Muñoz or 小明 should be replaced with suitable alphanumeric characters.
+* `NAME` can contain alphanumeric characters, spaces, apostrophes (`'`), periods (`.`), and hyphens (`-`).
 * `NAME` is case-sensitive for duplicate detection
 * `EMAIL_ADDRESS` must follow the rules below (format: `local-part@domain`, e.g. `alex@example.com`):
   * Local-part (before `@`)
@@ -164,7 +165,8 @@ Format: `edit INDEX [n/NAME] [g/GENDER] [dob/DATE_OF_BIRTH] [p/PHONE] [e/EMAIL] 
 * Feedback (e.g. `added/updated` or `unchanged`) is shown per specified field.
 * If multiple provided field values are invalid in one command, all related validation errors are shown together.
 * Repeated use of the same non-tag prefix is not allowed (e.g., `p/91234567 p/98765432`). Repeating `t/` is allowed for multiple tags.
-* Each provided `TAG` follows the same format rules as in `add` (letters/numbers, spaces, and hyphens only; Cannot start with hyphens and leading/trailing spaces will be automatically removed).
+* If provided, `NAME` follows the same format rules as in `add`.
+* Each provided `TAG` follows the same format rules as in `add` (letters/numbers, spaces, and hyphens only; cannot start with a hyphen; leading/trailing spaces are automatically removed).
 * You can clear a client's location by typing `l/` without specifying a value after it.
 * When editing tags, the existing tags of the client will be removed i.e adding of tags is not cumulative.
 * You can remove all the client’s tags by typing `t/` without specifying any tags after it.
