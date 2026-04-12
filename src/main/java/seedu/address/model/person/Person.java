@@ -167,6 +167,13 @@ public class Person {
     }
 
     /**
+     * Returns true if the current client is active.
+     */
+    public boolean isActive() {
+        return status.value.equals(Status.StatusEnum.ACTIVE);
+    }
+
+    /**
      * Returns a {@link Builder} pre-populated with this person's fields.
      */
     public Builder toBuilder() {

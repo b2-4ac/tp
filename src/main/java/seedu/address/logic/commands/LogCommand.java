@@ -28,7 +28,7 @@ public class LogCommand extends Command {
     public static final String COMMAND_WORD = "log";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Logs a workout for the person identified by the index number used in the displayed client list\n"
+            + ": Logs a workout for the client identified by the index number used in the displayed client list\n"
             + "Parameters: " + "INDEX (must be a positive integer) " + "[" + PREFIX_TIME + "TIME] "
             + "[" + PREFIX_LOCATION + "LOCATION]";
 
@@ -36,6 +36,8 @@ public class LogCommand extends Command {
             "Workout Logged for: %s\n" + "Date: %s\n" + "Location: %s";
 
     public static final String MESSAGE_DUPLICATE_LOG = "This workout log already exists.";
+
+    public static final String MESSAGE_INACTIVE_CLIENT = "This client is inactive.";
 
     private static final Logger logger = LogsCenter.getLogger(LogCommand.class);
 
@@ -70,6 +72,8 @@ public class LogCommand extends Command {
         assert location != null : "Location should always be initialised, use empty string for unspecified location";
 
         Person personToLog = getTargetPerson(model);
+        ensureActiveStatus(personToLog);
+
         WorkoutLog newLog = createWorkoutLog(personToLog);
 
         ensureNoDuplicateLog(model, newLog);
@@ -110,6 +114,12 @@ public class LogCommand extends Command {
         if (model.hasLog(log)) {
             logger.warning("Log command failed due to duplicate logs present");
             throw new CommandException(MESSAGE_DUPLICATE_LOG);
+        }
+    }
+
+    private void ensureActiveStatus(Person person) throws CommandException {
+        if (!person.isActive()) {
+            throw new CommandException(MESSAGE_INACTIVE_CLIENT);
         }
     }
 
