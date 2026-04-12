@@ -22,13 +22,13 @@ public class StatusCommand extends Command {
     public static final String COMMAND_WORD = "status";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Changes the status of the person identified by the index number used in the displayed person list.\n"
+            + ": Changes the status of the client identified by the index number used in the displayed client list.\n"
             + "Parameters: INDEX (must be a positive integer) "
             + PREFIX_STATUS + "STATUS (must be 'active' or 'inactive')\n"
             + "Example: " + COMMAND_WORD + " 1 " + PREFIX_STATUS + "inactive";
 
-    public static final String MESSAGE_STATUS_PERSON_SUCCESS = "Updated status of Person: %1$s";
-    public static final String MESSAGE_NOT_CHANGED = "Status is already set to %1$s for person: %2$s";
+    public static final String MESSAGE_STATUS_PERSON_SUCCESS = "Updated status of Client: %1$s";
+    public static final String MESSAGE_NOT_CHANGED = "Status is already set to %1$s for client: %2$s";
     public static final String MESSAGE_DUPLICATE_STATUS =
             "Only one status value (either active or inactive) can be specified.";
 
