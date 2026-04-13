@@ -67,7 +67,7 @@ PowerRoster is a **desktop app built to help Freelance Personal Fitness Trainers
   e.g. if the command specifies `exit 123`, it will be interpreted as `exit`.
 
 * Each command recognises only its **own set of prefixes**. When providing values for a command, ensure that the command's own prefixes are not used as part of the value text.
-  e.g. in `add n/John t/beginner`, `t/` is a prefix for the `add` command, so it cannot be used as part of the client's name. If you want to include `t/` in the name, you can replace the slash with something else (e.g. `add n/John t beginner`).
+  e.g. in `add n/John t/taylor ...`, `t/` is a prefix for the `add` command, so it cannot be used as part of the client's name. If you want to include `t/` in the name, you can replace the slash with something else (e.g. `add n/John t taylor`).
 
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 </box>
