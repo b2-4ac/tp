@@ -424,8 +424,8 @@ PowerRoster data are saved automatically as a JSON file `[JAR file location]/dat
 <box type="warning" seamless>
 
 **Caution:**
-If your changes to the data file makes its format invalid, PowerRoster will discard all data and start with an empty data file at the next run.  Hence, it is recommended to take a backup of the file before editing it.<br>
-Furthermore, certain edits can cause the PowerRoster to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
+If either file has invalid format, PowerRoster starts with empty in-memory data for that file on the next run. The file itself is rewritten only after a successful command that changes data. Hence, it is recommended to back up both files before editing them.<br>
+Furthermore, certain edits can cause PowerRoster to behave in unexpected ways (e.g., if a value is outside the acceptable range). Therefore, edit these files only if you are confident that you can update them correctly.
 </box>
 
 ### Viewing workout session history `[coming soon]`
