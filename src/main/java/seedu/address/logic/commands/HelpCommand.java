@@ -14,7 +14,7 @@ import seedu.address.model.Model;
 public class HelpCommand extends Command {
 
     public static final String COMMAND_WORD = "help";
-    private static final String USER_GUIDE_REFERENCE =
+    public static final String USER_GUIDE_REFERENCE =
             "Refer to the user guide: https://ay2526s2-cs2103-f08-1a.github.io/tp/UserGuide.html";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD

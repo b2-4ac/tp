@@ -13,15 +13,13 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 
 public class HelpCommandTest {
-    private static final String USER_GUIDE_REFERENCE =
-            "Refer to the user guide: https://ay2526s2-cs2103-f08-1a.github.io/tp/UserGuide.html";
     private Model model = new ModelManager();
     private Model expectedModel = new ModelManager();
 
     @Test
     public void execute_helpWithoutArgs_success() {
         String expectedMessage = CommandRegistry.getUsageMap().values().stream()
-                .collect(Collectors.joining("\n\n")) + "\n\n" + USER_GUIDE_REFERENCE;
+                .collect(Collectors.joining("\n\n")) + "\n\n" + HelpCommand.USER_GUIDE_REFERENCE;
         CommandResult expectedCommandResult = new CommandResult(expectedMessage, false, false);
         assertCommandSuccess(new HelpCommand(""), model, expectedCommandResult, expectedModel);
     }
